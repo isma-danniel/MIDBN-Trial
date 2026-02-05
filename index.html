@@ -18,72 +18,140 @@
 
 <input type="text" id="search" placeholder="Search watches..." onkeyup="searchWatch()">
 
+<select id="sort" onchange="sortWatches()">
+  <option value="">Sort by price</option>
+  <option value="low">Low → High</option>
+  <option value="high">High → Low</option>
+</select>
+
 <nav>
-  <button onclick="filterWatches('all')" class="active">All</button>
-  <button onclick="filterWatches('men')">Men</button>
-  <button onclick="filterWatches('women')">Women</button>
-  <button onclick="filterWatches('couple')">Couple</button>
-  <button onclick="filterWatches('promo')">Defect</button>
+  <button onclick="filterWatches('all', this)" class="active">All</button>
+  <button onclick="filterWatches('men', this)">Men</button>
+  <button onclick="filterWatches('women', this)">Women</button>
+  <button onclick="filterWatches('couple', this)">Couple</button>
+  <button onclick="filterWatches('promo', this)">Defect</button>
 </nav>
 
 <section class="catalogue" id="catalogue"></section>
+
+<section class="trust">
+  ✔️ 100% working watches • ✔️ Tested before delivery • ✔️ Fast WhatsApp response
+</section>
 
 <footer>
   <p>© MIDBN.Timepieces</p>
 </footer>
 
+<!-- PRODUCT MODAL -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">×</span>
+    <img id="modalImg">
+    <h2 id="modalName"></h2>
+    <p id="modalPrice"></p>
+    <p id="modalDesc"></p>
+    <a id="modalWA" class="wa" target="_blank">ORDER VIA WHATSAPP</a>
+  </div>
+</div>
+
 <script>
 const catalogue = document.getElementById("catalogue");
+let currentCategory = "all";
 
-function createWatch(category, img, name, price, desc, badge="") {
+/* CREATE CARD */
+function createWatch(category, img, name, price, desc, badge="", badgeType=""){
   const div = document.createElement("div");
   div.className = `watch-card ${category}`;
+  div.dataset.name = name.toLowerCase();
+  div.dataset.price = price;
+
   div.innerHTML = `
-    ${badge ? `<span class="badge">${badge}</span>` : ""}
-    <img src="images/${img}">
+    ${badge ? `<span class="badge ${badgeType}">${badge}</span>` : ""}
+    <img src="images/${img}" alt="${name}" loading="lazy">
     <h3>${name}</h3>
     <p class="price">$${price}</p>
     <p>${desc}</p>
-    <a class="wa" href="https://wa.me/6738908960?text=Hi%20MIDBN.Timepieces,%20I’m%20interested%20in%20${name}" target="_blank">WhatsApp</a>
   `;
+
+  div.onclick = () => openModal(img, name, price, desc);
   catalogue.appendChild(div);
 }
 
-/* ===== MEN 50 ===== */
+/* PRODUCTS */
 for(let i=1;i<=50;i++){
-  createWatch("men",`men-${i}.png`,`Men Watch ${i}`,25,"Quartz • Stainless Steel");
+  createWatch("men",`men-${i}.png`,`Men Watch ${i}`,25,"Quartz • Stainless Steel",
+    i<=5?"NEW":"", "new");
 }
 
-/* ===== WOMEN 50 ===== */
 for(let i=1;i<=50;i++){
-  createWatch("women",`women-${i}.png`,`Women Watch ${i}`,22,"Elegant • Lightweight");
+  createWatch("women",`women-${i}.png`,`Women Watch ${i}`,22,"Elegant • Lightweight",
+    i<=5?"BEST":"", "best");
 }
 
-/* ===== COUPLE 5 ===== */
 for(let i=1;i<=5;i++){
-  createWatch("couple",`couple-${i}.png`,`Couple Watch Set ${i}`,45,"Matching Gift Set");
+  createWatch("couple",`couple-${i}.png`,`Couple Watch Set ${i}`,45,"Matching Gift Set",
+    "LIMITED","limited");
 }
 
-/* ===== DEFECT 10 ===== */
 for(let i=1;i<=10;i++){
-  createWatch("promo",`promo-${i}.png`,`Grade A Watch ${i}`,15,"Minor defect • Fully working","DEFECT");
+  createWatch("promo",`promo-${i}.png`,`Grade A Watch ${i}`,15,"Minor defect • Fully working",
+    "DEFECT");
 }
 
-function filterWatches(cat){
+/* FILTER + SEARCH */
+function applyFilters(){
+  const q = document.getElementById("search").value.toLowerCase();
   document.querySelectorAll(".watch-card").forEach(card=>{
-    card.style.display = (cat==="all"||card.classList.contains(cat)) ? "block" : "none";
+    const catMatch = currentCategory==="all" || card.classList.contains(currentCategory);
+    const searchMatch = card.dataset.name.includes(q);
+    card.style.display = (catMatch && searchMatch) ? "block" : "none";
   });
+}
+
+function filterWatches(cat, btn){
+  currentCategory = cat;
   document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-  event.target.classList.add("active");
+  btn.classList.add("active");
+  applyFilters();
 }
 
-function searchWatch(){
-  let q = document.getElementById("search").value.toLowerCase();
-  document.querySelectorAll(".watch-card").forEach(card=>{
-    card.style.display = card.innerText.toLowerCase().includes(q) ? "block" : "none";
+function searchWatch(){ applyFilters(); }
+
+/* SORT */
+function sortWatches(){
+  const order = document.getElementById("sort").value;
+  const cards = Array.from(document.querySelectorAll(".watch-card"));
+  cards.sort((a,b)=>{
+    return order==="low"
+      ? a.dataset.price - b.dataset.price
+      : b.dataset.price - a.dataset.price;
   });
+  cards.forEach(c=>catalogue.appendChild(c));
+}
+
+/* MODAL */
+function openModal(img,name,price,desc){
+  modalImg.src = `images/${img}`;
+  modalName.innerText = name;
+  modalPrice.innerText = `$${price}`;
+  modalDesc.innerText = desc;
+
+  const msg = `Hi MIDBN.Timepieces 👋
+I'm interested in:
+• ${name}
+• Price: $${price}
+
+Is this available today?`;
+
+  modalWA.href = `https://wa.me/6738908960?text=${encodeURIComponent(msg)}`;
+  modal.style.display = "flex";
+}
+
+function closeModal(){
+  modal.style.display = "none";
 }
 </script>
 
 </body>
 </html>
+
