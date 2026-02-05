@@ -6,113 +6,115 @@
 <title>MIDBN.Timepieces</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* ===== CSS ===== */
-body {
-  margin: 0;
-  font-family: 'Rajdhani', sans-serif;
-  background: radial-gradient(circle at top, #111, #000);
-  color: #fff;
-}
+  body {
+    margin: 0;
+    font-family: 'Rajdhani', sans-serif;
+    background: radial-gradient(circle at top, #111, #000);
+    color: #fff;
+  }
 
-header {
-  text-align: center;
-  padding: 30px 10px;
-}
+  header {
+    text-align: center;
+    padding: 30px 10px;
+  }
 
-header h1 {
-  font-family: 'Orbitron', sans-serif;
-  letter-spacing: 3px;
-}
+  header h1 {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 3px;
+  }
 
-#search {
-  display: block;
-  margin: 10px auto;
-  width: 80%;
-  padding: 10px;
-  border-radius: 20px;
-  border: none;
-}
+  #search {
+    display: block;
+    margin: 10px auto;
+    width: 80%;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+  }
 
-nav {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  padding-bottom: 15px;
-}
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding-bottom: 15px;
+  }
 
-nav button {
-  background: transparent;
-  border: 1px solid #c9a24d;
-  color: #c9a24d;
-  padding: 6px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-}
+  nav button {
+    background: transparent;
+    border: 1px solid #c9a24d;
+    color: #c9a24d;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
 
-nav button.active,
-nav button:hover {
-  background: #c9a24d;
-  color: #000;
-}
+  nav button.active,
+  nav button:hover {
+    background: #c9a24d;
+    color: #000;
+  }
 
-.catalogue {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 15px;
-  padding: 20px;
-}
+  .catalogue {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+    padding: 20px;
+  }
 
-.watch-card {
-  background: #0b0b0b;
-  padding: 12px;
-  border-radius: 14px;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 0 18px rgba(201,162,77,0.15);
-  transition: transform 0.3s;
-}
+  .watch-card {
+    background: #0b0b0b;
+    padding: 12px;
+    border-radius: 14px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 18px rgba(201,162,77,0.15);
+    transition: transform 0.3s;
+  }
 
-.watch-card:hover {
-  transform: scale(1.05);
-}
+  .watch-card:hover {
+    transform: scale(1.05);
+  }
 
-.watch-card img {
-  width: 100%;
-  border-radius: 10px;
-}
+  .watch-card img {
+    width: 100%;
+    border-radius: 10px;
+  }
 
-.price {
-  color: #c9a24d;
-  font-weight: bold;
-}
+  .price {
+    color: #c9a24d;
+    font-weight: bold;
+  }
 
-.wa {
-  display: block;
-  margin-top: 8px;
-  padding: 6px;
-  background: #25d366;
-  color: #000;
-  border-radius: 20px;
-  text-decoration: none;
-  font-weight: bold;
-}
+  .wa {
+    display: block;
+    margin-top: 8px;
+    padding: 6px;
+    background: #25d366;
+    color: #000;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+  }
 
-.badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: red;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-}
+  .badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #fff;
+  }
 
-footer {
-  text-align: center;
-  padding: 20px;
-  opacity: 0.6;
-}
+  .badge.best { background: gold; color: #000; }
+  .badge.defect { background: red; }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    opacity: 0.6;
+  }
 </style>
 </head>
 <body>
@@ -125,15 +127,15 @@ footer {
 <input type="text" id="search" placeholder="Search watches..." onkeyup="searchWatch()">
 
 <nav>
-  <button onclick="filterWatches('all')" class="active">All</button>
-  <button onclick="filterWatches('men')">Men</button>
-  <button onclick="filterWatches('women')">Women</button>
-  <button onclick="filterWatches('couple')">Couple</button>
-  <button onclick="filterWatches('promo')">Defect</button>
-  <button onclick="filterWatches('BrandA')">BrandA</button>
-  <button onclick="filterWatches('BrandB')">BrandB</button>
-  <button onclick="filterWatches('BrandC')">BrandC</button>
-  <button onclick="filterWatches('BrandD')">BrandD</button>
+  <button onclick="filterWatches(event, 'all')" class="active">All</button>
+  <button onclick="filterWatches(event, 'men')">Men</button>
+  <button onclick="filterWatches(event, 'women')">Women</button>
+  <button onclick="filterWatches(event, 'couple')">Couple</button>
+  <button onclick="filterWatches(event, 'promo')">Defect</button>
+  <button onclick="filterWatches(event, 'BrandA')">BrandA</button>
+  <button onclick="filterWatches(event, 'BrandB')">BrandB</button>
+  <button onclick="filterWatches(event, 'BrandC')">BrandC</button>
+  <button onclick="filterWatches(event, 'BrandD')">BrandD</button>
 </nav>
 
 <section class="catalogue" id="catalogue"></section>
@@ -143,64 +145,21 @@ footer {
 </footer>
 
 <script>
-/* ===== JS ===== */
 const catalogue = document.getElementById("catalogue");
 
-const products = 
-/* ===== MEN 50 ===== */
-{brand:"BrandA", type:"men", img:"men-1.png", name:"Men Watch 1", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-2.png", name:"Men Watch 2", price:26, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-3.png", name:"Men Watch 3", price:27, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-4.png", name:"Men Watch 4", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-5.png", name:"Men Watch 5", price:28, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-6.png", name:"Men Watch 6", price:26, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-7.png", name:"Men Watch 7", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-8.png", name:"Men Watch 8", price:27, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-9.png", name:"Men Watch 9", price:28, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-10.png", name:"Men Watch 10", price:25, desc:"Quartz • Stainless Steel", badge:"BEST", badgeType:"best"},
-{brand:"BrandA", type:"men", img:"men-11.png", name:"Men Watch 11", price:26, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-12.png", name:"Men Watch 12", price:27, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-13.png", name:"Men Watch 13", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-14.png", name:"Men Watch 14", price:28, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-15.png", name:"Men Watch 15", price:26, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-16.png", name:"Men Watch 16", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-17.png", name:"Men Watch 17", price:27, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-18.png", name:"Men Watch 18", price:28, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-19.png", name:"Men Watch 19", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-20.png", name:"Men Watch 20", price:26, desc:"Quartz • Stainless Steel", badge:"BEST", badgeType:"best"},
-{brand:"BrandA", type:"men", img:"men-21.png", name:"Men Watch 21", price:27, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-22.png", name:"Men Watch 22", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-23.png", name:"Men Watch 23", price:28, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-24.png", name:"Men Watch 24", price:26, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-25.png", name:"Men Watch 25", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-26.png", name:"Men Watch 26", price:27, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-27.png", name:"Men Watch 27", price:28, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-28.png", name:"Men Watch 28", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-29.png", name:"Men Watch 29", price:26, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-30.png", name:"Men Watch 30", price:27, desc:"Quartz • Stainless Steel", badge:"BEST", badgeType:"best"},
-{brand:"BrandA", type:"men", img:"men-31.png", name:"Men Watch 31", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-32.png", name:"Men Watch 32", price:28, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-33.png", name:"Men Watch 33", price:26, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-34.png", name:"Men Watch 34", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-35.png", name:"Men Watch 35", price:27, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-36.png", name:"Men Watch 36", price:28, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-37.png", name:"Men Watch 37", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-38.png", name:"Men Watch 38", price:26, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-39.png", name:"Men Watch 39", price:27, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-40.png", name:"Men Watch 40", price:25, desc:"Quartz • Stainless Steel", badge:"BEST", badgeType:"best"},
-{brand:"BrandA", type:"men", img:"men-41.png", name:"Men Watch 41", price:28, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-42.png", name:"Men Watch 42", price:26, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-43.png", name:"Men Watch 43", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-44.png", name:"Men Watch 44", price:27, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-45.png", name:"Men Watch 45", price:28, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-46.png", name:"Men Watch 46", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-47.png", name:"Men Watch 47", price:26, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-48.png", name:"Men Watch 48", price:27, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-49.png", name:"Men Watch 49", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
-{brand:"BrandA", type:"men", img:"men-50.png", name:"Men Watch 50", price:28, desc:"Quartz • Stainless Steel", badge:"BEST", badgeType:"best"},
-
-/* ===== WOMEN 50, COUPLE 5, DEFECT 10 ===== */
-/* Add all remaining 65 watches here, from the previous message */
+// ===== Products Array (Sample, expand as needed) =====
+const products = [
+  // MEN
+  {brand:"BrandA", type:"men", img:"men-1.png", name:"Men Watch 1", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
+  {brand:"BrandA", type:"men", img:"men-2.png", name:"Men Watch 2", price:26, desc:"Quartz • Stainless Steel", badge:"BEST", badgeType:"best"},
+  {brand:"BrandB", type:"men", img:"men-3.png", name:"Men Watch 3", price:27, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
+  // WOMEN
+  {brand:"BrandC", type:"women", img:"women-1.png", name:"Women Watch 1", price:30, desc:"Quartz • Gold Plated", badge:"BEST", badgeType:"best"},
+  {brand:"BrandC", type:"women", img:"women-2.png", name:"Women Watch 2", price:28, desc:"Quartz • Silver Plated", badge:"", badgeType:""},
+  // COUPLE
+  {brand:"BrandD", type:"couple", img:"couple-1.png", name:"Couple Watch 1", price:50, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
+  // DEFECT/PROMO
+  {brand:"BrandB", type:"promo", img:"defect-1.png", name:"Defect Watch 1", price:15, desc:"Quartz • Stainless Steel", badge:"DEFECT", badgeType:"defect"}
 ];
 
 // ===== Create watch cards dynamically =====
@@ -208,7 +167,7 @@ function createWatchCard(product) {
   const div = document.createElement("div");
   div.className = `watch-card ${product.type} ${product.brand}`;
   div.innerHTML = `
-    ${product.badge ? `<span class="badge">${product.badge}</span>` : ""}
+    ${product.badge ? `<span class="badge ${product.badgeType}">${product.badge}</span>` : ""}
     <img src="images/${product.img}" alt="${product.name}">
     <h3>${product.name}</h3>
     <p class="price">$${product.price}</p>
@@ -218,11 +177,11 @@ function createWatchCard(product) {
   catalogue.appendChild(div);
 }
 
-// ===== Load all watches =====
+// Load all watches
 products.forEach(createWatchCard);
 
 // ===== Filter =====
-function filterWatches(cat){
+function filterWatches(event, cat){
   document.querySelectorAll(".watch-card").forEach(card=>{
     card.style.display = (cat==="all" || card.classList.contains(cat)) ? "block" : "none";
   });
@@ -234,7 +193,8 @@ function filterWatches(cat){
 function searchWatch(){
   let q = document.getElementById("search").value.toLowerCase();
   document.querySelectorAll(".watch-card").forEach(card=>{
-    card.style.display = card.innerText.toLowerCase().includes(q) ? "block" : "none";
+    const name = card.querySelector("h3").innerText.toLowerCase();
+    card.style.display = name.includes(q) ? "block" : "none";
   });
 }
 </script>
@@ -242,12 +202,3 @@ function searchWatch(){
 </body>
 </html>
 
-  btn.innerText = b;
-  btn.onclick = ()=>filterByBrand(b, btn);
-  brandNav.appendChild(btn);
-});
-</script>
-</body>
-</html>
-
-</html>
