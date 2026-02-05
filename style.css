@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIDBN.Timepieces</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ===== BODY ===== */
 body {
   margin: 0;
   font-family: 'Rajdhani', sans-serif;
@@ -23,8 +32,8 @@ header::after {
   margin: 15px auto 0;
 }
 
-/* SEARCH & SORT */
-#search, #sort {
+/* SEARCH & NAV */
+#search {
   display: block;
   margin: 10px auto;
   width: 80%;
@@ -37,7 +46,6 @@ header::after {
 }
 #search:focus { outline: none; }
 
-/* NAV */
 nav {
   display: flex;
   justify-content: center;
@@ -113,14 +121,6 @@ nav button.active, nav button:hover {
 .badge.limited { background:#d50000; }
 .badge { box-shadow:0 0 10px rgba(255,0,0,.5); }
 
-/* TRUST */
-.trust {
-  text-align: center;
-  font-size: 13px;
-  opacity: .75;
-  padding: 10px;
-}
-
 /* FOOTER */
 footer {
   text-align: center;
@@ -128,50 +128,123 @@ footer {
   opacity: .6;
 }
 
-/* MODAL */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.85);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-.modal-content {
-  background: #0b0b0b;
-  padding: 20px;
-  border-radius: 16px;
-  max-width: 320px;
-  text-align: center;
-  box-shadow: 0 0 30px rgba(201,162,77,.4);
-}
-.modal-content img {
-  width: 100%;
-  border-radius: 12px;
-}
-.close {
-  position: absolute;
-  right: 20px;
-  top: 15px;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-/* WHATSAPP */
+/* WHATSAPP POPUP */
 .wa {
   display: block;
   margin-top: 10px;
-  padding: 8px;
+  padding: 8px 12px;
   background: #25d366;
   color: #000;
   border-radius: 20px;
   text-decoration: none;
   font-weight: bold;
-  transition: .25s;
+
+  /* Hidden initially */
+  opacity: 0;
+  transform: translateY(20px);
+  max-height: 0;
+  overflow: hidden;
+
+  /* Smooth transition */
+  transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease;
 }
-.wa:hover {
-  background: #1ebe5d;
-  transform: scale(1.05);
+.wa.show {
+  opacity: 1;
+  max-height: 50px;
+  animation: popUp 0.4s ease forwards;
 }
+@keyframes popUp {
+  0%   { transform: translateY(20px) scale(0.8); }
+  50%  { transform: translateY(-5px) scale(1.05); }
+  70%  { transform: translateY(2px) scale(0.98); }
+  100% { transform: translateY(0) scale(1); }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>MIDBN.Timepieces</h1>
+  <p>Make every second precious</p>
+</header>
+
+<input type="text" id="search" placeholder="Search watches..." onkeyup="searchWatch()">
+
+<nav>
+  <button onclick="filterWatches(event,'all')" class="active">All</button>
+  <button onclick="filterWatches(event,'men')">Men</button>
+  <button onclick="filterWatches(event,'women')">Women</button>
+  <button onclick="filterWatches(event,'couple')">Couple</button>
+  <button onclick="filterWatches(event,'promo')">Defect</button>
+</nav>
+
+<section class="catalogue" id="catalogue"></section>
+
+<footer>
+  <p>© MIDBN.Timepieces</p>
+</footer>
+
+<script>
+const catalogue = document.getElementById("catalogue");
+let openWAButton = null;
+
+// Sample products array
+const products = [
+  {brand:"Rolex", type:"men", img:"men-1.png", name:"Rolex Daytona", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
+  {brand:"Patek Philippe", type:"men", img:"men-2.png", name:"Patek Nautilus", price:30, desc:"Quartz • Stainless Steel", badge:"BEST", badgeType:"best"},
+  {brand:"Franc Muller", type:"women", img:"women-1.png", name:"Vanguard", price:25, desc:"Quartz • Leather", badge:"BEST", badgeType:"best"},
+  {brand:"BrandD", type:"couple", img:"couple-1.png", name:"Couple Watch", price:50, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
+  {brand:"BrandB", type:"promo", img:"defect-1.png", name:"Defect Watch", price:15, desc:"Quartz • Stainless Steel", badge:"DEFECT", badgeType:"defect"}
+];
+
+// Create watch cards dynamically
+function createWatchCard(product){
+  const div = document.createElement("div");
+  div.className = `watch-card ${product.type} ${product.brand.replace(/\s+/g,'-')}`;
+  div.innerHTML = `
+    ${product.badge ? `<span class="badge ${product.badgeType}">${product.badge}</span>` : ""}
+    <img src="images/${product.img}" alt="${product.name}">
+    <h3>${product.name}</h3>
+    <p class="price">$${product.price}</p>
+    <p>${product.desc}</p>
+    <a class="wa" href="https://wa.me/6738908960?text=Hi%20MIDBN.Timepieces,%20I’m%20interested%20in%20${encodeURIComponent(product.name)}" target="_blank">WhatsApp</a>
+  `;
+  
+  const waBtn = div.querySelector('.wa');
+
+  div.addEventListener('click', () => {
+    if(openWAButton && openWAButton !== waBtn){
+      openWAButton.classList.remove('show');
+    }
+    waBtn.classList.toggle('show');
+    openWAButton = waBtn.classList.contains('show') ? waBtn : null;
+  });
+
+  catalogue.appendChild(div);
+}
+
+// Load all watches
+products.forEach(createWatchCard);
+
+// Filter
+function filterWatches(event, cat){
+  document.querySelectorAll(".watch-card").forEach(card=>{
+    card.style.display = (cat==="all" || card.classList.contains(cat)) ? "block" : "none";
+  });
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+  event.target.classList.add("active");
+}
+
+// Search
+function searchWatch(){
+  let q = document.getElementById("search").value.toLowerCase();
+  document.querySelectorAll(".watch-card").forEach(card=>{
+    const name = card.querySelector("h3").innerText.toLowerCase();
+    card.style.display = name.includes(q) ? "block" : "none";
+  });
+}
+</script>
+
+</body>
+</html>
 
