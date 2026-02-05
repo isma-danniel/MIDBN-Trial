@@ -128,6 +128,7 @@
 
 <nav>
   <button onclick="filterWatches(event, 'all')" class="active">All</button>
+  <button onclick="filterWatches(event, 'Coming-soon')">Coming soon</button>
   <button onclick="filterWatches(event, 'men')">Men</button>
   <button onclick="filterWatches(event, 'women')">Women</button>
   <button onclick="filterWatches(event, 'couple')">Couple</button>
@@ -139,6 +140,7 @@
   <button onclick="filterWatches(event, 'Michael-Kors')">Michael Kors</button>
   <button onclick="filterWatches(event, 'G-Shock')">G-Shock</button>
   <button onclick="filterWatches(event, 'Casio')">Casio</button>
+  <button onclick="filterWatches(event, 'Audemars-Pauguet')">Audemars Pauguet</button>
 </nav>
 
 <section class="catalogue" id="catalogue"></section>
@@ -179,7 +181,14 @@ const products = [
   {brand:"Cartier", type:"women", img:"women-13.png", name:"Cartier Santos (Silver/White)", price:25, desc:"Quartz • Stainles Steel • Grade A", badge:"BEST", badgeType:"best"},
   {brand:"Cartier", type:"women", img:"women-14.png", name:"Cartier Santos (Silver/Black)", price:25, desc:"Quartz • Stainles Steel • Grade A", badge:"BEST", badgeType:"best"},
   {brand:"Cartier", type:"women", img:"women-15.png", name:"Cartier Santos (Gold/white)", price:25, desc:"Quartz • Stainles Steel • Grade A", badge:"BEST", badgeType:"best"},
-  {brand:"Michael-Kors", type:"women", img:"women-16.png", name:"Cartier Santos (Gold/white)", price:25, desc:"Quartz • Stainles Steel • Grade A", badge:"BEST", badgeType:"best"},
+  {brand:"Michael-Kors", type:"women", img:"women-16.png", name:"Michael Kors Portia (Pink)", price:25, desc:"Quartz • Stainles Steel • Grade A", badge:"BEST", badgeType:"best"},
+  {brand:"Michael-Kors", type:"women", img:"women-17.png", name:"Michael Kors Slim Runaway (Silver)", price:25, desc:"Quartz • Stainles Steel • Grade A", badge:"BEST", badgeType:"best"},
+  {brand:"Michael-Kors", type:"women", img:"women-18.png", name:"Michael Kors Slim Runaway (Blue)", price:25, desc:"Quartz • Stainles Steel • Grade A", badge:"BEST", badgeType:"best"},
+  {brand:"Michael-Kors", type:"women", img:"women-19.png", name:"Michael Kors Lexington (White)", price:25, desc:"Quartz • Stainles Steel • Grade A", badge:"BEST", badgeType:"best"},
+  {brand:"Michael-Kors", type:"women", img:"women-20.png", name:"Michael Kors Lexington (Gold)", price:25, desc:"Quartz • Stainles Steel • Grade A", badge:"BEST", badgeType:"best"},
+  {brand:"Michael-Kors", type:"women", img:"women-21.png", name:"Michael Kors Lexington (Bronze)", price:25, desc:"Quartz • Stainles Steel • Grade A", badge:"BEST", badgeType:"best"},
+  {brand:"Audemars-Pauguet", type:"men", img:"men-12.png", name:"Audemars Pauguet Royal Oak (Black)", price:25, desc:"Quartz • Stainles Steel • Grade A", badge:"BEST", badgeType:"best"},
+  {brand:"Audemars-Pauguet", type:"men", img:"men-13.png", name:"Audemars Pauguet Royal Oak (White)", price:25, desc:"Quartz • Stainles Steel • Grade A", badge:"BEST", badgeType:"best"},
 ]
 // ===== Create watch cards dynamically =====
 function createWatchCard(product) {
