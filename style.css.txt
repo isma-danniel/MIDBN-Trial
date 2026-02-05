@@ -1,0 +1,97 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0e0e0e;
+  color: #fff;
+}
+
+header {
+  text-align: center;
+  padding: 35px 15px;
+}
+
+.filters {
+  text-align: center;
+}
+
+.filters button {
+  margin: 5px;
+  padding: 8px 14px;
+  background: #161616;
+  color: #fff;
+  border: 1px solid #c9a24d;
+}
+
+.catalogue {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.watch-card {
+  background: #161616;
+  border-radius: 10px;
+  text-align: center;
+  padding-bottom: 15px;
+  position: relative;
+}
+
+.watch-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.price {
+  color: #c9a24d;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.actions a {
+  display: inline-block;
+  margin: 5px;
+  padding: 8px 12px;
+  background: #c9a24d;
+  color: #000;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 7px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.left {
+  background: orange;
+}
+
+.sold {
+  background: red;
+}
+
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25D366;
+  color: #000;
+  padding: 12px 16px;
+  border-radius: 50px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 13px;
+  opacity: 0.6;
+}
