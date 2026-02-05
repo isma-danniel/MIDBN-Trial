@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MIDBN.Timepieces</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Rajdhani:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -14,36 +15,67 @@
   <p>Make every moment precious</p>
 </header>
 
+<!-- Category Filters -->
 <div class="filters">
-  <button onclick="filterWatches('all')">All</button>
+  <button class="active" onclick="filterWatches('all')">All</button>
   <button onclick="filterWatches('men')">Men</button>
   <button onclick="filterWatches('women')">Women</button>
   <button onclick="filterWatches('couple')">Couple</button>
   <button onclick="filterWatches('promo')">Promo</button>
 </div>
 
+<!-- Catalogue -->
 <section class="catalogue">
 
-<!-- COPY THIS BLOCK TO ADD WATCH -->
+<!-- Watch Block Template -->
 <div class="watch-card men">
-  <!-- BADGES: remove if not needed -->
   <span class="badge left">ONLY 1 LEFT</span>
-  <!-- <span class="badge sold">SOLD OUT</span> -->
-
-  <img src="images/men-1.jpg">
+  <img src="images/men-1.jpg" alt="Classic Black Watch">
   <h3>Classic Black Watch</h3>
   <p class="price">$25</p>
   <p>Quartz • Daily wear</p>
-
   <div class="actions">
     <a href="https://wa.me/6738908960?text=Hi%20MIDBN.Timepieces,%20I’m%20interested%20in%20Classic%20Black%20Watch" target="_blank">WhatsApp</a>
     <a href="https://instagram.com/MIDBN.Timepieces" target="_blank">Instagram</a>
   </div>
 </div>
-<!-- END WATCH -->
+
+<div class="watch-card women">
+  <img src="images/women-1.jpg" alt="Rose Gold Elegant">
+  <h3>Rose Gold Elegant</h3>
+  <p class="price">$22</p>
+  <p>Minimal • Lightweight</p>
+  <div class="actions">
+    <a href="https://wa.me/6738908960?text=Hi%20MIDBN.Timepieces,%20I’m%20interested%20in%20Rose%20Gold%20Elegant" target="_blank">WhatsApp</a>
+    <a href="https://instagram.com/MIDBN.Timepieces" target="_blank">Instagram</a>
+  </div>
+</div>
+
+<div class="watch-card couple">
+  <img src="images/couple-1.jpg" alt="Couple Silver Set">
+  <h3>Couple Silver Set</h3>
+  <p class="price">$45</p>
+  <p>Matching design</p>
+  <div class="actions">
+    <a href="https://wa.me/6738908960?text=Hi%20MIDBN.Timepieces,%20I’m%20interested%20in%20Couple%20Silver%20Set" target="_blank">WhatsApp</a>
+    <a href="https://instagram.com/MIDBN.Timepieces" target="_blank">Instagram</a>
+  </div>
+</div>
+
+<div class="watch-card promo">
+  <img src="images/promo-1.jpg" alt="Grade A Black Watch">
+  <h3>Grade A Black Watch</h3>
+  <p class="price">$15</p>
+  <p>Minor defects • Fully functional</p>
+  <div class="actions">
+    <a href="https://wa.me/6738908960?text=Hi%20MIDBN.Timepieces,%20I’m%20interested%20in%20Grade%20A%20Black%20Watch" target="_blank">WhatsApp</a>
+    <a href="https://instagram.com/MIDBN.Timepieces" target="_blank">Instagram</a>
+  </div>
+</div>
 
 </section>
 
+<!-- Sticky WhatsApp Button -->
 <a class="whatsapp-float" href="https://wa.me/6738908960?text=Hi%20MIDBN.Timepieces,%20I’m%20interested%20in%20your%20watches" target="_blank">
   WhatsApp
 </a>
@@ -53,10 +85,14 @@
 </footer>
 
 <script>
-function filterWatches(type) {
-  document.querySelectorAll('.watch-card').forEach(card => {
-    card.style.display = (type === 'all' || card.classList.contains(type)) ? 'block' : 'none';
+function filterWatches(type){
+  document.querySelectorAll('.watch-card').forEach(card=>{
+    card.style.display=(type==='all'||card.classList.contains(type))?'block':'none';
   });
+  document.querySelectorAll('.filters button').forEach(btn=>{
+    btn.classList.remove('active');
+  });
+  event.target.classList.add('active');
 }
 </script>
 
