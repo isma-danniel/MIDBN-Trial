@@ -6,37 +6,113 @@
 <title>MIDBN.Timepieces</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
 <style>
+/* ===== CSS ===== */
 body {
   margin: 0;
   font-family: 'Rajdhani', sans-serif;
   background: radial-gradient(circle at top, #111, #000);
   color: #fff;
 }
-header { text-align:center; padding:30px 10px; }
-header h1 { font-family:'Orbitron', sans-serif; letter-spacing:3px; }
-#search, #sort { display:block; margin:10px auto; width:80%; padding:10px; border-radius:20px; border:none; background:#0b0b0b; color:#fff; box-shadow:0 0 12px rgba(201,162,77,.25); }
-#search:focus, #sort:focus{outline:none;}
-nav { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; padding-bottom:15px; }
-nav button { background:transparent; border:1px solid #c9a24d; color:#c9a24d; padding:6px 14px; border-radius:20px; cursor:pointer; transition:.25s; }
-nav button.active, nav button:hover { background:#c9a24d; color:#000; }
-.catalogue { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:15px; padding:20px; }
-.watch-card { background:#0b0b0b; padding:12px; border-radius:14px; text-align:center; position:relative; cursor:pointer; box-shadow:0 0 18px rgba(201,162,77,.15); transition:transform .3s, box-shadow .3s; }
-.watch-card:hover { transform:translateY(-6px) scale(1.04); box-shadow:0 0 28px rgba(201,162,77,.35); }
-.watch-card img { width:100%; border-radius:10px; }
-.price { color:#c9a24d; font-weight:bold; font-size:1.1rem; }
-.badge { position:absolute; top:10px; left:10px; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:bold; }
-.badge.new { background:#00c853; }
-.badge.best { background:#ffab00; color:#000; }
-.badge.limited { background:#d50000; }
-.badge.defect { background:red; }
-.trust { text-align:center; font-size:13px; opacity:.75; padding:10px; }
-footer { text-align:center; padding:20px; opacity:.6; }
-.modal { position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; justify-content:center; align-items:center; z-index:999; }
-.modal-content { background:#0b0b0b; padding:20px; border-radius:16px; max-width:320px; text-align:center; box-shadow:0 0 30px rgba(201,162,77,.4); position:relative; }
-.modal-content img { width:100%; border-radius:12px; }
-.close { position:absolute; right:20px; top:15px; font-size:24px; cursor:pointer; }
-.wa { display:block; margin-top:10px; padding:8px; background:#25d366; color:#000; border-radius:20px; text-decoration:none; font-weight:bold; transition:.25s; }
-.wa:hover { background:#1ebe5d; transform:scale(1.05); }
+
+header {
+  text-align: center;
+  padding: 30px 10px;
+}
+
+header h1 {
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 3px;
+}
+
+#search {
+  display: block;
+  margin: 10px auto;
+  width: 80%;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-bottom: 15px;
+}
+
+nav button {
+  background: transparent;
+  border: 1px solid #c9a24d;
+  color: #c9a24d;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+nav button.active,
+nav button:hover {
+  background: #c9a24d;
+  color: #000;
+}
+
+.catalogue {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 15px;
+  padding: 20px;
+}
+
+.watch-card {
+  background: #0b0b0b;
+  padding: 12px;
+  border-radius: 14px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 0 18px rgba(201,162,77,0.15);
+  transition: transform 0.3s;
+}
+
+.watch-card:hover {
+  transform: scale(1.05);
+}
+
+.watch-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.price {
+  color: #c9a24d;
+  font-weight: bold;
+}
+
+.wa {
+  display: block;
+  margin-top: 8px;
+  padding: 6px;
+  background: #25d366;
+  color: #000;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: red;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  opacity: 0.6;
+}
 </style>
 </head>
 <body>
@@ -46,58 +122,31 @@ footer { text-align:center; padding:20px; opacity:.6; }
   <p>Make every second precious</p>
 </header>
 
-<input type="text" id="search" placeholder="Search watches..." onkeyup="applyFilters()">
-<select id="sort" onchange="sortWatches()">
-  <option value="">Sort by price</option>
-  <option value="low">Low → High</option>
-  <option value="high">High → Low</option>
-</select>
+<input type="text" id="search" placeholder="Search watches..." onkeyup="searchWatch()">
 
-<h3 style="text-align:center; margin-top:15px;">Filter by Brand</h3>
-<nav id="brandNav">
-  <button onclick="filterByBrand('all', this)" class="active">All</button>
-</nav>
-
-<h3 style="text-align:center; margin-top:15px;">Filter by Type</h3>
-<nav id="typeNav">
-  <button onclick="filterByType('all', this)" class="active">All</button>
-  <button onclick="filterByType('men', this)">Men</button>
-  <button onclick="filterByType('women', this)">Women</button>
-  <button onclick="filterByType('couple', this)">Couple</button>
-  <button onclick="filterByType('promo', this)">Defect</button>
+<nav>
+  <button onclick="filterWatches('all')" class="active">All</button>
+  <button onclick="filterWatches('men')">Men</button>
+  <button onclick="filterWatches('women')">Women</button>
+  <button onclick="filterWatches('couple')">Couple</button>
+  <button onclick="filterWatches('promo')">Defect</button>
+  <button onclick="filterWatches('BrandA')">BrandA</button>
+  <button onclick="filterWatches('BrandB')">BrandB</button>
+  <button onclick="filterWatches('BrandC')">BrandC</button>
+  <button onclick="filterWatches('BrandD')">BrandD</button>
 </nav>
 
 <section class="catalogue" id="catalogue"></section>
-
-<section class="trust">
-  ✔️ 100% working watches • ✔️ Tested before delivery • ✔️ Fast WhatsApp response
-</section>
 
 <footer>
   <p>© MIDBN.Timepieces</p>
 </footer>
 
-<!-- Modal -->
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">×</span>
-    <img id="modalImg">
-    <h2 id="modalName"></h2>
-    <p id="modalPrice"></p>
-    <p id="modalDesc"></p>
-    <a id="modalWA" class="wa" target="_blank">ORDER VIA WHATSAPP</a>
-  </div>
-</div>
-
 <script>
+/* ===== JS ===== */
 const catalogue = document.getElementById("catalogue");
 
-/* ===== PRODUCT DATA ===== */
-const products = [
-  const products = [
-/* ===== MEN 50 ===== */
-
-  { brand:"Casio", type:"men", img:"casio-classic.png", name:"Classic Casio", price:49, desc:"Quartz • Lightweight • Digital watch", badge:"", badgeType:"" },const products = [
+const products = 
 /* ===== MEN 50 ===== */
 {brand:"BrandA", type:"men", img:"men-1.png", name:"Men Watch 1", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
 {brand:"BrandA", type:"men", img:"men-2.png", name:"Men Watch 2", price:26, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
@@ -149,93 +198,50 @@ const products = [
 {brand:"BrandA", type:"men", img:"men-48.png", name:"Men Watch 48", price:27, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
 {brand:"BrandA", type:"men", img:"men-49.png", name:"Men Watch 49", price:25, desc:"Quartz • Stainless Steel", badge:"", badgeType:""},
 {brand:"BrandA", type:"men", img:"men-50.png", name:"Men Watch 50", price:28, desc:"Quartz • Stainless Steel", badge:"BEST", badgeType:"best"},
-  { brand:"Fossil", type:"women", img:"fossil-rose.png", name:"Rose Elegance", price:79, desc:"Elegant • Rose gold finish • Lightweight", badge:"NEW", badgeType:"new" },
-  { brand:"Rolex", type:"couple", img:"rolex-couple.png", name:"Rolex Couple Set", price:599, desc:"Matching watches • Premium gift set", badge:"LIMITED", badgeType:"limited" },
-  { brand:"Casio", type:"promo", img:"casio-defect.png", name:"Casio Grade A", price:25, desc:"Minor defect • Fully working", badge:"DEFECT", badgeType:"defect" }
+
+/* ===== WOMEN 50, COUPLE 5, DEFECT 10 ===== */
+/* Add all remaining 65 watches here, from the previous message */
 ];
 
-/* ===== CREATE CARD ===== */
-function createWatch(brand,type,img,name,price,desc,badge="",badgeType=""){
+// ===== Create watch cards dynamically =====
+function createWatchCard(product) {
   const div = document.createElement("div");
-  div.className = "watch-card";
-  div.dataset.brand = brand;
-  div.dataset.type = type;
-  div.dataset.name = name.toLowerCase();
-  div.dataset.price = price;
-
+  div.className = `watch-card ${product.type} ${product.brand}`;
   div.innerHTML = `
-    ${badge ? `<span class="badge ${badgeType}">${badge}</span>` : ""}
-    <img src="images/${img}" alt="${name}" loading="lazy">
-    <h3>${name}</h3>
-    <p class="price">$${price}</p>
-    <p>${desc}</p>
+    ${product.badge ? `<span class="badge">${product.badge}</span>` : ""}
+    <img src="images/${product.img}" alt="${product.name}">
+    <h3>${product.name}</h3>
+    <p class="price">$${product.price}</p>
+    <p>${product.desc}</p>
+    <a class="wa" href="https://wa.me/6738908960?text=Hi%20MIDBN.Timepieces,%20I’m%20interested%20in%20${encodeURIComponent(product.name)}" target="_blank">WhatsApp</a>
   `;
-  div.onclick = () => openModal(img,name,price,desc);
   catalogue.appendChild(div);
 }
 
-/* ===== LOAD CARDS ===== */
-products.forEach(p=>{
-  createWatch(p.brand,p.type,p.img,p.name,p.price,p.desc,p.badge,p.badgeType);
-});
+// ===== Load all watches =====
+products.forEach(createWatchCard);
 
-/* ===== FILTERS ===== */
-let currentBrand = "all";
-let currentType = "all";
-
-function applyFilters(){
-  const query = document.getElementById("search").value.toLowerCase();
+// ===== Filter =====
+function filterWatches(cat){
   document.querySelectorAll(".watch-card").forEach(card=>{
-    const brandMatch = currentBrand === "all" || card.dataset.brand === currentBrand;
-    const typeMatch = currentType === "all" || card.dataset.type === currentType;
-    const searchMatch = card.dataset.name.includes(query);
-    card.style.display = (brandMatch && typeMatch && searchMatch) ? "block" : "none";
+    card.style.display = (cat==="all" || card.classList.contains(cat)) ? "block" : "none";
+  });
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+  event.target.classList.add("active");
+}
+
+// ===== Search =====
+function searchWatch(){
+  let q = document.getElementById("search").value.toLowerCase();
+  document.querySelectorAll(".watch-card").forEach(card=>{
+    card.style.display = card.innerText.toLowerCase().includes(q) ? "block" : "none";
   });
 }
+</script>
 
-function filterByBrand(brand, btn){
-  currentBrand = brand;
-  document.querySelectorAll("#brandNav button").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  applyFilters();
-}
+</body>
+</html>
 
-function filterByType(type, btn){
-  currentType = type;
-  document.querySelectorAll("#typeNav button").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  applyFilters();
-}
-
-/* ===== SORT ===== */
-function sortWatches(){
-  const order = document.getElementById("sort").value;
-  const cards = Array.from(document.querySelectorAll(".watch-card"));
-  cards.sort((a,b)=> order==="low" ? a.dataset.price-b.dataset.price : b.dataset.price-a.dataset.price );
-  cards.forEach(c => catalogue.appendChild(c));
-}
-
-/* ===== MODAL ===== */
-function openModal(img,name,price,desc){
-  modalImg.src = `images/${img}`;
-  modalName.innerText = name;
-  modalPrice.innerText = `$${price}`;
-  modalDesc.innerText = desc;
-  const msg = `Hi MIDBN.Timepieces 👋
-I'm interested in:
-• ${name}
-• Price: $${price}
-Is this available today?`;
-  modalWA.href = `https://wa.me/6738908960?text=${encodeURIComponent(msg)}`;
-  modal.style.display = "flex";
-}
-function closeModal(){ modal.style.display = "none"; }
-
-/* ===== AUTO GENERATE BRAND BUTTONS ===== */
-const brands = [...new Set(products.map(p=>p.brand))];
-const brandNav = document.getElementById("brandNav");
-brands.forEach(b=>{
-  const btn = document.createElement("button");
   btn.innerText = b;
   btn.onclick = ()=>filterByBrand(b, btn);
   brandNav.appendChild(btn);
