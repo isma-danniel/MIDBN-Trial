@@ -1,5 +1,5 @@
 
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -13,8 +13,8 @@
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
-  background-color: #DCFBFF;
-  color: #4E5D5D;
+  background-color: #1A1A1A; /* Dark background */
+  color: #DCFBFF; /* Accent color */
 }
 
 header {
@@ -27,6 +27,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 999;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
 
 header h1 {
@@ -51,6 +52,7 @@ nav a {
   align-items: center;
 }
 
+/* Search & Sort */
 .search-sort {
   display: flex;
   flex-wrap: wrap;
@@ -62,17 +64,26 @@ nav a {
   padding: 8px;
   font-size: 1em;
   width: 200px;
-  border: 1px solid #4E5D5D;
+  border: 1px solid #DCFBFF;
   border-radius: 5px;
+  background-color: #2A2A2A;
+  color: #DCFBFF;
+}
+
+.search-bar input::placeholder {
+  color: #AAAAAA;
 }
 
 .sort-bar select {
   padding: 8px;
   font-size: 1em;
-  border: 1px solid #4E5D5D;
+  border: 1px solid #DCFBFF;
   border-radius: 5px;
+  background-color: #2A2A2A;
+  color: #DCFBFF;
 }
 
+/* Filter styling */
 .filter-category, .filter-brand {
   padding: 10px 20px;
 }
@@ -85,6 +96,7 @@ nav a {
   cursor: pointer;
   background-color: #4E5D5D;
   color: #DCFBFF;
+  transition: 0.2s;
 }
 
 .filter-category button:hover, .filter-bar-vertical button:hover {
@@ -102,27 +114,35 @@ nav a {
   cursor: pointer;
 }
 
+/* Brand filter dropdown */
 .filter-bar-vertical {
   display: none;
   flex-wrap: wrap;
   margin-top: 10px;
 }
 
+/* Product grid */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
   padding: 20px;
 }
 
 .product-card {
-  background-color: #FFFFFF;
+  background-color: #2A2A2A;
   border-radius: 10px;
   padding: 10px;
-  box-shadow: 0 0 10px rgba(78, 93, 93, 0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.6);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.8);
 }
 
 .product-images img {
@@ -132,27 +152,35 @@ nav a {
 }
 
 .badge.new {
-  background-color: #4E5D5D;
-  color: #DCFBFF;
+  background-color: #DCFBFF;
+  color: #4E5D5D;
   padding: 4px 8px;
   font-size: 0.8em;
   border-radius: 5px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.brand {
+  font-weight: bold;
+  margin: 5px 0;
 }
 
 .buy-btn {
   margin-top: 10px;
-  background-color: #4E5D5D;
-  color: #DCFBFF;
+  background-color: #DCFBFF;
+  color: #4E5D5D;
   text-align: center;
   padding: 8px;
   border-radius: 5px;
   text-decoration: none;
+  font-weight: bold;
 }
 
 .buy-btn:hover {
-  background-color: #DCFBFF;
-  color: #4E5D5D;
-  border: 1px solid #4E5D5D;
+  background-color: #4E5D5D;
+  color: #DCFBFF;
+  border: 1px solid #DCFBFF;
 }
 
 /* Footer */
@@ -191,6 +219,9 @@ footer a:hover {
   }
   .hamburger {
     display: block;
+  }
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 </style>
@@ -233,6 +264,7 @@ footer a:hover {
 <section class="filter-brand">
   <button class="brand-toggle" onclick="toggleBrandFilter()">Brands ▾</button>
   <div class="filter-bar-vertical" id="brandFilter">
+    <!-- Keep all original brand buttons -->
     <button class="brand-btn" data-brand="all">All</button>
     <button class="brand-btn" data-brand="Rolex">Rolex</button>
     <button class="brand-btn" data-brand="Omega">Omega</button>
@@ -1246,48 +1278,107 @@ footer a:hover {
   
 </section>
 
-<!-- Footer -->
 <footer>
-  <p>&copy; 2026 MIDBN Timepieces. All rights reserved.</p>
-  <p>
-    <a href="index.html">Home</a> |
-    <a href="https://wa.me/6738908960">Contact</a>
-  </p>
-  <p>Follow us:
-    <a href="#">Instagram</a> |
-    <a href="#">Facebook</a>
-  </p>
+  &copy; 2026 MIDBN Timepieces. All Rights Reserved.
 </footer>
 
 <script>
-// Mobile menu toggle
+// ---------------------
+// Hamburger toggle
+// ---------------------
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
+
 hamburger.addEventListener('click', () => {
   navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
 });
 
-// Brand filter toggle
+// ---------------------
+// Brand Filter toggle
+// ---------------------
 function toggleBrandFilter() {
   const filter = document.getElementById('brandFilter');
   filter.style.display = filter.style.display === 'flex' ? 'none' : 'flex';
 }
 
-// Search filter
-const productSearch = document.getElementById('productSearch');
-productSearch.addEventListener('input', () => {
-  const query = productSearch.value.toLowerCase();
-  document.querySelectorAll('.product-card').forEach(card => {
-    card.style.display = card.querySelector('h3').textContent.toLowerCase().includes(query) ? 'block' : 'none';
+// ---------------------
+// Product filter
+// ---------------------
+const productCards = document.querySelectorAll('.product-card');
+const brandButtons = document.querySelectorAll('.brand-btn');
+
+function filterProducts(category) {
+  productCards.forEach(card => {
+    if(category === 'all' || card.dataset.category === category) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  // Reset brand filter to all
+  brandButtons.forEach(btn => btn.classList.remove('active'));
+  brandButtons[0].classList.add('active');
+}
+
+brandButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const brand = btn.dataset.brand;
+    brandButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    productCards.forEach(card => {
+      const categoryVisible = card.style.display !== 'none';
+      if(brand === 'all') {
+        card.style.display = categoryVisible ? '' : 'none';
+      } else {
+        card.style.display = (card.dataset.brand === brand && categoryVisible) ? '' : 'none';
+      }
+    });
   });
 });
 
-// Category filter
-function filterProducts(category) {
-  document.querySelectorAll('.product-card').forEach(card => {
-    card.style.display = category === 'all' || card.dataset.category === category ? 'block' : 'none';
+// ---------------------
+// Search
+// ---------------------
+const searchInput = document.getElementById('productSearch');
+searchInput.addEventListener('input', () => {
+  const term = searchInput.value.toLowerCase();
+  productCards.forEach(card => {
+    const name = card.querySelector('h3').innerText.toLowerCase();
+    const brand = card.querySelector('.brand').innerText.toLowerCase();
+    if(name.includes(term) || brand.includes(term)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
   });
-}
+});
+
+// ---------------------
+// Sort by stock
+// ---------------------
+const sortSelect = document.getElementById('sortStock');
+sortSelect.addEventListener('change', () => {
+  const grid = document.querySelector('.product-grid');
+  const cards = Array.from(productCards);
+  if(sortSelect.value === 'instock') {
+    cards.sort((a,b) => parseInt(b.querySelector('.stock').dataset.stock) - parseInt(a.querySelector('.stock').dataset.stock));
+  } else {
+    cards.sort((a,b) => 0); // normal order
+  }
+  cards.forEach(card => grid.appendChild(card));
+});
+
+// ---------------------
+// WhatsApp link
+// ---------------------
+document.querySelectorAll('.whatsapp-product').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    const product = btn.dataset.product;
+    const url = `https://wa.me/6738908960?text=Hi,%20I%20want%20to%20buy%20${encodeURIComponent(product)}`;
+    window.open(url, '_blank');
+  });
+});
 </script>
 </body>
 </html>
