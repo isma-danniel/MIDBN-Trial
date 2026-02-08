@@ -4,10 +4,11 @@
 :root {
     --primary: #DCFBFF; /* light blue */
     --secondary: #4E5D5D; /* dark gray */
-    --overlay: rgba(78,93,93,0.5);
+    --overlay: rgba(78,93,93,0.6); /* slightly darker overlay */
     --bg-color: #111;
     --text-color: #fff;
-    --highlight: #FFD700; /* gold highlight */
+    --card-bg: rgba(78,93,93,0.2);
+    --button-hover: #DCFBFF;
 }
 
 /* ====== Global ====== */
@@ -31,6 +32,7 @@ a {
 
 button {
     cursor: pointer;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* ====== Header ====== */
@@ -62,7 +64,7 @@ header h1 {
 }
 
 .nav-links a:hover {
-    color: var(--highlight);
+    color: var(--primary);
 }
 
 .hamburger {
@@ -106,7 +108,7 @@ header h1 {
     font-family: 'Playfair Display', serif;
     font-size: 3rem;
     margin-bottom: 0.5rem;
-    text-shadow: 0 0 20px var(--highlight);
+    text-shadow: 0 0 20px rgba(220,251,255,0.5);
     animation: fadeIn 2s ease-in-out;
 }
 
@@ -124,17 +126,17 @@ header h1 {
 
 .hero-btn {
     padding: 0.8rem 2rem;
-    background: var(--highlight);
+    background: var(--primary);
     color: var(--secondary);
     font-weight: 600;
     border-radius: 30px;
-    box-shadow: 0 0 20px var(--highlight);
+    box-shadow: 0 0 20px rgba(220,251,255,0.4);
     transition: 0.3s;
 }
 
 .hero-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 30px var(--highlight);
+    box-shadow: 0 0 30px rgba(220,251,255,0.6);
 }
 
 /* ====== Brand Story ====== */
@@ -147,7 +149,7 @@ header h1 {
     font-family: 'Playfair Display', serif;
     font-size: 2.5rem;
     margin-bottom: 1rem;
-    color: var(--highlight);
+    color: var(--primary);
 }
 
 .brand-story p {
@@ -166,16 +168,16 @@ header h1 {
 }
 
 .feature {
-    background: rgba(220,251,255,0.1);
+    background: var(--card-bg);
     padding: 1rem 2rem;
     border-radius: 10px;
     font-weight: 500;
-    color: var(--secondary);
+    color: var(--primary);
     transition: 0.3s;
 }
 
 .feature:hover {
-    background: var(--highlight);
+    background: var(--primary);
     color: var(--secondary);
 }
 
@@ -191,15 +193,15 @@ header h1 {
     padding: 0.8rem 2rem;
     border-radius: 30px;
     font-weight: 600;
-    background: var(--highlight);
+    background: var(--primary);
     color: var(--secondary);
-    box-shadow: 0 0 20px var(--highlight);
+    box-shadow: 0 0 20px rgba(220,251,255,0.4);
     transition: 0.3s;
 }
 
 .brand-actions .action-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 30px var(--highlight);
+    box-shadow: 0 0 30px rgba(220,251,255,0.6);
 }
 
 /* ====== Footer ====== */
@@ -221,43 +223,63 @@ header h1 {
 }
 
 .search-bar input {
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
+    padding: 0.6rem 1rem;
+    border-radius: 25px;
     border: none;
-    width: 200px;
-    background: rgba(255,255,255,0.05);
-    color: var(--text-color);
+    width: 220px;
+    background: var(--card-bg);
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.search-bar input::placeholder {
+    color: #ccc;
+    font-weight: 400;
 }
 
 .sort-bar select {
     padding: 0.5rem 1rem;
     border-radius: 20px;
     border: none;
-    background: rgba(255,255,255,0.05);
-    color: var(--text-color);
+    background: var(--card-bg);
+    color: var(--primary);
+    font-weight: 500;
 }
 
 /* ====== Filter Section ====== */
 .filter-category, .filter-brand {
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
     gap: 0.5rem;
     padding: 1rem 2rem;
+    flex-wrap: wrap;
 }
 
-.filter-category button, .filter-brand button {
+.filter-category button, .filter-bar-vertical button {
     padding: 0.5rem 1rem;
     border-radius: 20px;
-    background: rgba(255,255,255,0.05);
+    background: var(--card-bg);
     color: var(--primary);
     border: none;
     font-weight: 500;
     transition: 0.3s;
 }
 
-.filter-category button:hover, .filter-brand button:hover {
-    background: var(--highlight);
+.filter-category button:hover, .filter-bar-vertical button:hover,
+.filter-category button.active, .filter-bar-vertical button.active {
+    background: var(--primary);
     color: var(--secondary);
+}
+
+/* Brand filter collapse */
+.filter-bar-vertical {
+    display: none;
+    flex-direction: column;
+    margin-top: 0.5rem;
+}
+
+.filter-bar-vertical.active {
+    display: flex;
 }
 
 /* ====== Product Grid ====== */
@@ -269,7 +291,7 @@ header h1 {
 }
 
 .product-card {
-    background: rgba(255,255,255,0.05);
+    background: var(--card-bg);
     padding: 1rem;
     border-radius: 15px;
     overflow: hidden;
@@ -287,7 +309,7 @@ header h1 {
 
 .product-card h3 {
     margin: 0.5rem 0;
-    color: var(--highlight);
+    color: var(--primary);
 }
 
 .product-card p {
@@ -302,7 +324,7 @@ header h1 {
     background: #25D366;
     color: #fff;
     border-radius: 20px;
-    font-weight: 500;
+    font-weight: 600;
     text-decoration: none;
     transition: 0.3s;
 }
@@ -313,7 +335,7 @@ header h1 {
 
 .product-card:hover {
     transform: scale(1.03);
-    box-shadow: 0 0 20px var(--highlight);
+    box-shadow: 0 0 20px var(--primary);
 }
 
 /* ====== Responsive ====== */
@@ -338,6 +360,15 @@ header h1 {
         display: flex;
     }
 
+    .brand-features {
+        flex-direction: column;
+    }
+
+    .brand-actions {
+        flex-direction: column;
+    }
+
+    /* Mobile 2-column product grid */
     .product-grid {
         grid-template-columns: repeat(2, 1fr);
     }
