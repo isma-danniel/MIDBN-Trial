@@ -4,11 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MIDBN | Luxury Timepieces</title>
-
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
 <header>
@@ -18,23 +16,19 @@
       <a href="home.html">Home</a>
       <a href="product.html">Catalog</a>
     </div>
+    <div class="hamburger" id="hamburger">☰</div>
   </nav>
-  <div class="hamburger">☰</div>
 </header>
 
 <section class="brand-hero">
-  
   <video autoplay muted loop playsinline class="hero-video">
     <source src="images/hero.mp4" type="video/mp4">
   </video>
-
   <div class="hero-overlay"></div>
-
   <div class="hero-content">
     <h2>MIDBN</h2>
     <p>Luxury Timepieces</p>
     <span>Precision • Elegance • Legacy</span>
-
     <a href="product.html" class="hero-btn">Explore Collection</a>
   </div>
 </section>
@@ -55,13 +49,23 @@
 </section>
 
 <section class="brand-actions">
-  <a href="product.html">View Catalog</a>
-  <a href="https://wa.me/673XXXXXXXX">Order via WhatsApp</a>
+  <a href="product.html" class="action-btn">View Catalog</a>
+  <a href="https://wa.me/673XXXXXXXX" class="action-btn whatsapp-btn">Order via WhatsApp</a>
 </section>
 
 <footer class="wedding-footer">
   © 2026 MIDBN Timepieces
 </footer>
+
+<script>
+  // Hamburger menu toggle
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.querySelector('.nav-links');
+
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+  });
+</script>
 
 </body>
 </html>
