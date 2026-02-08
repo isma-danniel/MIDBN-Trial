@@ -1,8 +1,325 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta http-equiv="refresh" content="0; url=home.html">
-  <title>MIDBN</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIDBN | Luxury Timepieces</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ---------------------------
+   Custom inline CSS for homepage
+--------------------------- */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #1A1A1A;
+  color: #DCFBFF;
+}
+
+header {
+  background-color: #4E5D5D;
+  color: #DCFBFF;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+nav a {
+  color: #DCFBFF;
+  text-decoration: none;
+  margin-left: 15px;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  text-align: center;
+  background: url('hero.jpg') center/cover no-repeat;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #FFD700; /* Gold text */
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero h2 {
+  font-size: 3em;
+  text-shadow: 0 0 15px #FFD700;
+  margin: 0;
+}
+
+.hero p {
+  font-size: 1.2em;
+  margin: 10px 0 20px 0;
+}
+
+.hero a {
+  padding: 10px 25px;
+  background-color: #FFD700;
+  color: #1A1A1A;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  box-shadow: 0 0 15px #FFD700;
+  transition: 0.3s;
+}
+
+.hero a:hover {
+  background-color: #1A1A1A;
+  color: #FFD700;
+  box-shadow: 0 0 25px #FFD700;
+}
+
+/* Featured Categories */
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 20px;
+}
+
+.category-card {
+  background-color: #2A2A2A;
+  flex: 1 1 200px;
+  max-width: 250px;
+  border-radius: 10px;
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(255,215,0,0.6);
+}
+
+.category-card img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.category-card h3 {
+  margin: 10px 0;
+  color: #FFD700;
+}
+
+/* Featured Products Grid */
+.featured-products {
+  padding: 40px 20px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  background-color: #2A2A2A;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(255,215,0,0.6);
+}
+
+.product-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.product-card h4 {
+  color: #FFD700;
+  margin: 10px 0 5px 0;
+}
+
+.product-card .buy-btn {
+  margin-top: 10px;
+  background-color: #FFD700;
+  color: #1A1A1A;
+  text-align: center;
+  padding: 8px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.product-card .buy-btn:hover {
+  background-color: #1A1A1A;
+  color: #FFD700;
+  border: 1px solid #FFD700;
+}
+
+/* Footer */
+footer {
+  background-color: #4E5D5D;
+  color: #DCFBFF;
+  padding: 20px;
+  text-align: center;
+}
+
+footer a {
+  color: #DCFBFF;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile */
+@media (max-width:768px){
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background-color: #4E5D5D;
+    width: 100%;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    padding: 10px 0;
+  }
+  .nav-links a {
+    margin: 10px 0;
+  }
+  .hamburger {
+    display: block;
+  }
+  .categories, .product-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+</style>
 </head>
-<body></body>
+<body>
+
+<header>
+  <h1>MIDBN_TIMEPIECES</h1>
+  <nav>
+    <div class="hamburger" id="hamburger">&#9776;</div>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="product.html">Shop</a>
+      <a href="https://wa.me/6738908960">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <h2>Luxury Watches</h2>
+    <p>Premium Timepieces for Men, Women & Couples</p>
+    <a href="product.html">Explore Collection</a>
+  </div>
+</section>
+
+<section class="categories">
+  <div class="category-card">
+    <img src="men.jpg" alt="Men Watches">
+    <h3>Men</h3>
+    <a href="product.html#Men" class="buy-btn">Shop Now</a>
+  </div>
+  <div class="category-card">
+    <img src="women.jpg" alt="Women Watches">
+    <h3>Women</h3>
+    <a href="product.html#Women" class="buy-btn">Shop Now</a>
+  </div>
+  <div class="category-card">
+    <img src="couple.jpg" alt="Couple Watches">
+    <h3>Couple</h3>
+    <a href="product.html#Couple" class="buy-btn">Shop Now</a>
+  </div>
+  <div class="category-card">
+    <img src="promo.jpg" alt="Promo Watches">
+    <h3>Defects/Promo</h3>
+    <a href="product.html#Defects" class="buy-btn">Shop Now</a>
+  </div>
+</section>
+
+<section class="featured-products">
+  <h2 style="text-align:center;color:#FFD700;">Featured Products</h2>
+  <div class="product-grid">
+    <!-- Example Featured Product Cards -->
+    <div class="product-card" data-category="Men" data-brand="Rolex">
+      <img src="featured1.jpg" alt="Rolex Watch">
+      <h4>Rolex Submariner</h4>
+      <a href="https://wa.me/6738908960?text=Hi,%20I%20want%20to%20buy%20Rolex%20Submariner" class="buy-btn">Buy via WhatsApp</a>
+    </div>
+    <div class="product-card" data-category="Women" data-brand="Omega">
+      <img src="featured2.jpg" alt="Omega Watch">
+      <h4>Omega Constellation</h4>
+      <a href="https://wa.me/6738908960?text=Hi,%20I%20want%20to%20buy%20Omega%20Constellation" class="buy-btn">Buy via WhatsApp</a>
+    </div>
+    <div class="product-card" data-category="Couple" data-brand="Casio">
+      <img src="featured3.jpg" alt="Casio Watch">
+      <h4>Casio Couple Set</h4>
+      <a href="https://wa.me/6738908960?text=Hi,%20I%20want%20to%20buy%20Casio%20Couple%20Set" class="buy-btn">Buy via WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 MIDBN Timepieces. All Rights Reserved.
+  <br>
+  <a href="https://wa.me/6738908960">WhatsApp</a> | <a href="mailto:info@midbn.com">Email</a>
+</footer>
+
+<script>
+// ---------------------
+// Hamburger toggle
+// ---------------------
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+
+hamburger.addEventListener('click', () => {
+  navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+});
+</script>
+</body>
 </html>
