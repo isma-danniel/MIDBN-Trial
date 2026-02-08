@@ -1,486 +1,342 @@
+/* ====== Fonts & Variables ====== */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;600&display=swap');
 
 :root {
-  --gold-main: #d4af37;
-  --gold-soft: #e6c65c;
-  --gold-glow: rgba(212,175,55,0.55);
-  --glass-bg: rgba(255,255,255,0.03);
+    --gold: #d4af37;
+    --gold-glow: rgba(212, 175, 55, 0.3);
+    --dark-overlay: rgba(0, 0, 0, 0.4);
+    --bg-color: #111;
+    --text-color: #fff;
 }
 
+/* ====== Global ====== */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
-  background: #0b0b0b;
-  color: #f5f5f5;
-  line-height: 1.5;
+    background-color: #111;
+    color: #fff;
+    line-height: 1.6;
 }
 
-/* ===========================
-   HEADER
-=========================== */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* ====== Header ====== */
 header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: rgba(0,0,0,.85);
-  backdrop-filter: blur(6px);
-  border-bottom: 1px solid rgba(255,215,0,.15);
-  padding: 12px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    position: fixed;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
 }
 
 header h1 {
-  font-size: 18px;
-  letter-spacing: 2px;
-  color: gold;
-}
-
-nav {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--gold);
 }
 
 .nav-links {
-  display: flex;
-  gap: 15px;
+    display: flex;
+    gap: 1.5rem;
 }
 
 .nav-links a {
-  text-decoration: none;
-  color: #f5f5f5;
-  font-size: 14px;
-  transition: .2s;
+    font-weight: 500;
+    transition: 0.3s;
 }
 
 .nav-links a:hover {
-  color: gold;
+    color: var(--gold);
 }
 
 .hamburger {
-  display: none;
-  font-size: 22px;
-  cursor: pointer;
+    display: none;
+    font-size: 2rem;
+    color: var(--gold);
 }
 
-/* ===========================
-   SEARCH & SORT
-=========================== */
-.search-sort {
-  padding: 15px 15px 5px;
-}
-
-.search-bar input {
-  width: 100%;
-  padding: 10px 20px;
-  border-radius: 25px;
-  border: 1px solid rgba(255,215,0,.25);
-  background: #111;
-  color: #fff;
-  outline: none;
-  font-size: 14px;
-}
-
-.sort-bar {
-  margin-top: 10px;
-}
-
-.sort-bar select {
-  width: 100%;
-  padding: 10px 15px;
-  border-radius: 20px;
-  border: 1px solid rgba(255,215,0,.25);
-  background: #111;
-  color: #fff;
-}
-
-/* ===========================
-   CATEGORY FILTER
-=========================== */
-.filter-category {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding: 10px 12px 4px;
-  scrollbar-width: none;
-}
-
-.filter-category::-webkit-scrollbar { display:none; }
-
-.filter-category strong {
-  white-space: nowrap;
-  font-size: 12px;
-  color: gold;
-}
-
-.filter-category button {
-  background: #111;
-  border: 1px solid rgba(255,215,0,.25);
-  color: #fff;
-  padding: 6px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 12px;
-  white-space: nowrap;
-  transition: .25s;
-}
-
-.filter-category button:hover {
-  background: gold;
-  color: #000;
-}
-
-/* ===========================
-   BRAND FILTER
-=========================== */
-.filter-brand {
-  padding: 4px 12px 5px;
-}
-
-.brand-toggle {
-  width: 100%;
-  padding: 10px;
-  border-radius: 20px;
-  border: 1px solid rgba(255,215,0,.25);
-  background: #111;
-  color: gold;
-  cursor: pointer;
-  margin-top: 6px;
-}
-
-/* Premium slide animation */
-.filter-bar-vertical {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(-6px);
-  margin-top: 6px;
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 8px;
-  transition: 
-    max-height .45s cubic-bezier(.4,0,.2,1),
-    opacity .25s ease,
-    transform .35s ease;
-}
-
-.filter-bar-vertical.show {
-  max-height: 420px;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.brand-btn {
-  background: #111;
-  border: 1px solid rgba(255,215,0,.25);
-  color: #fff;
-  padding: 8px;
-  border-radius: 18px;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.brand-btn:hover {
-  background: gold;
-  color: #000;
-}
-
-/* ===========================
-   PRODUCT GRID
-=========================== */
-.product-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:15px;
-  padding:15px;
-}
-
-/* ===========================
-   PRODUCT CARD
-=========================== */
-.product-card {
-  border:1px solid rgba(212,175,55,.15);
-  background:linear-gradient(145deg,#111,#050505);
-  padding:14px;
-  text-align:center;
-  position:relative;
-  border-radius:12px;
-  transition:.35s cubic-bezier(.25,.8,.25,1);
-}
-
-.product-card:hover {
-  transform:translateY(-6px) scale(1.02);
-  border-color:var(--gold-main);
-  box-shadow:0 12px 30px rgba(212,175,55,.25);
-}
-
-.product-card::after {
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(120deg,
-    transparent 20%,
-    rgba(255,255,255,.06) 35%,
-    transparent 55%);
-  opacity:0;
-  transition:.6s;
-  pointer-events:none;
-}
-.product-card:hover::after { opacity:1; }
-
-/* ===========================
-   PRODUCT IMAGE + GLOW
-=========================== */
-.product-images {
-  position:relative;
-  height:150px;
-  margin-bottom:10px;
-}
-
-.product-images::before {
-  content:"";
-  position:absolute;
-  inset:-18px;
-  background:radial-gradient(circle,var(--gold-glow) 0%,transparent 70%);
-  filter:blur(35px);
-  opacity:.95;
-  z-index:0;
-  animation:glowPulse 4s infinite ease-in-out;
-}
-
-.product-images img {
-  position:relative;
-  z-index:2;
-  width:100%;
-  height:100%;
-  object-fit:contain;
-}
-
-@keyframes glowPulse {
-  0%,100%{opacity:.6;}
-  50%{opacity:1;}
-}
-
-/* ===========================
-   CARD TEXT
-=========================== */
-.badge {
-  position:absolute;
-  top:8px;
-  left:8px;
-  font-size:10px;
-  font-weight:600;
-  padding:4px 10px;
-  border-radius:10px;
-  background:var(--gold-main);
-  color:#000;
-}
-
-.brand {
-  color:var(--gold-main);
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:1px;
-}
-
-.details {
-  font-size:12px;
-  color:#aaa;
-}
-
-.price {
-  font-size:14px;
-  font-weight:600;
-  margin:6px 0;
-}
-
-/* ===========================
-   BUY BUTTON
-=========================== */
-.buy-btn {
-  margin-top:10px;
-  background:linear-gradient(135deg,#b8962e,#f3d37a);
-  color:#000;
-  padding:7px 18px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:600;
-  text-decoration:none;
-  display:inline-block;
-  transition:.3s;
-  box-shadow:0 0 14px var(--gold-glow);
-}
-
-.buy-btn:hover {
-  transform:scale(1.07);
-  box-shadow:0 0 28px rgba(212,175,55,.9);
-}
-
-/* ===========================
-   FLOATING WHATSAPP
-=========================== */
-.whatsapp-float {
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  border:1px solid var(--gold-main);
-  background:#000;
-  padding:10px 18px;
-  color:var(--gold-main);
-  border-radius:50px;
-  font-weight:bold;
-  text-decoration:none;
-  z-index:100;
-  transition:.3s;
-}
-
-.whatsapp-float:hover {
-  background:var(--gold-main);
-  color:#000;
-  box-shadow:0 0 20px var(--gold-glow);
-}
-
-/* ===========================
-   MOBILE
-=========================== */
-@media(max-width:768px){
-
-  header { padding:12px 15px; }
-  h1 { font-size:18px; }
-
-  .hamburger { display:block; }
-  nav { display:none; }
-
-  .product-grid {
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .filter-category { padding-bottom:2px; }
-  .filter-brand { padding-top:2px; }
-}
-
-/* ===========================
-   BRAND HOMEPAGE
-=========================== */
-
+/* ====== Hero Section ====== */
 .brand-hero {
-  position:relative;
-  height:100vh;
-  background:url('images/hero.jpg') center/cover no-repeat;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
+    position: relative;
+    height: 90vh;
+    overflow: hidden;
+}
+
+.hero-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .hero-overlay {
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.65);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--dark-overlay);
 }
 
 .hero-content {
-  position:relative;
-  z-index:2;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--gold);
 }
 
 .hero-content h2 {
-  font-family:'Playfair Display',serif;
-  font-size:46px;
-  letter-spacing:4px;
-  color:var(--gold-main);
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 10px var(--gold-glow);
+    animation: fadeIn 2s ease-in-out;
 }
 
 .hero-content p {
-  margin-top:8px;
-  letter-spacing:2px;
-  font-size:14px;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .hero-content span {
-  font-size:12px;
-  color:var(--gold-soft);
-  display:block;
-  margin-bottom:18px;
+    display: block;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
 }
 
 .hero-btn {
-  display:inline-block;
-  margin-top:12px;
-  padding:10px 28px;
-  border-radius:30px;
-  border:1px solid var(--gold-main);
-  color:var(--gold-main);
-  text-decoration:none;
-  transition:.3s;
+    padding: 0.8rem 2rem;
+    background: var(--gold);
+    color: #111;
+    font-weight: 600;
+    border-radius: 30px;
+    box-shadow: 0 0 20px var(--gold-glow);
+    transition: 0.3s;
 }
 
 .hero-btn:hover {
-  background:var(--gold-main);
-  color:#000;
-  box-shadow:0 0 22px var(--gold-glow);
+    transform: scale(1.05);
+    box-shadow: 0 0 30px var(--gold-glow);
 }
 
+/* ====== Brand Story ====== */
 .brand-story {
-  text-align:center;
-  padding:45px 20px;
+    padding: 5rem 2rem;
+    text-align: center;
 }
 
 .brand-story h2 {
-  font-family:'Playfair Display',serif;
-  color:var(--gold-main);
-  margin-bottom:10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--gold);
 }
 
 .brand-story p {
-  font-size:13px;
-  max-width:500px;
-  margin:auto;
-  color:#aaa;
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.1rem;
 }
 
+/* ====== Brand Features ====== */
 .brand-features {
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  padding:10px 20px 40px;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding: 3rem 2rem;
 }
 
 .feature {
-  border:1px solid rgba(255,215,0,.25);
-  padding:14px;
-  text-align:center;
-  border-radius:14px;
-  background:#000;
-  color:var(--gold-main);
-  font-size:13px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    font-weight: 500;
+    transition: 0.3s;
 }
 
+.feature:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ====== Brand Actions ====== */
 .brand-actions {
-  display:flex;
-  justify-content:center;
-  gap:14px;
-  padding-bottom:45px;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 3rem 2rem;
 }
 
-.brand-actions a {
-  text-decoration:none;
-  padding:10px 24px;
-  border-radius:30px;
-  border:1px solid var(--gold-main);
-  color:var(--gold-main);
-  transition:.3s;
+.brand-actions .action-btn {
+    padding: 0.8rem 2rem;
+    border-radius: 30px;
+    font-weight: 600;
+    background: var(--gold);
+    color: #111;
+    box-shadow: 0 0 20px var(--gold-glow);
+    transition: 0.3s;
 }
 
-.brand-actions a:hover {
-  background:var(--gold-main);
-  color:#000;
-  box-shadow:0 0 22px var(--gold-glow);
+.brand-actions .action-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px var(--gold-glow);
+}
+
+/* ====== Footer ====== */
+.wedding-footer {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(0,0,0,0.9);
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+/* ====== Product Page ====== */
+.search-sort {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 1.5rem 2rem;
+    gap: 1rem;
+}
+
+.search-bar input {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: none;
+    width: 200px;
+}
+
+.sort-bar select {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: none;
+}
+
+/* ====== Filter Section ====== */
+.filter-category, .filter-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    flex-wrap: wrap;
+}
+
+.filter-category button, .filter-bar-vertical button {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    color: var(--gold);
+    border: none;
+    transition: 0.3s;
+}
+
+.filter-category button:hover, .filter-bar-vertical button:hover {
+    background: var(--gold);
+    color: #111;
+}
+
+/* Brand filter collapse */
+.filter-bar-vertical {
+    display: none;
+    flex-direction: column;
+    margin-top: 0.5rem;
+}
+
+.filter-bar-vertical.active {
+    display: flex;
+}
+
+/* ====== Product Grid ====== */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.product-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 15px;
+    overflow: hidden;
+    text-align: center;
+    transition: 0.3s;
+    position: relative;
+}
+
+.product-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.product-card h3 {
+    margin: 0.5rem 0;
+    color: var(--gold);
+}
+
+.product-card p {
+    font-size: 0.9rem;
+    color: #ddd;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--gold-glow);
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        background: rgba(0,0,0,0.95);
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 200px;
+        padding: 1rem;
+        border-radius: 10px;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .brand-features {
+        flex-direction: column;
+    }
+
+    .brand-actions {
+        flex-direction: column;
+    }
+}
+
+/* ====== Animations ====== */
+@keyframes fadeIn {
+    0% {opacity: 0; transform: translateY(-20px);}
+    100% {opacity: 1; transform: translateY(0);}
 }
