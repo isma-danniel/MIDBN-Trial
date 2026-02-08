@@ -1,16 +1,15 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Midbn Timepieces - Products</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Midbn Timepieces - Products</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ==========================
-       HEADER
-=========================== -->
 <header>
   <h1>MIDBN_TIMEPIECES</h1>
   <nav>
@@ -22,14 +21,10 @@
   </nav>
 </header>
 
-<!-- ==========================
-       SEARCH & SORT
-=========================== -->
 <section class="search-sort">
   <div class="search-bar">
     <input type="text" id="productSearch" placeholder="Search watches...">
   </div>
-
   <div class="sort-bar">
     <select id="sortStock">
       <option value="normal">Normal order</option>
@@ -38,9 +33,6 @@
   </div>
 </section>
 
-<!-- ==========================
-       CATEGORY FILTER
-=========================== -->
 <section class="filter-category">
   <strong>Filter by Category:</strong>
   <button onclick="filterProducts('all')">All</button>
@@ -51,12 +43,9 @@
   <button onclick="filterProducts('Coming-soon')">Coming soon</button>
 </section>
 
-<!-- ==========================
-       BRAND FILTER
-=========================== -->
 <section class="filter-brand">
-  <button class="brand-toggle">Brands ▾</button>
-  <div class="filter-bar-vertical">
+  <button class="brand-toggle" onclick="toggleBrandFilter()">Brands ▾</button>
+  <div class="filter-bar-vertical" id="brandFilter">
     <button class="brand-btn" data-brand="all">All</button>
     <button class="brand-btn" data-brand="Rolex">Rolex</button>
     <button class="brand-btn" data-brand="Omega">Omega</button>
@@ -1117,97 +1106,49 @@
   <!-- Add your footer content if any -->
 </footer>
   
+
 <script>
-  // Hamburger toggle
   const hamburger = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
   hamburger.addEventListener('click', () => {
     navLinks.classList.toggle('active');
   });
 
-  // Brand filter toggle
-  const brandToggle = document.querySelector('.brand-toggle');
-  const brandMenu = document.querySelector('.filter-bar-vertical');
-  brandToggle.addEventListener('click', () => {
-    brandMenu.classList.toggle('show');
+  // Brand toggle
+  function toggleBrandFilter() {
+    document.getElementById('brandFilter').classList.toggle('active');
+  }
+
+  // Filtering
+  const productCards = document.querySelectorAll('.product-card');
+  const brandBtns = document.querySelectorAll('.brand-btn');
+
+  brandBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBrand(btn.dataset.brand);
+    });
   });
 
-  // Filter products by category
-  function filterProducts(category) {
-    const cards = document.querySelectorAll('.product-card');
-    cards.forEach(card => {
-      if(category === 'all' || card.dataset.category === category) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
-      }
+  function filterBrand(brand) {
+    productCards.forEach(card => {
+      card.style.display = (brand === 'all' || card.dataset.brand === brand) ? 'block' : 'none';
     });
   }
 
-  // Filter products by brand
-  const brandButtons = document.querySelectorAll('.brand-btn');
-  brandButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const brand = btn.dataset.brand;
-      const cards = document.querySelectorAll('.product-card');
-      cards.forEach(card => {
-        if(brand === 'all' || card.dataset.brand === brand) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
-      });
+  function filterProducts(category) {
+    productCards.forEach(card => {
+      card.style.display = (category === 'all' || card.dataset.category === category) ? 'block' : 'none';
     });
-  });
+  }
 
-  // Search products
+  // Search
   const searchInput = document.getElementById('productSearch');
   searchInput.addEventListener('input', () => {
-    const query = searchInput.value.toLowerCase();
-    const cards = document.querySelectorAll('.product-card');
-    cards.forEach(card => {
+    const term = searchInput.value.toLowerCase();
+    productCards.forEach(card => {
       const title = card.querySelector('h3').textContent.toLowerCase();
-      if(title.includes(query)) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
-      }
+      card.style.display = title.includes(term) ? 'block' : 'none';
     });
-  });
-
-  // Sort by stock
-  const sortStock = document.getElementById('sortStock');
-  sortStock.addEventListener('change', () => {
-    const cards = Array.from(document.querySelectorAll('.product-card'));
-    if(sortStock.value === 'instock') {
-      cards.sort((a, b) => b.dataset.stock - a.dataset.stock);
-    }
-    const grid = document.querySelector('.product-grid');
-    grid.innerHTML = '';
-    cards.forEach(card => grid.appendChild(card));
-  });
-
-  // WhatsApp buy button
-  const whatsappBtns = document.querySelectorAll('.whatsapp-product');
-  whatsappBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const product = btn.dataset.product;
-      const url = `https://wa.me/6738908960?text=Hello,%20I%20want%20to%20buy%20${encodeURIComponent(product)}`;
-      window.open(url, '_blank');
-    });
-  });
-
-  // Display stock status
-  const stockElements = document.querySelectorAll('.stock');
-  stockElements.forEach(el => {
-    const stock = parseInt(el.dataset.stock);
-    if(stock > 0) {
-      el.textContent = `In Stock: ${stock}`;
-      el.style.color = 'green';
-    } else {
-      el.textContent = 'Out of Stock';
-      el.style.color = 'red';
-    }
   });
 </script>
 </body>
