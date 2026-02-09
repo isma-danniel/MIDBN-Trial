@@ -3,108 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MIDBN.Timepieces - Products</title>
-  <link rel="stylesheet" href="products-style.css">
+  <title>MIDBN Timepieces - Products</title>
+  <link rel="stylesheet" href="style-products.css">
 </head>
 <body>
 
-<!-- HEADER / HAMBURGER -->
-<header class="header">
-  <nav>
-    <div class="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    <ul class="menu">
-      <!-- Controls inside hamburger -->
-      <li>
-        <input type="text" id="search" placeholder="Search products..." />
-      </li>
-      <li>
-        <button class="sort-btn" data-sort="az">Sort A-Z</button>
-      </li>
-      <li>
-        <button class="sort-btn" data-sort="price">Price Low</button>
-      </li>
-      <li>
-        <label>Brand</label>
-        <select id="filter-brand">
-          <option value="all">All Brands</option>
-          <option value="rolex">Rolex</option>
-          <option value="omega">Omega</option>
-          <option value="casio">Casio</option>
-          <option value="cartier">Cartier</option>
-          <option value="patek">Patek Philippe</option>
-          <option value="gshock">G-Shock</option>
-          <option value="swarovski">Swarovski</option>
-          <option value="franck">Franck Muller</option>
-          <option value="ap">Audemars Piguet</option>
-          <option value="seiko">Seiko</option>
-          <option value="mk">Michael Kors</option>
-        </select>
-      </li>
-      <li>
-        <label>Category</label>
-        <select id="filter-category">
-          <option value="all">All Categories</option>
-          <option value="mens">Mens</option>
-          <option value="womens">Womens</option>
-          <option value="couple">Couple</option>
-          <option value="new">New Collection</option>
-          <option value="defect">Defect / Promo</option>
-        </select>
-      </li>
-      <li>
-        <label>Grade</label>
-        <select id="filter-grade">
-          <option value="all">All Grades</option>
-          <option value="standard">Standard</option>
-          <option value="premium">Premium</option>
-        </select>
-      </li>
-    </ul>
+<header>
+  <h1>MIDBN_TIMEPIECES</h1>
+  <div class="hamburger" id="hamburger">&#9776;</div>
+  <nav id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="https://wa.me/6738908960">Contact</a>
   </nav>
 </header>
 
-<!-- PRODUCTS GRID -->
-<section class="products">
-  <div class="products-grid" id="products-grid">
-    <!-- Sample product items -->
-    <div class="product-card" data-name="Rolex Submariner" data-price="12000" data-brand="rolex" data-category="mens" data-grade="premium">
-      <div class="label new">New Arrival</div>
-      <img src="images/products/sample1.png" alt="Rolex Submariner">
-      <div class="product-info">
-        <h3>Rolex Submariner</h3>
-        <p>$12,000</p>
-        <p>Stock: <span class="stock">5</span></p>
-      </div>
-    </div>
+<section class="controls">
+  <input type="text" id="searchInput" placeholder="Search watches...">
+  <select id="sortSelect">
+    <option value="default">Sort: Normal order</option>
+    <option value="name">Sort: A-Z</option>
+    <option value="price">Sort: Price Low-High</option>
+  </select>
+</section>
 
-    <div class="product-card" data-name="Casio G-Shock" data-price="150" data-brand="casio" data-category="mens" data-grade="standard">
-      <div class="label promo">Defect / Promo</div>
-      <img src="images/products/sample2.png" alt="Casio G-Shock">
-      <div class="product-info">
-        <h3>Casio G-Shock</h3>
-        <p>$150</p>
-        <p>Stock: <span class="stock">12</span></p>
-      </div>
-    </div>
-
-    <div class="product-card" data-name="Omega Seamaster" data-price="5000" data-brand="omega" data-category="womens" data-grade="premium">
-      <div class="label last">Last Stock</div>
-      <img src="images/products/sample3.png" alt="Omega Seamaster">
-      <div class="product-info">
-        <h3>Omega Seamaster</h3>
-        <p>$5,000</p>
-        <p>Stock: <span class="stock">1</span></p>
-      </div>
-    </div>
-
-    <!-- Add more product cards as needed -->
+<section class="filters">
+  <div class="filter-category">
+    <strong>Category:</strong>
+    <button data-filter="all">All</button>
+    <button data-filter="Men">Men</button>
+    <button data-filter="Women">Women</button>
+    <button data-filter="Couple">Couple</button>
+    <button data-filter="New">New Collection</button>
+    <button data-filter="Defect">Defect / Promo</button>
+  </div>
+  <div class="filter-brand">
+    <strong>Brand:</strong>
+    <button data-filter="all">All</button>
+    <button data-filter="Rolex">Rolex</button>
+    <button data-filter="Omega">Omega</button>
+    <button data-filter="Casio">Casio</button>
+    <button data-filter="Cartier">Cartier</button>
+    <button data-filter="Patek-Philippe">Patek Philippe</button>
+    <button data-filter="G-Shock">G-Shock</button>
+    <button data-filter="Swarvowski">Swarvowski</button>
+    <button data-filter="Franc-Muller">Franc Muller</button>
+    <button data-filter="Audemars-Piguet">Audemars Piguet</button>
+    <button data-filter="Seiko">Seiko</button>
+    <button data-filter="Michael-Kors">Michael Kors</button>
+  </div>
+  <div class="filter-grade">
+    <strong>Grade:</strong>
+    <button data-filter="all">All</button>
+    <button data-filter="New Arrival">New Arrival</button>
+    <button data-filter="Defect">Defect</button>
+    <button data-filter="Last Stock">Last Stock</button>
   </div>
 </section>
 
-<script src="products-script.js"></script>
+<section class="product-grid" id="productGrid">
+  <!-- PRODUCT CARDS -->
+  <!-- Example card, copy and update for your products -->
+  <!-- Add "data-category", "data-brand", "data-grade", "data-price", "data-stock" -->
+  <div class="product-card" 
+       data-category="Men" 
+       data-brand="Rolex" 
+       data-grade="New Arrival" 
+       data-price="2500" 
+       data-stock="5">
+    <div class="label">New Arrival</div>
+    <div class="product-images">
+      <img src="images/men-1.png" alt="Rolex Daytona">
+    </div>
+    <h3>Daytona (Black/Gold)</h3>
+    <p class="brand">Rolex</p>
+    <p class="price">$2500</p>
+    <p class="stock-count">Stock: 5</p>
+    <a class="buy-btn whatsapp-product" data-product="Rolex Daytona" href="#">Buy via WhatsApp</a>
+  </div>
+
+  <!-- More product cards go here -->
+</section>
+
+<script src="script-products.js"></script>
 </body>
 </html>
