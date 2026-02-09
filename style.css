@@ -15,6 +15,15 @@ body {
   line-height: 1.6;
 }
 
+/* HEADER */
+.header { 
+  position: sticky; top:0; z-index: 5;
+  background: rgba(13,15,16,0.8); 
+  backdrop-filter: blur(6px);
+}
+.header nav ul { display:flex; justify-content:space-around; list-style:none; padding:10px 0; }
+.header nav ul li a { color: var(--primary); text-decoration:none; font-weight:500; }
+
 /* HERO */
 .hero { position: relative; height: 100svh; overflow: hidden; }
 .hero-video { width: 100%; height: 100%; object-fit: cover; }
@@ -25,16 +34,16 @@ body {
   padding: 20px; text-align: center;
 }
 .hero-quote {
-  font-size: 2rem; color: var(--primary); margin-bottom: 20px;
-  opacity: 0; transform: translateY(20px); transition: 0.8s ease;
+  font-size: 1.5rem; color: var(--primary); margin-bottom: 15px;
+  opacity: 0; transform: translateY(10px); transition: 0.8s ease;
 }
 .hero-btn {
-  padding: 12px 30px; border: 1px solid var(--primary);
+  padding: 10px 24px; border: 1px solid var(--primary);
   color: var(--primary); text-decoration: none; letter-spacing: 1px;
-  opacity: 0; transform: translateY(20px); transition: 0.8s ease;
+  opacity: 0; transform: translateY(10px); transition: 0.8s ease;
 }
 
-/* GLASS CARD COMMON */
+/* GLASS CARD */
 .glass-card {
   backdrop-filter: blur(var(--glass-blur));
   background: rgba(255, 255, 255, var(--glass-opacity));
@@ -59,17 +68,18 @@ body {
 
 /* BRANDS */
 .brands { padding: 60px 20px; }
-.brands h2 { margin-bottom: 20px; color: var(--primary); }
+.brands h2 { margin-bottom: 20px; color: var(--primary); text-align: center; }
 .brand-scroll {
   display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
   max-height: 400px; overflow-y: auto;
 }
 .brand-card {
   border: 1px solid var(--secondary); border-radius: 16px;
-  padding: 10px; display: flex; justify-content: center; align-items: center;
+  padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center;
   background: rgba(255,255,255,0.1); backdrop-filter: blur(var(--glass-blur));
 }
 .brand-card img { width: 80%; height: auto; object-fit: contain; }
+.brand-name { margin-top: 8px; font-size: 0.9rem; color: var(--primary); }
 
 /* CATALOGUE */
 .catalog { padding: 60px 20px; text-align: center; }
@@ -77,3 +87,7 @@ body {
   padding: 14px 32px; border: 1px solid var(--primary);
   color: var(--primary); text-decoration: none;
 }
+
+/* FOOTER */
+.footer { padding: 20px; text-align:center; }
+.footer .glass-card { margin:0; padding:15px; font-size:0.85rem; }
