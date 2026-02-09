@@ -34,24 +34,95 @@ document.querySelectorAll(".faq-question").forEach(btn => {
   });
 });
 
-// ARRIVALS horizontal drag
+// NEW ARRIVALS horizontal drag/swipe with momentum
 const slider = document.querySelector('.arrival-scroll');
 let isDown = false;
-let startX;
-let scrollLeft;
+let startX, scrollLeft;
+let velocity = 0;
+let lastX = 0;
+let momentumID;
+let pauseAutoScroll = false;
+const speed = 0.3;
 
+// Desktop drag
 slider.addEventListener('mousedown', (e) => {
   isDown = true;
-  slider.classList.add('active');
+  pauseAutoScroll = true;
   startX = e.pageX - slider.offsetLeft;
   scrollLeft = slider.scrollLeft;
+  lastX = e.pageX;
+  cancelMomentum();
 });
-slider.addEventListener('mouseleave', () => { isDown = false; slider.classList.remove('active'); });
-slider.addEventListener('mouseup', () => { isDown = false; slider.classList.remove('active'); });
+slider.addEventListener('mouseleave', () => endDrag());
+slider.addEventListener('mouseup', () => endDrag());
 slider.addEventListener('mousemove', (e) => {
   if(!isDown) return;
   e.preventDefault();
   const x = e.pageX - slider.offsetLeft;
-  const walk = (x - startX) * 2; // scroll-fast
+  const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
+
+  // calculate velocity
+  velocity = e.pageX - lastX;
+  lastX = e.pageX;
 });
+
+// Mobile swipe
+slider.addEventListener('touchstart', (e) => {
+  isDown = true;
+  pauseAutoScroll = true;
+  startX = e.touches[0].pageX - slider.offsetLeft;
+  scrollLeft = slider.scrollLeft;
+  lastX = e.touches[0].pageX;
+  cancelMomentum();
+});
+slider.addEventListener('touchend', () => endDrag(true));
+slider.addEventListener('touchmove', (e) => {
+  if(!isDown) return;
+  const x = e.touches[0].pageX - slider.offsetLeft;
+  const walk = (x - startX) * 2;
+  slider.scrollLeft = scrollLeft - walk;
+
+  // calculate velocity
+  velocity = e.touches[0].pageX - lastX;
+  lastX = e.touches[0].pageX;
+});
+
+// Helper functions
+function endDrag(isTouch=false) {
+  isDown = false;
+  pauseAutoScroll = false;
+  startMomentum(velocity);
+}
+
+function startMomentum(initialVelocity) {
+  let v = initialVelocity;
+  function momentum() {
+    slider.scrollLeft -= v;
+    v *= 0.95; // friction
+    if (Math.abs(v) > 0.5) {
+      momentumID = requestAnimationFrame(momentum);
+    }
+  }
+  momentumID = requestAnimationFrame(momentum);
+}
+
+function cancelMomentum() {
+  if(momentumID) cancelAnimationFrame(momentumID);
+}
+
+// Smooth auto-slide when not interacting
+let autoScroll = 0;
+function animateSlide() {
+  if (!slider) return;
+  if (!pauseAutoScroll && !isDown) {
+    autoScroll += speed;
+    slider.scrollLeft += (autoScroll - slider.scrollLeft) * 0.05;
+    if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth) {
+      slider.scrollLeft = 0;
+      autoScroll = 0;
+    }
+  }
+  requestAnimationFrame(animateSlide);
+}
+requestAnimationFrame(animateSlide);
