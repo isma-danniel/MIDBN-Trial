@@ -10,7 +10,7 @@ window.addEventListener("load", () => {
 
   lines.forEach((lineText, index) => {
     const line = document.createElement('div');
-    line.textContent = lineText.toUpperCase(); // all uppercase
+    line.textContent = lineText.toUpperCase();
     line.style.opacity = '0';
     line.style.transform = 'translateY(20px)';
     line.style.transition = 'all 0.8s ease';
@@ -50,7 +50,6 @@ let momentumID;
 let pauseAutoScroll = false;
 const speed = 0.3;
 
-// Desktop drag
 slider.addEventListener('mousedown', (e) => {
   isDown = true;
   pauseAutoScroll = true;
@@ -67,12 +66,10 @@ slider.addEventListener('mousemove', (e) => {
   const x = e.pageX - slider.offsetLeft;
   const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
-
   velocity = e.pageX - lastX;
   lastX = e.pageX;
 });
 
-// Mobile swipe
 slider.addEventListener('touchstart', (e) => {
   isDown = true;
   pauseAutoScroll = true;
@@ -87,12 +84,10 @@ slider.addEventListener('touchmove', (e) => {
   const x = e.touches[0].pageX - slider.offsetLeft;
   const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
-
   velocity = e.touches[0].pageX - lastX;
   lastX = e.touches[0].pageX;
 });
 
-// Helper functions
 function endDrag() {
   isDown = false;
   pauseAutoScroll = false;
@@ -103,7 +98,7 @@ function startMomentum(initialVelocity) {
   let v = initialVelocity;
   function momentum() {
     slider.scrollLeft -= v;
-    v *= 0.95; // friction
+    v *= 0.95;
     if (Math.abs(v) > 0.5) {
       momentumID = requestAnimationFrame(momentum);
     }
@@ -115,14 +110,12 @@ function cancelMomentum() {
   if(momentumID) cancelAnimationFrame(momentumID);
 }
 
-// Auto-slide with easing when not interacting
 let autoScroll = 0;
 function animateSlide() {
   if (!slider) return;
   if (!pauseAutoScroll && !isDown) {
     autoScroll += speed;
     slider.scrollLeft += (autoScroll - slider.scrollLeft) * 0.05;
-
     if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth) {
       slider.scrollLeft = 0;
       autoScroll = 0;
@@ -141,7 +134,7 @@ const navLinks = document.querySelectorAll(".header nav ul li a");
 window.addEventListener("scroll", () => {
   let current = "";
   sections.forEach(section => {
-    const sectionTop = section.offsetTop - 80; // adjust for header height
+    const sectionTop = section.offsetTop - 80;
     if (pageYOffset >= sectionTop) {
       current = section.getAttribute("id");
     }
@@ -165,43 +158,32 @@ navLinks.forEach(link => {
     const targetSection = document.getElementById(targetId);
 
     if (targetSection) {
-      const headerOffset = 70; // adjust to match sticky header height
+      const headerOffset = 70;
       const sectionPosition = targetSection.offsetTop - headerOffset;
-
       window.scrollTo({
         top: sectionPosition,
         behavior: "smooth"
       });
     }
-
-    // Close hamburger menu when link is clicked
-    if (document.body.classList.contains('nav-open')) {
-      toggleHamburger();
-    }
   });
 });
 
 // ------------------------
-// HAMBURGER MENU
+// HAMBURGER MENU TOGGLE
 // ------------------------
-const hamburger = document.createElement('div');
-hamburger.classList.add('hamburger');
-hamburger.innerHTML = `<span></span><span></span><span></span>`;
-document.querySelector('.header-container').appendChild(hamburger);
+const hamburger = document.querySelector('.hamburger');
+const nav = document.querySelector('.header nav');
 
-function toggleHamburger() {
-  document.body.classList.toggle('nav-open');
-  const nav = document.querySelector('.header nav ul');
-  if (document.body.classList.contains('nav-open')) {
-    nav.style.display = 'flex';
-  } else {
-    nav.style.display = 'none';
-  }
+if (hamburger) {
+  hamburger.addEventListener('click', () => {
+    document.body.classList.toggle('nav-open');
+  });
 }
 
-hamburger.addEventListener('click', toggleHamburger);
-
-// Initially hide nav on mobile
-if (window.innerWidth <= 480) {
-  document.querySelector('.header nav ul').style.display = 'none';
-}
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    if (document.body.classList.contains('nav-open')) {
+      document.body.classList.remove('nav-open');
+    }
+  });
+});
