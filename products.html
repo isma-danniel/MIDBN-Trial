@@ -1,88 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MIDBN Timepieces - Products</title>
-  <link rel="stylesheet" href="style-products.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIDBN Timepieces - Products</title>
+<link rel="stylesheet" href="style-products.css">
 </head>
 <body>
 
 <header>
   <h1>MIDBN_TIMEPIECES</h1>
-  <div class="hamburger" id="hamburger">&#9776;</div>
-  <nav id="navLinks">
-    <a href="index.html">Home</a>
-    <a href="https://wa.me/6738908960">Contact</a>
+  <nav>
+    <div class="hamburger" id="hamburger">&#9776;</div>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="https://wa.me/6738908960">Contact</a>
+    </div>
   </nav>
 </header>
 
-<section class="controls">
-  <input type="text" id="searchInput" placeholder="Search watches...">
-  <select id="sortSelect">
-    <option value="default">Sort: Normal order</option>
-    <option value="name">Sort: A-Z</option>
-    <option value="price">Sort: Price Low-High</option>
-  </select>
-</section>
-
-<section class="filters">
-  <div class="filter-category">
-    <strong>Category:</strong>
-    <button data-filter="all">All</button>
-    <button data-filter="Men">Men</button>
-    <button data-filter="Women">Women</button>
-    <button data-filter="Couple">Couple</button>
-    <button data-filter="New">New Collection</button>
-    <button data-filter="Defect">Defect / Promo</button>
+<section class="search-sort">
+  <div class="search-bar">
+    <input type="text" id="productSearch" placeholder="Search watches...">
   </div>
-  <div class="filter-brand">
-    <strong>Brand:</strong>
-    <button data-filter="all">All</button>
-    <button data-filter="Rolex">Rolex</button>
-    <button data-filter="Omega">Omega</button>
-    <button data-filter="Casio">Casio</button>
-    <button data-filter="Cartier">Cartier</button>
-    <button data-filter="Patek-Philippe">Patek Philippe</button>
-    <button data-filter="G-Shock">G-Shock</button>
-    <button data-filter="Swarvowski">Swarvowski</button>
-    <button data-filter="Franc-Muller">Franc Muller</button>
-    <button data-filter="Audemars-Piguet">Audemars Piguet</button>
-    <button data-filter="Seiko">Seiko</button>
-    <button data-filter="Michael-Kors">Michael Kors</button>
-  </div>
-  <div class="filter-grade">
-    <strong>Grade:</strong>
-    <button data-filter="all">All</button>
-    <button data-filter="New Arrival">New Arrival</button>
-    <button data-filter="Defect">Defect</button>
-    <button data-filter="Last Stock">Last Stock</button>
+  <div class="sort-bar">
+    <select id="sortStock">
+      <option value="normal">Normal order</option>
+      <option value="az">Sort A-Z</option>
+      <option value="price-low">Price Low → High</option>
+    </select>
   </div>
 </section>
 
-<section class="product-grid" id="productGrid">
-  <!-- PRODUCT CARDS -->
-  <!-- Example card, copy and update for your products -->
-  <!-- Add "data-category", "data-brand", "data-grade", "data-price", "data-stock" -->
-  <div class="product-card" 
-       data-category="Men" 
-       data-brand="Rolex" 
-       data-grade="New Arrival" 
-       data-price="2500" 
-       data-stock="5">
-    <div class="label">New Arrival</div>
+<section class="filter-bar">
+  <strong>Category:</strong>
+  <button data-category="all">All</button>
+  <button data-category="Men">Men</button>
+  <button data-category="Women">Women</button>
+  <button data-category="Couple">Couple</button>
+  <button data-category="New Collection">New Collection</button>
+  <button data-category="Defect/Promo">Defect/Promo</button>
+
+  <strong>Brand:</strong>
+  <button data-brand="all">All</button>
+  <button data-brand="Rolex">Rolex</button>
+  <button data-brand="Omega">Omega</button>
+  <button data-brand="Casio">Casio</button>
+  <button data-brand="Cartier">Cartier</button>
+  <button data-brand="Patek-Philippe">Patek Philippe</button>
+  <button data-brand="G-Shock">G-Shock</button>
+  <button data-brand="Swarvowski">Swarvowski</button>
+  <button data-brand="Franc-Muller">Franc Muller</button>
+  <button data-brand="Audemars-Piguet">Audemars Piguet</button>
+  <button data-brand="Seiko">Seiko</button>
+  <button data-brand="Michael-Kors">Michael Kors</button>
+</section>
+
+<section class="product-grid">
+
+  <!-- ADD YOUR PRODUCT CARDS HERE -->
+  <!-- Use this template for each product:
+  <div class="product-card" data-category="Men" data-brand="Rolex" data-grade="New Arrival">
+    <span class="badge new">New Arrival</span> <!-- Only if new/defect -->
     <div class="product-images">
-      <img src="images/men-1.png" alt="Rolex Daytona">
+      <img src="images/men-1.png" alt="men-1">
     </div>
+    <p class="brand">Brand: Rolex</p>
     <h3>Daytona (Black/Gold)</h3>
-    <p class="brand">Rolex</p>
-    <p class="price">$2500</p>
-    <p class="stock-count">Stock: 5</p>
-    <a class="buy-btn whatsapp-product" data-product="Rolex Daytona" href="#">Buy via WhatsApp</a>
+    <p class="details">Quartz, stainless steel, men watch</p>
+    <p>Price: $25</p>
+    <p class="stock" data-stock="5"></p>
+    <a class="buy-btn whatsapp-product" data-product="Rolex Daytona">Buy via WhatsApp</a>
   </div>
+  -->
 
-  <!-- More product cards go here -->
 </section>
+
+<footer>
+  &copy; 2026 MIDBN Timepieces
+</footer>
 
 <script src="script-products.js"></script>
 </body>
