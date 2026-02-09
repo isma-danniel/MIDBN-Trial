@@ -153,3 +153,13 @@ document.body.addEventListener("click", (e) => {
     navMenu.classList.remove("active");
   }
 });
+
+// Close hamburger menu when clicking outside
+document.addEventListener("click", (e) => {
+  const isClickInside = hamburger.contains(e.target) || navMenu.contains(e.target);
+
+  if (!isClickInside && hamburger.classList.contains("active")) {
+    hamburger.classList.remove("active");
+    navMenu.classList.remove("active");
+  }
+});
