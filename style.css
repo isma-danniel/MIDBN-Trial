@@ -485,3 +485,19 @@ a{text-decoration:none;color:inherit}
   .product-details h1 { font-size:36px; }
   .product-desc { font-size:14px; }
 }
+
+/* ==============================
+   SCROLL REVEAL ANIMATIONS
+============================== */
+
+.fade, .product-card, .product-hero-grid, .editorial, .collection-hero {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+
+.fade.show, .product-card.show, .product-hero-grid.show,
+.editorial.show, .collection-hero.show {
+  opacity: 1;
+  transform: translateY(0);
+}
