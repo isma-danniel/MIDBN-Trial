@@ -2,8 +2,10 @@
 window.addEventListener("load", () => {
   const quote = document.querySelector(".hero-quote");
   const btn = document.querySelector(".hero-btn");
-  quote.style.opacity = "1";
-  quote.style.transform = "translateY(0)";
+
+  // Animate hero text
+  quote.classList.add("animate");
+
   setTimeout(() => {
     btn.style.opacity = "1";
     btn.style.transform = "translateY(0)";
