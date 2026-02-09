@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<!-- HEADER / HAMBURGER MENU -->
+<!-- HEADER / NAVIGATION -->
 <header class="header">
   <nav>
     <div class="hamburger">
@@ -17,37 +17,55 @@
       <span></span>
     </div>
     <ul class="menu">
+      <li><input type="text" placeholder="Search..." id="search-input"></li>
       <li>
-        <input type="text" id="searchBox" placeholder="Search product...">
+        <button class="filter-btn" data-sort="az">Sort A-Z</button>
       </li>
       <li>
-        <button class="sort-btn" data-sort="az">Sort A→Z</button>
+        <button class="filter-btn" data-sort="price">Price Low-High</button>
       </li>
       <li>
-        <button class="sort-btn" data-sort="price">Sort Price Low→High</button>
-      </li>
-      <li>
-        <div class="filter-group">
-          <h4>Brand</h4>
-          <div class="filter-buttons" id="brandFilters"></div>
+        <button class="filter-btn" data-filter="brand">Filter Brand</button>
+        <div class="filter-options brand-options">
+          <button data-brand="Rolex">Rolex</button>
+          <button data-brand="Omega">Omega</button>
+          <button data-brand="Casio">Casio</button>
+          <button data-brand="Cartier">Cartier</button>
+          <button data-brand="Patek Philippe">Patek Philippe</button>
+          <button data-brand="G-Shock">G-Shock</button>
+          <button data-brand="Swarovski">Swarovski</button>
+          <button data-brand="Franck Muller">Franck Muller</button>
+          <button data-brand="Audemars Piguet">Audemars Piguet</button>
+          <button data-brand="Seiko">Seiko</button>
+          <button data-brand="Michael Kors">Michael Kors</button>
         </div>
       </li>
       <li>
-        <div class="filter-group">
-          <h4>Category</h4>
-          <div class="filter-buttons" id="categoryFilters"></div>
+        <button class="filter-btn" data-filter="category">Filter Category</button>
+        <div class="filter-options category-options">
+          <button data-category="Mens">Mens</button>
+          <button data-category="Womens">Womens</button>
+          <button data-category="Couple">Couple</button>
+          <button data-category="New Collection">New Collection</button>
+          <button data-category="Defect/Promo">Defect/Promo</button>
+        </div>
+      </li>
+      <li>
+        <button class="filter-btn" data-filter="grade">Filter Grade</button>
+        <div class="filter-options grade-options">
+          <button data-grade="A">A</button>
+          <button data-grade="B">B</button>
+          <button data-grade="C">C</button>
         </div>
       </li>
     </ul>
   </nav>
 </header>
 
-<!-- PRODUCTS GRID -->
-<section class="products">
-  <div class="product-grid" id="productGrid">
-    <!-- Product cards injected by JS -->
-  </div>
-</section>
+<!-- PRODUCT GRID -->
+<main class="products-grid" id="products-grid">
+  <!-- Products inserted dynamically via JS -->
+</main>
 
 <script src="products-script.js"></script>
 </body>
