@@ -95,68 +95,15 @@ h2 {
   width: 100%;
 }
 
-/* ---------------------------
-   HAMBURGER MENU
---------------------------- */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 25px;
-  height: 18px;
-  cursor: pointer;
-  z-index: 30;
-}
-
-.hamburger span {
-  display: block;
-  height: 3px;
-  width: 100%;
-  background: var(--primary);
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
-
-body.nav-open .hamburger span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-
-body.nav-open .hamburger span:nth-child(2) {
-  opacity: 0;
-}
-
-body.nav-open .hamburger span:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
-}
-
 /* Mobile Responsive */
 @media (max-width: 480px) {
-  .hamburger {
-    display: flex;
-  }
-
   .header-container {
     flex-direction: column;
     gap: 8px;
   }
-
   .header nav ul {
     flex-direction: column;
-    gap: 15px;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    right: 0;
-    background: rgba(13,15,16,0.95);
-    padding: 20px;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-    display: none;
-  }
-
-  .header nav ul li a {
-    font-size: 1rem;
-    padding: 10px 0;
+    gap: 10px;
   }
 }
 
@@ -411,4 +358,56 @@ body.nav-open .hamburger span:nth-child(3) {
 .arrival-scroll::-webkit-scrollbar-track,
 .brand-scroll::-webkit-scrollbar-track {
   background: rgba(255,255,255,0.05);
+}
+
+/* ---------------------------
+   HAMBURGER MENU
+--------------------------- */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: var(--primary);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 480px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .header nav {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: rgba(13,15,16,0.95);
+    backdrop-filter: blur(12px);
+    width: 200px;
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  body.nav-open .header nav {
+    display: flex;
+  }
+
+  body.nav-open .hamburger span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  body.nav-open .hamburger span:nth-child(2) {
+    opacity: 0;
+  }
+  body.nav-open .hamburger span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
 }
