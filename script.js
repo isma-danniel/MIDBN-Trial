@@ -64,7 +64,7 @@ slider.addEventListener('mouseup', () => endDrag());
 slider.addEventListener('mousemove', (e) => {
   if(!isDown) return;
   e.preventDefault();
-  const x = e.pageX - startX;
+  const x = e.pageX - slider.offsetLeft;
   const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
 
@@ -136,7 +136,7 @@ requestAnimationFrame(animateSlide);
 // HEADER ACTIVE LINK ON SCROLL
 // ------------------------
 const sections = document.querySelectorAll("section");
-const navLinks = document.querySelectorAll(".header nav ul li a");
+const navLinks = document.querySelectorAll("#nav-menu a");
 
 window.addEventListener("scroll", () => {
   let current = "";
@@ -173,5 +173,22 @@ navLinks.forEach(link => {
         behavior: "smooth"
       });
     }
+
+    // CLOSE HAMBURGER MENU ON CLICK
+    if(navMenu.classList.contains('open')) {
+      navMenu.classList.remove('open');
+      hamburger.classList.remove('active');
+    }
   });
+});
+
+// ------------------------
+// HAMBURGER MENU TOGGLE
+// ------------------------
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('nav-menu');
+
+hamburger.addEventListener('click', () => {
+  navMenu.classList.toggle('open');
+  hamburger.classList.toggle('active');
 });
