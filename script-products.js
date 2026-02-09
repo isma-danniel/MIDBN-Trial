@@ -1,64 +1,100 @@
-// Hamburger menu
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('navLinks');
+/* ---------------------------------
+   Script Products | MIDBN Timepieces
+--------------------------------- */
 
-hamburger.addEventListener('click', () => {
-  navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+// Hamburger menu
+const hamburger = document.getElementById("hamburger");
+const navLinks = document.getElementById("navLinks");
+hamburger.addEventListener("click", () => {
+  navLinks.classList.toggle("show");
 });
 
-// Product filtering
-const searchInput = document.getElementById('searchInput');
-const sortSelect = document.getElementById('sortSelect');
-const productGrid = document.getElementById('productGrid');
-const filterButtons = document.querySelectorAll('.filters button');
+// Product filter
+const productGrid = document.querySelector(".product-grid");
+const filterButtons = document.querySelectorAll(".filter-bar button");
+const searchInput = document.getElementById("productSearch");
+const sortSelect = document.getElementById("sortStock");
 
-function filterProducts() {
-  const search = searchInput.value.toLowerCase();
+filterButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const category = btn.getAttribute("data-category");
+    const brand = btn.getAttribute("data-brand");
+    const grade = btn.getAttribute("data-grade");
 
-  const categoryFilter = document.querySelector('.filter-category button.active')?.dataset.filter || 'all';
-  const brandFilter = document.querySelector('.filter-brand button.active')?.dataset.filter || 'all';
-  const gradeFilter = document.querySelector('.filter-grade button.active')?.dataset.filter || 'all';
+    filterProducts(category, brand, grade);
+  });
+});
 
-  const products = Array.from(productGrid.children);
-  products.forEach(card => {
-    const name = card.querySelector('h3').innerText.toLowerCase();
-    const category = card.dataset.category;
-    const brand = card.dataset.brand;
-    const grade = card.dataset.grade;
+searchInput.addEventListener("keyup", () => {
+  filterProducts();
+});
 
-    const matchesSearch = name.includes(search);
-    const matchesCategory = categoryFilter === 'all' || category === categoryFilter;
-    const matchesBrand = brandFilter === 'all' || brand === brandFilter;
-    const matchesGrade = gradeFilter === 'all' || grade === gradeFilter;
+sortSelect.addEventListener("change", () => {
+  sortProducts();
+});
 
-    if (matchesSearch && matchesCategory && matchesBrand && matchesGrade) {
-      card.style.display = 'block';
-    } else {
-      card.style.display = 'none';
-    }
+function filterProducts(category = "all", brand = "all", grade = "all") {
+  const searchText = searchInput.value.toLowerCase();
+  const products = document.querySelectorAll(".product-card");
+
+  products.forEach(prod => {
+    const prodCategory = prod.getAttribute("data-category");
+    const prodBrand = prod.getAttribute("data-brand");
+    const prodGrade = prod.getAttribute("data-grade");
+    const title = prod.querySelector("h3").innerText.toLowerCase();
+
+    let isVisible = true;
+
+    if(category !== "all" && prodCategory.toLowerCase() !== category.toLowerCase()) isVisible = false;
+    if(brand !== "all" && prodBrand.toLowerCase() !== brand.toLowerCase()) isVisible = false;
+    if(grade !== "all" && prodGrade.toLowerCase() !== grade.toLowerCase()) isVisible = false;
+    if(title.indexOf(searchText) === -1) isVisible = false;
+
+    prod.style.display = isVisible ? "flex" : "none";
   });
 }
 
-searchInput.addEventListener('input', filterProducts);
+function sortProducts() {
+  const products = Array.from(document.querySelectorAll(".product-card"));
+  const sortValue = sortSelect.value;
 
-// Filter button click
-filterButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const parent = btn.parentElement;
-    parent.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    filterProducts();
+  products.sort((a,b) => {
+    if(sortValue === "az") return a.querySelector("h3").innerText.localeCompare(b.querySelector("h3").innerText);
+    if(sortValue === "price-low") return parseFloat(a.querySelector("p:nth-of-type(2)").innerText.replace(/[^0-9\.]+/g,"")) - 
+                                        parseFloat(b.querySelector("p:nth-of-type(2)").innerText.replace(/[^0-9\.]+/g,""));
+    return 0;
+  });
+
+  products.forEach(p => productGrid.appendChild(p));
+}
+
+// WhatsApp button
+const whatsappButtons = document.querySelectorAll(".whatsapp-product");
+whatsappButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const productName = btn.getAttribute("data-product");
+    const phone = "6738908960";
+    window.open(`https://wa.me/${phone}?text=Hi, I'm interested in the product: ${encodeURIComponent(productName)}`, "_blank");
   });
 });
 
-// Sorting
-sortSelect.addEventListener('change', () => {
-  const products = Array.from(productGrid.children);
-  let sorted = [...products];
-  if (sortSelect.value === 'name') {
-    sorted.sort((a,b) => a.querySelector('h3').innerText.localeCompare(b.querySelector('h3').innerText));
-  } else if (sortSelect.value === 'price') {
-    sorted.sort((a,b) => Number(a.dataset.price) - Number(b.dataset.price));
+// Stock counter
+document.querySelectorAll(".product-card").forEach(card => {
+  const stock = parseInt(card.querySelector(".stock").dataset.stock);
+  const stockElem = card.querySelector(".stock");
+  if(stock === 0) {
+    stockElem.innerText = "Out of Stock";
+    card.querySelector(".buy-btn").style.pointerEvents = "none";
+    card.querySelector(".buy-btn").style.opacity = "0.6";
+  } else {
+    stockElem.innerText = `${stock} in stock`;
   }
-  sorted.forEach(p => productGrid.appendChild(p));
+
+  // Add label for last stock
+  if(stock === 1) {
+    const badge = document.createElement("span");
+    badge.classList.add("badge", "last-stock");
+    badge.innerText = "Last Stock!";
+    card.appendChild(badge);
+  }
 });
