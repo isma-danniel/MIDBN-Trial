@@ -1,64 +1,64 @@
-// Hamburger toggle
-const hamburger = document.querySelector(".hamburger");
-const menu = document.querySelector(".header nav ul");
-hamburger.addEventListener("click", () => {
-  hamburger.classList.toggle("active");
-  menu.classList.toggle("active");
+// Hamburger menu
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+
+hamburger.addEventListener('click', () => {
+  navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
 });
 
-// Product filtering and sorting
-const productsGrid = document.getElementById("products-grid");
-const productCards = Array.from(productsGrid.getElementsByClassName("product-card"));
-
-const searchInput = document.getElementById("search");
-const filterBrand = document.getElementById("filter-brand");
-const filterCategory = document.getElementById("filter-category");
-const filterGrade = document.getElementById("filter-grade");
-const sortButtons = document.querySelectorAll(".sort-btn");
+// Product filtering
+const searchInput = document.getElementById('searchInput');
+const sortSelect = document.getElementById('sortSelect');
+const productGrid = document.getElementById('productGrid');
+const filterButtons = document.querySelectorAll('.filters button');
 
 function filterProducts() {
   const search = searchInput.value.toLowerCase();
-  const brand = filterBrand.value;
-  const category = filterCategory.value;
-  const grade = filterGrade.value;
 
-  productCards.forEach(card => {
-    const name = card.dataset.name.toLowerCase();
-    const cBrand = card.dataset.brand;
-    const cCategory = card.dataset.category;
-    const cGrade = card.dataset.grade;
+  const categoryFilter = document.querySelector('.filter-category button.active')?.dataset.filter || 'all';
+  const brandFilter = document.querySelector('.filter-brand button.active')?.dataset.filter || 'all';
+  const gradeFilter = document.querySelector('.filter-grade button.active')?.dataset.filter || 'all';
+
+  const products = Array.from(productGrid.children);
+  products.forEach(card => {
+    const name = card.querySelector('h3').innerText.toLowerCase();
+    const category = card.dataset.category;
+    const brand = card.dataset.brand;
+    const grade = card.dataset.grade;
 
     const matchesSearch = name.includes(search);
-    const matchesBrand = brand === "all" || cBrand === brand;
-    const matchesCategory = category === "all" || cCategory === category;
-    const matchesGrade = grade === "all" || cGrade === grade;
+    const matchesCategory = categoryFilter === 'all' || category === categoryFilter;
+    const matchesBrand = brandFilter === 'all' || brand === brandFilter;
+    const matchesGrade = gradeFilter === 'all' || grade === gradeFilter;
 
-    if(matchesSearch && matchesBrand && matchesCategory && matchesGrade){
-      card.style.display = "block";
+    if (matchesSearch && matchesCategory && matchesBrand && matchesGrade) {
+      card.style.display = 'block';
     } else {
-      card.style.display = "none";
+      card.style.display = 'none';
     }
   });
 }
 
-// Event listeners
-searchInput.addEventListener("input", filterProducts);
-filterBrand.addEventListener("change", filterProducts);
-filterCategory.addEventListener("change", filterProducts);
-filterGrade.addEventListener("change", filterProducts);
+searchInput.addEventListener('input', filterProducts);
+
+// Filter button click
+filterButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const parent = btn.parentElement;
+    parent.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterProducts();
+  });
+});
 
 // Sorting
-sortButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    sortButtons.forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-
-    const sortType = btn.dataset.sort;
-    const sorted = productCards.sort((a,b)=>{
-      if(sortType==="az") return a.dataset.name.localeCompare(b.dataset.name);
-      if(sortType==="price") return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
-      return 0;
-    });
-    sorted.forEach(card => productsGrid.appendChild(card));
-  });
+sortSelect.addEventListener('change', () => {
+  const products = Array.from(productGrid.children);
+  let sorted = [...products];
+  if (sortSelect.value === 'name') {
+    sorted.sort((a,b) => a.querySelector('h3').innerText.localeCompare(b.querySelector('h3').innerText));
+  } else if (sortSelect.value === 'price') {
+    sorted.sort((a,b) => Number(a.dataset.price) - Number(b.dataset.price));
+  }
+  sorted.forEach(p => productGrid.appendChild(p));
 });
