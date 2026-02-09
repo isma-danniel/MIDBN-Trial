@@ -1,6 +1,4 @@
-// ------------------------
-// HERO ANIMATION
-// ------------------------
+// HERO ANIMATION SEQUENTIAL
 window.addEventListener("load", () => {
   const quote = document.querySelector(".hero-quote");
   const btn = document.querySelector(".hero-btn");
@@ -10,7 +8,7 @@ window.addEventListener("load", () => {
 
   lines.forEach((lineText, index) => {
     const line = document.createElement('div');
-    line.textContent = lineText.toUpperCase();
+    line.textContent = lineText;
     line.style.opacity = '0';
     line.style.transform = 'translateY(20px)';
     line.style.transition = 'all 0.8s ease';
@@ -28,9 +26,7 @@ window.addEventListener("load", () => {
   }, 400 * (lines.length + 1));
 });
 
-// ------------------------
-// FAQ TOGGLE
-// ------------------------
+// FAQ toggle
 document.querySelectorAll(".faq-question").forEach(btn => {
   btn.addEventListener("click", () => {
     const answer = btn.nextElementSibling;
@@ -38,9 +34,7 @@ document.querySelectorAll(".faq-question").forEach(btn => {
   });
 });
 
-// ------------------------
-// NEW ARRIVALS HORIZONTAL SCROLL
-// ------------------------
+// NEW ARRIVALS horizontal drag/swipe with momentum & auto-slide
 const slider = document.querySelector('.arrival-scroll');
 let isDown = false;
 let startX, scrollLeft;
@@ -50,6 +44,7 @@ let momentumID;
 let pauseAutoScroll = false;
 const speed = 0.3;
 
+// Desktop drag
 slider.addEventListener('mousedown', (e) => {
   isDown = true;
   pauseAutoScroll = true;
@@ -66,10 +61,12 @@ slider.addEventListener('mousemove', (e) => {
   const x = e.pageX - slider.offsetLeft;
   const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
+
   velocity = e.pageX - lastX;
   lastX = e.pageX;
 });
 
+// Mobile swipe
 slider.addEventListener('touchstart', (e) => {
   isDown = true;
   pauseAutoScroll = true;
@@ -84,11 +81,13 @@ slider.addEventListener('touchmove', (e) => {
   const x = e.touches[0].pageX - slider.offsetLeft;
   const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
+
   velocity = e.touches[0].pageX - lastX;
   lastX = e.touches[0].pageX;
 });
 
-function endDrag() {
+// Helper functions
+function endDrag(isTouch=false) {
   isDown = false;
   pauseAutoScroll = false;
   startMomentum(velocity);
@@ -110,80 +109,8 @@ function cancelMomentum() {
   if(momentumID) cancelAnimationFrame(momentumID);
 }
 
+// Smooth auto-slide when not interacting
 let autoScroll = 0;
 function animateSlide() {
   if (!slider) return;
-  if (!pauseAutoScroll && !isDown) {
-    autoScroll += speed;
-    slider.scrollLeft += (autoScroll - slider.scrollLeft) * 0.05;
-    if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth) {
-      slider.scrollLeft = 0;
-      autoScroll = 0;
-    }
-  }
-  requestAnimationFrame(animateSlide);
-}
-requestAnimationFrame(animateSlide);
-
-// ------------------------
-// HEADER ACTIVE LINK ON SCROLL
-// ------------------------
-const sections = document.querySelectorAll("section");
-const navLinks = document.querySelectorAll(".header nav ul li a");
-
-window.addEventListener("scroll", () => {
-  let current = "";
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop - 80;
-    if (pageYOffset >= sectionTop) {
-      current = section.getAttribute("id");
-    }
-  });
-
-  navLinks.forEach(link => {
-    link.classList.remove("active");
-    if (link.getAttribute("href") === "#" + current) {
-      link.classList.add("active");
-    }
-  });
-});
-
-// ------------------------
-// SMOOTH SCROLL ON HEADER LINK CLICK
-// ------------------------
-navLinks.forEach(link => {
-  link.addEventListener("click", function(e) {
-    e.preventDefault();
-    const targetId = this.getAttribute("href").substring(1);
-    const targetSection = document.getElementById(targetId);
-
-    if (targetSection) {
-      const headerOffset = 70;
-      const sectionPosition = targetSection.offsetTop - headerOffset;
-      window.scrollTo({
-        top: sectionPosition,
-        behavior: "smooth"
-      });
-    }
-  });
-});
-
-// ------------------------
-// HAMBURGER MENU TOGGLE
-// ------------------------
-const hamburger = document.querySelector('.hamburger');
-const nav = document.querySelector('.header nav');
-
-if (hamburger) {
-  hamburger.addEventListener('click', () => {
-    document.body.classList.toggle('nav-open');
-  });
-}
-
-navLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    if (document.body.classList.contains('nav-open')) {
-      document.body.classList.remove('nav-open');
-    }
-  });
-});
+  if (!pause
