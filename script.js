@@ -34,7 +34,7 @@ document.querySelectorAll(".faq-question").forEach(btn => {
   });
 });
 
-// NEW ARRIVALS horizontal drag/swipe with momentum & auto-slide
+// NEW ARRIVALS horizontal drag/swipe with momentum
 const slider = document.querySelector('.arrival-scroll');
 let isDown = false;
 let startX, scrollLeft;
@@ -62,6 +62,7 @@ slider.addEventListener('mousemove', (e) => {
   const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
 
+  // calculate velocity
   velocity = e.pageX - lastX;
   lastX = e.pageX;
 });
@@ -82,6 +83,7 @@ slider.addEventListener('touchmove', (e) => {
   const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
 
+  // calculate velocity
   velocity = e.touches[0].pageX - lastX;
   lastX = e.touches[0].pageX;
 });
@@ -97,7 +99,7 @@ function startMomentum(initialVelocity) {
   let v = initialVelocity;
   function momentum() {
     slider.scrollLeft -= v;
-    v *= 0.95;
+    v *= 0.95; // friction
     if (Math.abs(v) > 0.5) {
       momentumID = requestAnimationFrame(momentum);
     }
@@ -113,4 +115,14 @@ function cancelMomentum() {
 let autoScroll = 0;
 function animateSlide() {
   if (!slider) return;
-  if (!pause
+  if (!pauseAutoScroll && !isDown) {
+    autoScroll += speed;
+    slider.scrollLeft += (autoScroll - slider.scrollLeft) * 0.05;
+    if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth) {
+      slider.scrollLeft = 0;
+      autoScroll = 0;
+    }
+  }
+  requestAnimationFrame(animateSlide);
+}
+requestAnimationFrame(animateSlide);
