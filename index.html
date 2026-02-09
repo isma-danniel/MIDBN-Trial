@@ -3,68 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MIDBN | Luxury Watches</title>
+<title>MIDBN – Luxury Watches</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<nav class="navbar">
-  <div class="logo">MIDBN</div>
-  <div class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="products.html">Collection</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-  </div>
-</nav>
+<header class="nav">
+  <div class="nav-left">MIDBN</div>
+  <nav class="nav-right">
+    <a href="#">Home</a>
+    <a href="#">Collection</a>
+    <a href="#">Journal</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </nav>
+</header>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-content fade">
-    <h1>Luxury Crafted Timepieces</h1>
-    <p>Precision, elegance & craftsmanship in every detail.</p>
-    <a href="products.html" class="btn">Shop Collection</a>
+  <div class="hero-grid">
+    <div class="hero-text">
+      <h1>Precision<br>Crafted<br>Timepieces</h1>
+      <p>Where Swiss engineering meets timeless luxury.</p>
+      <a href="#" class="btn">Explore Collection</a>
+    </div>
+    <div class="hero-image">
+      <img src="https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=1600&q=80">
+    </div>
   </div>
 </section>
 
-<section class="section">
-  <h2 class="section-title fade">Featured Watches</h2>
+<!-- FEATURE STRIP -->
+<section class="strip">
+  <p>Swiss Movement</p>
+  <span></span>
+  <p>Sapphire Crystal</p>
+  <span></span>
+  <p>316L Stainless Steel</p>
+</section>
+
+<!-- COLLECTION -->
+<section class="collection">
+  <div class="section-head">
+    <h2>The Collection</h2>
+    <a href="#">View All</a>
+  </div>
+
   <div class="product-grid">
-    <a href="product.html?id=1" class="product-card fade">
+    <a class="product">
       <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30">
-      <h3>MIDBN Heritage</h3>
-      <span>$499</span>
+      <div class="info">
+        <h3>Heritage</h3>
+        <p>$499</p>
+      </div>
     </a>
-    <a href="product.html?id=2" class="product-card fade">
+
+    <a class="product">
       <img src="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1">
-      <h3>MIDBN Classic</h3>
-      <span>$459</span>
+      <div class="info">
+        <h3>Classic</h3>
+        <p>$459</p>
+      </div>
     </a>
-    <a href="product.html?id=3" class="product-card fade">
+
+    <a class="product">
       <img src="https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3">
-      <h3>MIDBN Royal</h3>
-      <span>$599</span>
+      <div class="info">
+        <h3>Royal</h3>
+        <p>$599</p>
+      </div>
     </a>
   </div>
 </section>
 
+<!-- EDITORIAL FEATURE -->
+<section class="editorial">
+  <div class="editorial-img">
+    <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=1600&q=80">
+  </div>
+  <div class="editorial-text">
+    <h2>Crafted For Those Who Value Precision</h2>
+    <p>
+      Every MIDBN timepiece is built with obsessive attention to detail,
+      premium materials, and timeless design philosophy.
+    </p>
+    <a href="#" class="btn">Our Story</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer class="footer">
   <div>
-    <h3>MIDBN</h3>
-    <p>Luxury watches crafted for excellence.</p>
+    <h4>MIDBN</h4>
+    <p>Luxury watches engineered for excellence.</p>
   </div>
   <div>
-    <h3>Navigation</h3>
-    <a href="#">Home</a><br>
-    <a href="#">Collection</a><br>
+    <h4>Explore</h4>
+    <a href="#">Collection</a>
+    <a href="#">Journal</a>
     <a href="#">About</a>
   </div>
   <div>
-    <h3>Contact</h3>
+    <h4>Contact</h4>
     <p>Brunei Darussalam</p>
     <p>support@midbn.com</p>
   </div>
 </footer>
 
-<script src="script.js"></script>
 </body>
 </html>
