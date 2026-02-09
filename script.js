@@ -63,3 +63,35 @@ if(id){
     document.getElementById("p-price").innerText = product.price;
   }
 }
+
+// ==========================
+// SCROLL REVEAL
+// ==========================
+const scrollElements = document.querySelectorAll('.fade, .product-card, .product-hero-grid, .editorial, .collection-hero');
+
+const elementInView = (el, offset = 0) => {
+  const elementTop = el.getBoundingClientRect().top;
+  return elementTop <= (window.innerHeight - offset);
+};
+
+const displayScrollElement = (el) => {
+  el.classList.add('show');
+};
+
+const hideScrollElement = (el) => {
+  el.classList.remove('show');
+};
+
+const handleScrollAnimation = () => {
+  scrollElements.forEach(el => {
+    if(elementInView(el, 100)){
+      displayScrollElement(el);
+    } else {
+      hideScrollElement(el);
+    }
+  });
+};
+
+window.addEventListener('scroll', () => {
+  handleScrollAnimation();
+});
