@@ -1,1 +1,46 @@
 
+// Reveal animations
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('show');
+    }
+  });
+});
+
+document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+
+// Product Database
+const products = [
+  {
+    id: 1,
+    name: "MIDBN Heritage",
+    price: "$499",
+    img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30"
+  },
+  {
+    id: 2,
+    name: "MIDBN Classic",
+    price: "$459",
+    img: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1"
+  },
+  {
+    id: 3,
+    name: "MIDBN Royal",
+    price: "$599",
+    img: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3"
+  }
+];
+
+// Load product detail
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+if(id){
+  const product = products.find(p => p.id == id);
+  if(product){
+    document.getElementById("p-img").src = product.img;
+    document.getElementById("p-name").innerText = product.name;
+    document.getElementById("p-price").innerText = product.price;
+  }
+}
