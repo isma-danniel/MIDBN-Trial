@@ -209,46 +209,23 @@ h2 {
   text-transform: uppercase;
 }
 
-.hero-btn {
-  display: inline-block;
-  padding: 12px 30px;
-  background-color: var(--primary);
-  color: var(--bg-dark);
-  font-weight: 600;
-  border-radius: 6px;
-  transition: transform 0.3s ease;
-}
-
-.hero-btn:hover {
-  transform: translateY(-3px);
-}
-
 /* ---------------------------
-   INTRODUCTION
+   INTRODUCTION (MIRROR DESIGN PRESERVED)
 --------------------------- */
 .intro {
   padding: 60px 20px;
   max-width: 900px;
   margin: 0 auto;
-  text-align: justify;
-}
-
-.intro h2 {
-  text-align: center;
-}
-
-.intro-divider {
-  border: 0.5px solid var(--secondary);
-  margin: 15px 0;
-}
-
-.highlight {
-  color: var(--primary);
-  font-weight: 600;
+  text-align: justify; /* keep justified */
+  /* mirror/bubble effects preserved */
+  background: var(--glass);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: 15px;
+  padding: 40px 25px;
 }
 
 /* ---------------------------
-   NEW ARRIVALS (HORIZONTAL)
+   NEW ARRIVALS (HORIZONTAL, MIRROR STYLE PRESERVED)
 --------------------------- */
 .arrivals {
   padding: 40px 20px;
@@ -313,7 +290,7 @@ h2 {
   width: 100%;
   background: var(--secondary);
   color: var(--primary);
-  font-weight: bold;
+  font-weight: bold; /* bold headings */
   padding: 12px;
   border: none;
   border-radius: 8px;
@@ -330,7 +307,7 @@ h2 {
 }
 
 /* ---------------------------
-   MOST POPULAR BRANDS (VERTICAL)
+   MOST POPULAR BRANDS (VERTICAL, 2-COLUMN)
 --------------------------- */
 .brands {
   padding: 40px 20px;
@@ -365,7 +342,7 @@ h2 {
    CATALOGUE CTA
 --------------------------- */
 .catalog {
-  padding: 60px 20px;
+  padding: 80px 20px; /* extra spacing to prevent collision */
   text-align: center;
 }
 
@@ -376,7 +353,7 @@ h2 {
   color: var(--bg-dark);
   font-weight: 600;
   border-radius: 6px;
-  margin-top: 20px;
+  margin-top: 30px;
   transition: transform 0.3s ease;
 }
 
