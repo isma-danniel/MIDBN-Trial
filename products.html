@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MIDBN.Timepieces | Products</title>
-  <link rel="stylesheet" href="products-style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIDBN Timepieces - Products</title>
+<link rel="stylesheet" href="products-style.css"> <!-- separate CSS for products -->
 </head>
 <body>
 
-<!-- HEADER / NAVIGATION -->
+<!-- HEADER + HAMBURGER -->
 <header class="header">
   <nav>
     <div class="hamburger">
@@ -17,55 +17,58 @@
       <span></span>
     </div>
     <ul class="menu">
-      <li><input type="text" placeholder="Search..." id="search-input"></li>
-      <li>
-        <button class="filter-btn" data-sort="az">Sort A-Z</button>
-      </li>
-      <li>
-        <button class="filter-btn" data-sort="price">Price Low-High</button>
-      </li>
-      <li>
-        <button class="filter-btn" data-filter="brand">Filter Brand</button>
-        <div class="filter-options brand-options">
-          <button data-brand="Rolex">Rolex</button>
-          <button data-brand="Omega">Omega</button>
-          <button data-brand="Casio">Casio</button>
-          <button data-brand="Cartier">Cartier</button>
-          <button data-brand="Patek Philippe">Patek Philippe</button>
-          <button data-brand="G-Shock">G-Shock</button>
-          <button data-brand="Swarovski">Swarovski</button>
-          <button data-brand="Franck Muller">Franck Muller</button>
-          <button data-brand="Audemars Piguet">Audemars Piguet</button>
-          <button data-brand="Seiko">Seiko</button>
-          <button data-brand="Michael Kors">Michael Kors</button>
-        </div>
-      </li>
-      <li>
-        <button class="filter-btn" data-filter="category">Filter Category</button>
-        <div class="filter-options category-options">
-          <button data-category="Mens">Mens</button>
-          <button data-category="Womens">Womens</button>
-          <button data-category="Couple">Couple</button>
-          <button data-category="New Collection">New Collection</button>
-          <button data-category="Defect/Promo">Defect/Promo</button>
-        </div>
-      </li>
-      <li>
-        <button class="filter-btn" data-filter="grade">Filter Grade</button>
-        <div class="filter-options grade-options">
-          <button data-grade="A">A</button>
-          <button data-grade="B">B</button>
-          <button data-grade="C">C</button>
-        </div>
-      </li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="#">Products</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
     </ul>
   </nav>
 </header>
 
-<!-- PRODUCT GRID -->
-<main class="products-grid" id="products-grid">
-  <!-- Products inserted dynamically via JS -->
-</main>
+<!-- FILTERS / CONTROLS -->
+<div class="filter-container">
+  <div class="filter-group">
+    <button class="filter-btn brand-filter" data-brand="Brand1">Brand1</button>
+    <button class="filter-btn brand-filter" data-brand="Brand2">Brand2</button>
+    <button class="filter-btn brand-filter" data-brand="Brand3">Brand3</button>
+    <button class="filter-btn brand-filter" data-brand="Brand4">Brand4</button>
+    <button class="filter-btn brand-filter" data-brand="Brand5">Brand5</button>
+    <button class="filter-btn brand-filter" data-brand="Brand6">Brand6</button>
+    <button class="filter-btn brand-filter" data-brand="Brand7">Brand7</button>
+    <button class="filter-btn brand-filter" data-brand="Brand8">Brand8</button>
+    <button class="filter-btn brand-filter" data-brand="Brand9">Brand9</button>
+    <button class="filter-btn brand-filter" data-brand="Brand10">Brand10</button>
+    <button class="filter-btn brand-filter" data-brand="Brand11">Brand11</button>
+  </div>
+
+  <div class="filter-group">
+    <button class="filter-btn category-filter" data-category="Mens">Mens</button>
+    <button class="filter-btn category-filter" data-category="Womens">Womens</button>
+    <button class="filter-btn category-filter" data-category="Couple">Couple</button>
+    <button class="filter-btn category-filter" data-category="New Collection">New Collection</button>
+    <button class="filter-btn category-filter" data-category="Defect/Promo">Defect/Promo</button>
+  </div>
+
+  <div class="filter-group">
+    <button class="filter-btn grade-filter" data-grade="New">New</button>
+    <button class="filter-btn grade-filter" data-grade="Defect">Defect</button>
+    <button class="filter-btn grade-filter" data-grade="Last">Last</button>
+  </div>
+
+  <div class="filter-group">
+    <input type="text" id="search-input" placeholder="Search products..." />
+    <select id="sort-select">
+      <option value="">Sort</option>
+      <option value="a-z">A - Z</option>
+      <option value="price-low">Price: Low</option>
+    </select>
+  </div>
+</div>
+
+<!-- PRODUCTS GRID -->
+<div class="products-grid">
+  <!-- JS will render products here -->
+</div>
 
 <script src="products-script.js"></script>
 </body>
