@@ -1,4 +1,6 @@
+// ------------------------
 // HERO ANIMATION SEQUENTIAL
+// ------------------------
 window.addEventListener("load", () => {
   const quote = document.querySelector(".hero-quote");
   const btn = document.querySelector(".hero-btn");
@@ -26,7 +28,9 @@ window.addEventListener("load", () => {
   }, 400 * (lines.length + 1));
 });
 
+// ------------------------
 // FAQ toggle
+// ------------------------
 document.querySelectorAll(".faq-question").forEach(btn => {
   btn.addEventListener("click", () => {
     const answer = btn.nextElementSibling;
@@ -34,7 +38,9 @@ document.querySelectorAll(".faq-question").forEach(btn => {
   });
 });
 
+// ------------------------
 // NEW ARRIVALS horizontal drag/swipe with momentum
+// ------------------------
 const slider = document.querySelector('.arrival-scroll');
 let isDown = false;
 let startX, scrollLeft;
@@ -44,7 +50,6 @@ let momentumID;
 let pauseAutoScroll = false;
 const speed = 0.3;
 
-// Desktop drag
 slider.addEventListener('mousedown', (e) => {
   isDown = true;
   pauseAutoScroll = true;
@@ -58,16 +63,13 @@ slider.addEventListener('mouseup', () => endDrag());
 slider.addEventListener('mousemove', (e) => {
   if(!isDown) return;
   e.preventDefault();
-  const x = e.pageX - slider.offsetLeft;
+  const x = e.pageX - startX;
   const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
-
-  // calculate velocity
   velocity = e.pageX - lastX;
   lastX = e.pageX;
 });
 
-// Mobile swipe
 slider.addEventListener('touchstart', (e) => {
   isDown = true;
   pauseAutoScroll = true;
@@ -79,17 +81,14 @@ slider.addEventListener('touchstart', (e) => {
 slider.addEventListener('touchend', () => endDrag(true));
 slider.addEventListener('touchmove', (e) => {
   if(!isDown) return;
-  const x = e.touches[0].pageX - slider.offsetLeft;
+  const x = e.touches[0].pageX - startX;
   const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
-
-  // calculate velocity
   velocity = e.touches[0].pageX - lastX;
   lastX = e.touches[0].pageX;
 });
 
-// Helper functions
-function endDrag(isTouch=false) {
+function endDrag() {
   isDown = false;
   pauseAutoScroll = false;
   startMomentum(velocity);
@@ -99,10 +98,8 @@ function startMomentum(initialVelocity) {
   let v = initialVelocity;
   function momentum() {
     slider.scrollLeft -= v;
-    v *= 0.95; // friction
-    if (Math.abs(v) > 0.5) {
-      momentumID = requestAnimationFrame(momentum);
-    }
+    v *= 0.95;
+    if(Math.abs(v) > 0.5) momentumID = requestAnimationFrame(momentum);
   }
   momentumID = requestAnimationFrame(momentum);
 }
@@ -111,14 +108,13 @@ function cancelMomentum() {
   if(momentumID) cancelAnimationFrame(momentumID);
 }
 
-// Smooth auto-slide when not interacting
 let autoScroll = 0;
 function animateSlide() {
-  if (!slider) return;
-  if (!pauseAutoScroll && !isDown) {
+  if(!slider) return;
+  if(!pauseAutoScroll && !isDown) {
     autoScroll += speed;
     slider.scrollLeft += (autoScroll - slider.scrollLeft) * 0.05;
-    if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth) {
+    if(slider.scrollLeft >= slider.scrollWidth - slider.clientWidth) {
       slider.scrollLeft = 0;
       autoScroll = 0;
     }
@@ -126,3 +122,35 @@ function animateSlide() {
   requestAnimationFrame(animateSlide);
 }
 requestAnimationFrame(animateSlide);
+
+// ------------------------
+// HAMBURGER MENU LOGIC
+// ------------------------
+const hamburger = document.createElement('div');
+hamburger.classList.add('hamburger');
+hamburger.innerHTML = '<span></span><span></span><span></span>';
+document.querySelector('.header').appendChild(hamburger);
+
+const mobileMenu = document.createElement('div');
+mobileMenu.classList.add('mobile-menu');
+document.querySelectorAll('.header nav ul li a').forEach(a => {
+  const link = a.cloneNode(true);
+  mobileMenu.appendChild(link);
+});
+document.body.appendChild(mobileMenu);
+
+const overlay = document.createElement('div');
+overlay.classList.add('menu-overlay');
+document.body.appendChild(overlay);
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  mobileMenu.classList.toggle('show');
+  overlay.classList.toggle('show');
+});
+
+overlay.addEventListener('click', () => {
+  hamburger.classList.remove('active');
+  mobileMenu.classList.remove('show');
+  overlay.classList.remove('show');
+});
