@@ -4,7 +4,7 @@ window.addEventListener("load", () => {
   const btn = document.querySelector(".hero-btn");
 
   const lines = quote.innerHTML.split('<br>');
-  quote.innerHTML = ''; // clear
+  quote.innerHTML = '';
 
   lines.forEach((lineText, index) => {
     const line = document.createElement('div');
@@ -20,7 +20,6 @@ window.addEventListener("load", () => {
     }, 400 * (index + 1));
   });
 
-  // Animate button after lines
   setTimeout(() => {
     btn.style.opacity = '1';
     btn.style.transform = 'translateY(0)';
@@ -33,4 +32,26 @@ document.querySelectorAll(".faq-question").forEach(btn => {
     const answer = btn.nextElementSibling;
     answer.style.display = answer.style.display === "block" ? "none" : "block";
   });
+});
+
+// ARRIVALS horizontal drag
+const slider = document.querySelector('.arrival-scroll');
+let isDown = false;
+let startX;
+let scrollLeft;
+
+slider.addEventListener('mousedown', (e) => {
+  isDown = true;
+  slider.classList.add('active');
+  startX = e.pageX - slider.offsetLeft;
+  scrollLeft = slider.scrollLeft;
+});
+slider.addEventListener('mouseleave', () => { isDown = false; slider.classList.remove('active'); });
+slider.addEventListener('mouseup', () => { isDown = false; slider.classList.remove('active'); });
+slider.addEventListener('mousemove', (e) => {
+  if(!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - slider.offsetLeft;
+  const walk = (x - startX) * 2; // scroll-fast
+  slider.scrollLeft = scrollLeft - walk;
 });
