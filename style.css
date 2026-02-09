@@ -3,91 +3,79 @@
   --secondary: #4E5D5D;
   --dark: #0d0f10;
   --text: #e6e6e6;
-  --glass-blur: 10px;
+  --glass-blur: 15px;
   --glass-opacity: 0.25;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background: var(--dark);
-  color: var(--text);
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background: var(--dark); color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-  line-height: 1.6;
+  line-height:1.6;
 }
 
 /* HEADER */
-.header { 
-  position: sticky; top:0; z-index: 5;
-  background: rgba(13,15,16,0.8); 
-  backdrop-filter: blur(6px);
+.header {
+  position: sticky; top:0; z-index:5;
+  background: rgba(13,15,16,0.6);
+  backdrop-filter: blur(12px);
 }
-.header nav ul { display:flex; justify-content:space-around; list-style:none; padding:10px 0; }
-.header nav ul li a { color: var(--primary); text-decoration:none; font-weight:500; }
+.header nav ul {
+  display:flex; justify-content:space-around; list-style:none; padding:10px 0;
+}
+.header nav ul li a {
+  color: var(--primary); text-decoration:none; font-weight:500; letter-spacing:0.5px;
+}
 
 /* HERO */
 .hero { position: relative; height: 100svh; overflow: hidden; }
-.hero-video { width: 100%; height: 100%; object-fit: cover; }
-.hero-overlay { position: absolute; inset:0; background: rgba(0,0,0,0.4); }
-.hero-content {
-  position: absolute; inset: 0; z-index: 2;
-  display: flex; flex-direction: column; justify-content: center; align-items: center;
-  padding: 20px; text-align: center;
-}
-.hero-quote {
-  font-size: 1.5rem; color: var(--primary); margin-bottom: 15px;
-  opacity: 0; transform: translateY(10px); transition: 0.8s ease;
-}
-.hero-btn {
-  padding: 10px 24px; border: 1px solid var(--primary);
-  color: var(--primary); text-decoration: none; letter-spacing: 1px;
-  opacity: 0; transform: translateY(10px); transition: 0.8s ease;
-}
+.hero-video { width:100%; height:100%; object-fit:cover; }
+.hero-overlay { position:absolute; inset:0; background: rgba(0,0,0,0.35); }
+.hero-content { position:absolute; inset:0; z-index:2; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px; text-align:center; }
+.hero-quote { font-size:1.5rem; color:var(--primary); margin-bottom:15px; opacity:0; transform: translateY(10px); transition:0.8s ease; }
+.hero-btn { padding:10px 24px; border:1px solid var(--primary); color:var(--primary); text-decoration:none; letter-spacing:1px; opacity:0; transform:translateY(10px); transition:0.8s ease; }
 
 /* GLASS CARD */
 .glass-card {
   backdrop-filter: blur(var(--glass-blur));
-  background: rgba(255, 255, 255, var(--glass-opacity));
-  border: 1px solid var(--secondary);
-  border-radius: 16px;
-  padding: 20px;
-  margin: 20px;
+  background: rgba(255,255,255,var(--glass-opacity));
+  border:1px solid var(--secondary);
+  border-radius: 20px;
+  padding:20px;
+  margin:20px;
   color: var(--text);
+}
+.enhanced-glass {
+  box-shadow:0 8px 25px rgba(0,0,0,0.3);
 }
 
 /* INTRO */
-.intro { padding: 60px 20px; }
+.intro { position:relative; padding:60px 20px; display:flex; justify-content:center; align-items:center; }
+.intro-shape { position:absolute; border-radius:50%; filter:blur(80px); opacity:0.15; z-index:0; }
+.shape1 { width:200px; height:200px; top:-50px; left:-50px; background:var(--primary); }
+.shape2 { width:250px; height:250px; bottom:-60px; right:-40px; background:var(--primary); }
+.intro .glass-card { position:relative; z-index:1; max-width:500px; text-align:center; padding:25px; }
+.intro .glass-card h2 { font-size:2rem; color: var(--primary); margin-bottom:15px; }
+.intro .glass-card p { font-size:1rem; line-height:1.6; }
+.intro .highlight { color: var(--primary); font-weight:600; }
 
 /* FAQ */
-.faq h2 { margin-bottom: 20px; color: var(--primary); }
-.faq-item { margin-bottom: 15px; }
-.faq-question {
-  width: 100%; padding: 15px; background: none;
-  border: 1px solid var(--secondary); color: var(--text); text-align: left;
-}
-.faq-answer { display: none; padding: 15px; background: rgba(0,0,0,0.2); font-size: 0.9rem; }
+.faq h2 { margin-bottom:20px; color:var(--primary); }
+.faq-item { margin-bottom:15px; }
+.faq-question { width:100%; padding:15px; background:none; border:1px solid var(--secondary); color:var(--text); text-align:left; }
+.faq-answer { display:none; padding:15px; background: rgba(0,0,0,0.2); font-size:0.9rem; }
 
 /* BRANDS */
-.brands { padding: 60px 20px; }
-.brands h2 { margin-bottom: 20px; color: var(--primary); text-align: center; }
-.brand-scroll {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
-  max-height: 400px; overflow-y: auto;
-}
-.brand-card {
-  border: 1px solid var(--secondary); border-radius: 16px;
-  padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center;
-  background: rgba(255,255,255,0.1); backdrop-filter: blur(var(--glass-blur));
-}
-.brand-card img { width: 80%; height: auto; object-fit: contain; }
-.brand-name { margin-top: 8px; font-size: 0.9rem; color: var(--primary); }
+.brands { padding:60px 20px; }
+.brands h2 { margin-bottom:20px; color:var(--primary); text-align:center; }
+.brand-scroll { display:grid; grid-template-columns:1fr 1fr; gap:15px; max-height:400px; overflow-y:auto; }
+.brand-card { display:flex; flex-direction:column; justify-content:center; align-items:center; padding:10px; border:1px solid var(--secondary); border-radius:16px; background:rgba(255,255,255,0.1); backdrop-filter:blur(var(--glass-blur)); }
+.brand-card img { width:80%; height:auto; object-fit:contain; }
+.brand-name { margin-top:8px; font-size:0.9rem; color:var(--primary); }
 
 /* CATALOGUE */
-.catalog { padding: 60px 20px; text-align: center; }
-.catalog-btn {
-  padding: 14px 32px; border: 1px solid var(--primary);
-  color: var(--primary); text-decoration: none;
-}
+.catalog { padding:60px 20px; text-align:center; }
+.catalog-btn { padding:14px 32px; border:1px solid var(--primary); color:var(--primary); text-decoration:none; }
 
 /* FOOTER */
-.footer { padding: 20px; text-align:center; }
+.footer { padding:20px; text-align:center; }
 .footer .glass-card { margin:0; padding:15px; font-size:0.85rem; }
