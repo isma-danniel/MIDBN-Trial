@@ -1,102 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MIDBN | Luxury Timepieces</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIDBN | Luxury Watches</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <h1>MIDBN</h1>
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="product.html">Catalog</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <div class="hamburger">&#9776;</div>
-  </header>
 
-  <!-- Hero / Banner -->
-  <section class="hero-banner">
-    <h2>Luxury Timepieces, Redefined</h2>
-    <p>Timeless design. Precision craftsmanship. Unmatched style.</p>
-    <a href="#featured" class="cta-btn">Shop Now</a>
-  </section>
+<nav class="navbar">
+  <div class="logo">MIDBN</div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="products.html">Collection</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
 
-  <!-- Featured Products -->
-  <section id="featured" class="featured-section">
-    <h2>Featured Products</h2>
-    <div class="product-grid">
-      <!-- Example Product Card -->
-      <div class="product-card">
-        <div class="product-images">
-          <img src="watch1.jpg" alt="Watch 1">
-        </div>
-        <div class="badge new">New Arrival</div>
-        <div class="brand">MIDBN Classic</div>
-        <h3>Model X1</h3>
-        <div class="details">Elegant stainless steel</div>
-        <div class="price">$499</div>
-        <button class="buy-btn">Buy Now</button>
-      </div>
+<section class="hero">
+  <div class="hero-content fade">
+    <h1>Luxury Crafted Timepieces</h1>
+    <p>Precision, elegance & craftsmanship in every detail.</p>
+    <a href="products.html" class="btn">Shop Collection</a>
+  </div>
+</section>
 
-      <div class="product-card">
-        <div class="product-images">
-          <img src="watch2.jpg" alt="Watch 2">
-        </div>
-        <div class="badge limited">Only 3 left</div>
-        <div class="brand">MIDBN Modern</div>
-        <h3>Model M2</h3>
-        <div class="details">Minimalist design</div>
-        <div class="price">$599</div>
-        <button class="buy-btn">Buy Now</button>
-      </div>
+<section class="section">
+  <h2 class="section-title fade">Featured Watches</h2>
+  <div class="product-grid">
+    <a href="product.html?id=1" class="product-card fade">
+      <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30">
+      <h3>MIDBN Heritage</h3>
+      <span>$499</span>
+    </a>
+    <a href="product.html?id=2" class="product-card fade">
+      <img src="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1">
+      <h3>MIDBN Classic</h3>
+      <span>$459</span>
+    </a>
+    <a href="product.html?id=3" class="product-card fade">
+      <img src="https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3">
+      <h3>MIDBN Royal</h3>
+      <span>$599</span>
+    </a>
+  </div>
+</section>
 
-      <div class="product-card">
-        <div class="product-images">
-          <img src="watch3.jpg" alt="Watch 3">
-        </div>
-        <div class="badge out-of-stock">Out of Stock</div>
-        <div class="brand">MIDBN Sport</div>
-        <h3>Model S3</h3>
-        <div class="details">Durable & waterproof</div>
-        <div class="price">$399</div>
-        <button class="buy-btn" disabled>Out of Stock</button>
-      </div>
+<footer class="footer">
+  <div>
+    <h3>MIDBN</h3>
+    <p>Luxury watches crafted for excellence.</p>
+  </div>
+  <div>
+    <h3>Navigation</h3>
+    <a href="#">Home</a><br>
+    <a href="#">Collection</a><br>
+    <a href="#">About</a>
+  </div>
+  <div>
+    <h3>Contact</h3>
+    <p>Brunei Darussalam</p>
+    <p>support@midbn.com</p>
+  </div>
+</footer>
 
-      <div class="product-card">
-        <div class="product-images">
-          <img src="watch4.jpg" alt="Watch 4">
-        </div>
-        <div class="brand">MIDBN Vintage</div>
-        <h3>Model V4</h3>
-        <div class="details">Classic leather strap</div>
-        <div class="price">$449</div>
-        <button class="buy-btn">Buy Now</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="about-section">
-    <h2>About MIDBN</h2>
-    <p>
-      MIDBN is a luxury watch brand dedicated to timeless design and precision craftsmanship.  
-      Our collections are crafted for those who appreciate elegance and premium quality.
-    </p>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2026 MIDBN | All Rights Reserved</p>
-    <div>
-      <a href="#">Facebook</a>
-      <a href="#">Instagram</a>
-      <a href="#">Twitter</a>
-    </div>
-  </footer>
+<script src="script.js"></script>
 </body>
 </html>
