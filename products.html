@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MIDBN Timepieces - Products</title>
-<link rel="stylesheet" href="products-style.css"> <!-- separate CSS for products -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MIDBN.Timepieces - Products</title>
+  <link rel="stylesheet" href="products-style.css">
 </head>
 <body>
 
-<!-- HEADER + HAMBURGER -->
+<!-- HEADER / HAMBURGER -->
 <header class="header">
   <nav>
     <div class="hamburger">
@@ -17,58 +17,93 @@
       <span></span>
     </div>
     <ul class="menu">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="#">Products</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Contact</a></li>
+      <!-- Controls inside hamburger -->
+      <li>
+        <input type="text" id="search" placeholder="Search products..." />
+      </li>
+      <li>
+        <button class="sort-btn" data-sort="az">Sort A-Z</button>
+      </li>
+      <li>
+        <button class="sort-btn" data-sort="price">Price Low</button>
+      </li>
+      <li>
+        <label>Brand</label>
+        <select id="filter-brand">
+          <option value="all">All Brands</option>
+          <option value="rolex">Rolex</option>
+          <option value="omega">Omega</option>
+          <option value="casio">Casio</option>
+          <option value="cartier">Cartier</option>
+          <option value="patek">Patek Philippe</option>
+          <option value="gshock">G-Shock</option>
+          <option value="swarovski">Swarovski</option>
+          <option value="franck">Franck Muller</option>
+          <option value="ap">Audemars Piguet</option>
+          <option value="seiko">Seiko</option>
+          <option value="mk">Michael Kors</option>
+        </select>
+      </li>
+      <li>
+        <label>Category</label>
+        <select id="filter-category">
+          <option value="all">All Categories</option>
+          <option value="mens">Mens</option>
+          <option value="womens">Womens</option>
+          <option value="couple">Couple</option>
+          <option value="new">New Collection</option>
+          <option value="defect">Defect / Promo</option>
+        </select>
+      </li>
+      <li>
+        <label>Grade</label>
+        <select id="filter-grade">
+          <option value="all">All Grades</option>
+          <option value="standard">Standard</option>
+          <option value="premium">Premium</option>
+        </select>
+      </li>
     </ul>
   </nav>
 </header>
 
-<!-- FILTERS / CONTROLS -->
-<div class="filter-container">
-  <div class="filter-group">
-    <button class="filter-btn brand-filter" data-brand="Brand1">Brand1</button>
-    <button class="filter-btn brand-filter" data-brand="Brand2">Brand2</button>
-    <button class="filter-btn brand-filter" data-brand="Brand3">Brand3</button>
-    <button class="filter-btn brand-filter" data-brand="Brand4">Brand4</button>
-    <button class="filter-btn brand-filter" data-brand="Brand5">Brand5</button>
-    <button class="filter-btn brand-filter" data-brand="Brand6">Brand6</button>
-    <button class="filter-btn brand-filter" data-brand="Brand7">Brand7</button>
-    <button class="filter-btn brand-filter" data-brand="Brand8">Brand8</button>
-    <button class="filter-btn brand-filter" data-brand="Brand9">Brand9</button>
-    <button class="filter-btn brand-filter" data-brand="Brand10">Brand10</button>
-    <button class="filter-btn brand-filter" data-brand="Brand11">Brand11</button>
-  </div>
-
-  <div class="filter-group">
-    <button class="filter-btn category-filter" data-category="Mens">Mens</button>
-    <button class="filter-btn category-filter" data-category="Womens">Womens</button>
-    <button class="filter-btn category-filter" data-category="Couple">Couple</button>
-    <button class="filter-btn category-filter" data-category="New Collection">New Collection</button>
-    <button class="filter-btn category-filter" data-category="Defect/Promo">Defect/Promo</button>
-  </div>
-
-  <div class="filter-group">
-    <button class="filter-btn grade-filter" data-grade="New">New</button>
-    <button class="filter-btn grade-filter" data-grade="Defect">Defect</button>
-    <button class="filter-btn grade-filter" data-grade="Last">Last</button>
-  </div>
-
-  <div class="filter-group">
-    <input type="text" id="search-input" placeholder="Search products..." />
-    <select id="sort-select">
-      <option value="">Sort</option>
-      <option value="a-z">A - Z</option>
-      <option value="price-low">Price: Low</option>
-    </select>
-  </div>
-</div>
-
 <!-- PRODUCTS GRID -->
-<div class="products-grid">
-  <!-- JS will render products here -->
-</div>
+<section class="products">
+  <div class="products-grid" id="products-grid">
+    <!-- Sample product items -->
+    <div class="product-card" data-name="Rolex Submariner" data-price="12000" data-brand="rolex" data-category="mens" data-grade="premium">
+      <div class="label new">New Arrival</div>
+      <img src="images/products/sample1.png" alt="Rolex Submariner">
+      <div class="product-info">
+        <h3>Rolex Submariner</h3>
+        <p>$12,000</p>
+        <p>Stock: <span class="stock">5</span></p>
+      </div>
+    </div>
+
+    <div class="product-card" data-name="Casio G-Shock" data-price="150" data-brand="casio" data-category="mens" data-grade="standard">
+      <div class="label promo">Defect / Promo</div>
+      <img src="images/products/sample2.png" alt="Casio G-Shock">
+      <div class="product-info">
+        <h3>Casio G-Shock</h3>
+        <p>$150</p>
+        <p>Stock: <span class="stock">12</span></p>
+      </div>
+    </div>
+
+    <div class="product-card" data-name="Omega Seamaster" data-price="5000" data-brand="omega" data-category="womens" data-grade="premium">
+      <div class="label last">Last Stock</div>
+      <img src="images/products/sample3.png" alt="Omega Seamaster">
+      <div class="product-info">
+        <h3>Omega Seamaster</h3>
+        <p>$5,000</p>
+        <p>Stock: <span class="stock">1</span></p>
+      </div>
+    </div>
+
+    <!-- Add more product cards as needed -->
+  </div>
+</section>
 
 <script src="products-script.js"></script>
 </body>
