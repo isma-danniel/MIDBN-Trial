@@ -1,72 +1,193 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MIDBN.Timepieces | Products</title>
-  <link rel="stylesheet" href="products-style.css">
-</head>
-<body>
+:root {
+  --primary: #DCFBFF;
+  --secondary: #4E5D5D;
+  --dark: #0d0f10;
+  --text: #e6e6e6;
+}
 
-<!-- HEADER / NAVIGATION -->
-<header class="header">
-  <nav>
-    <div class="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    <ul class="menu">
-      <li><input type="text" placeholder="Search..." id="search-input"></li>
-      <li>
-        <button class="filter-btn" data-sort="az">Sort A-Z</button>
-      </li>
-      <li>
-        <button class="filter-btn" data-sort="price">Price Low-High</button>
-      </li>
-      <li>
-        <button class="filter-btn" data-filter="brand">Filter Brand</button>
-        <div class="filter-options brand-options">
-          <button data-brand="Rolex">Rolex</button>
-          <button data-brand="Omega">Omega</button>
-          <button data-brand="Casio">Casio</button>
-          <button data-brand="Cartier">Cartier</button>
-          <button data-brand="Patek Philippe">Patek Philippe</button>
-          <button data-brand="G-Shock">G-Shock</button>
-          <button data-brand="Swarovski">Swarovski</button>
-          <button data-brand="Franck Muller">Franck Muller</button>
-          <button data-brand="Audemars Piguet">Audemars Piguet</button>
-          <button data-brand="Seiko">Seiko</button>
-          <button data-brand="Michael Kors">Michael Kors</button>
-        </div>
-      </li>
-      <li>
-        <button class="filter-btn" data-filter="category">Filter Category</button>
-        <div class="filter-options category-options">
-          <button data-category="Mens">Mens</button>
-          <button data-category="Womens">Womens</button>
-          <button data-category="Couple">Couple</button>
-          <button data-category="New Collection">New Collection</button>
-          <button data-category="Defect/Promo">Defect/Promo</button>
-        </div>
-      </li>
-      <li>
-        <button class="filter-btn" data-filter="grade">Filter Grade</button>
-        <div class="filter-options grade-options">
-          <button data-grade="A">A</button>
-          <button data-grade="B">B</button>
-          <button data-grade="C">C</button>
-        </div>
-      </li>
-    </ul>
-  </nav>
-</header>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { 
+  background: var(--dark); 
+  color: var(--text); 
+  font-family:-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; 
+  line-height:1.6; 
+}
 
-<!-- PRODUCT GRID -->
-<main class="products-grid" id="products-grid">
-  <!-- Products inserted dynamically via JS -->
-</main>
+/* HEADER / HAMBURGER */
+.header {
+  position: sticky;
+  top:0;
+  z-index: 10;
+  background: rgba(13,15,16,0.5);
+  backdrop-filter: blur(16px) saturate(180%);
+  box-shadow: 0 0 30px rgba(0,0,0,0.4);
+  border-bottom: 1px solid rgba(220,251,255,0.2);
+}
 
-<script src="products-script.js"></script>
-</body>
-</html>
+.header nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  position: relative;
+}
+
+.header nav ul.menu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  list-style: none;
+}
+
+.header nav ul.menu li {
+  position: relative;
+}
+
+.header nav ul.menu li input[type="text"] {
+  padding: 6px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--secondary);
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  outline: none;
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 20px;
+  cursor: pointer;
+  position: relative;
+  z-index: 15;
+}
+
+.hamburger span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background-color: var(--primary);
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(220,251,255,0.8);
+  transition: 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+  box-shadow: 0 0 12px rgba(220,251,255,1);
+}
+.hamburger.active span:nth-child(2) { opacity:0; }
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+  box-shadow: 0 0 12px rgba(220,251,255,1);
+}
+
+/* Filter Options Dropdown */
+.filter-options {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background: rgba(13,15,16,0.9);
+  backdrop-filter: blur(14px);
+  padding: 10px;
+  border-radius: 12px;
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 140px;
+  z-index: 10;
+}
+
+.filter-options button {
+  background: rgba(255,255,255,0.05);
+  color: var(--primary);
+  border: 1px solid var(--secondary);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  text-align: left;
+}
+
+.filter-options button:hover,
+.filter-options button.active {
+  background: var(--primary);
+  color: var(--dark);
+}
+
+/* Show dropdown when parent has active */
+.filter-btn.active + .filter-options {
+  display: flex;
+}
+
+/* PRODUCTS GRID */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  padding: 40px 20px;
+}
+
+/* PRODUCT CARD */
+.product-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(14px);
+  border-radius: 16px;
+  padding: 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+/* Product image */
+.product-card img {
+  width: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+/* Brand & Name */
+.product-name {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--primary);
+}
+
+/* Labels (Top Right) */
+.product-label {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--dark);
+  border-radius: 8px;
+  background: var(--primary);
+}
+
+/* Stock counter */
+.stock-counter {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: var(--secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+  .header nav ul.menu { display: none; flex-direction: column; gap: 10px; width: 100%; }
+  .header nav ul.menu.active { display: flex; }
+
+  .filter-options { top: 100%; }
+}
