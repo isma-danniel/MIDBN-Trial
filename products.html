@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MIDBN.Timepieces | Products</title>
-  <link rel="stylesheet" href="style-products.css">
+  <title>MIDBN.Timepieces - Products</title>
+  <link rel="stylesheet" href="products.css">
 </head>
 <body>
 
-<!-- HEADER -->
+<!-- HEADER / NAVIGATION -->
 <header class="header">
   <nav>
     <div class="hamburger">
@@ -17,57 +17,42 @@
       <span></span>
     </div>
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="#products">Products</a></li>
-      <li><a href="#brands">Brands</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><button class="filter-btn" data-action="search">Search</button></li>
+      <li><button class="filter-btn" data-action="sort-az">Sort A-Z</button></li>
+      <li><button class="filter-btn" data-action="sort-price">Sort Price</button></li>
+      <li><button class="filter-btn" data-action="brand">Filter Brand</button></li>
+      <li><button class="filter-btn" data-action="category">Filter Category</button></li>
+      <li><button class="filter-btn" data-action="grade">Filter Grade</button></li>
     </ul>
   </nav>
 </header>
 
-<!-- FILTER BAR -->
-<section class="filter-bar">
-  <button data-category="all">All</button>
-  <button data-category="classic">Classic</button>
-  <button data-category="modern">Modern</button>
-  <button data-category="luxury">Luxury</button>
-</section>
-
 <!-- PRODUCTS GRID -->
-<section id="products" class="products-container">
-  <div class="product-card classic">
-    <img src="images/products/watch1.png" alt="Classic Watch 1">
-    <h3>Classic Watch 1</h3>
-    <p>$250</p>
+<section class="products">
+  <div class="product-grid">
+    <!-- Sample product card -->
+    <div class="product-card">
+      <div class="badge"><span>New Arrival</span></div>
+      <img src="images/products/watch1.png" alt="Product 1">
+      <h3>Model 1</h3>
+      <p>Brand: Rolex</p>
+      <p>Stock: <span class="stock-count">12</span></p>
+      <p>Price: $350</p>
+    </div>
+
+    <div class="product-card">
+      <div class="badge"><span>Defect</span></div>
+      <img src="images/products/watch2.png" alt="Product 2">
+      <h3>Model 2</h3>
+      <p>Brand: Omega</p>
+      <p>Stock: <span class="stock-count">5</span></p>
+      <p>Price: $280</p>
+    </div>
+
+    <!-- Add more product cards here -->
   </div>
-  <div class="product-card modern">
-    <img src="images/products/watch2.png" alt="Modern Watch 2">
-    <h3>Modern Watch 2</h3>
-    <p>$320</p>
-  </div>
-  <div class="product-card luxury">
-    <img src="images/products/watch3.png" alt="Luxury Watch 3">
-    <h3>Luxury Watch 3</h3>
-    <p>$1200</p>
-  </div>
-  <div class="product-card classic">
-    <img src="images/products/watch4.png" alt="Classic Watch 4">
-    <h3>Classic Watch 4</h3>
-    <p>$280</p>
-  </div>
-  <div class="product-card modern">
-    <img src="images/products/watch5.png" alt="Modern Watch 5">
-    <h3>Modern Watch 5</h3>
-    <p>$350</p>
-  </div>
-  <!-- Add more product cards as needed -->
 </section>
 
-<!-- FOOTER -->
-<footer id="contact" class="footer">
-  <p>&copy; 2026 MIDBN.Timepieces. All rights reserved.</p>
-</footer>
-
-<script src="script-products.js"></script>
+<script src="products.js"></script>
 </body>
 </html>
