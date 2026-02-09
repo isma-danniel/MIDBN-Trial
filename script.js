@@ -1,18 +1,19 @@
-// HERO TEXT ANIMATION
+// HERO ANIMATION
 window.addEventListener("load", () => {
-  document.querySelector(".hero-quote").style.opacity = "1";
-  document.querySelector(".hero-quote").style.transform = "translateY(0)";
-
+  const quote = document.querySelector(".hero-quote");
+  const btn = document.querySelector(".hero-btn");
+  quote.style.opacity = "1";
+  quote.style.transform = "translateY(0)";
   setTimeout(() => {
-    document.querySelector(".hero-btn").style.opacity = "1";
-    document.querySelector(".hero-btn").style.transform = "translateY(0)";
+    btn.style.opacity = "1";
+    btn.style.transform = "translateY(0)";
   }, 400);
 });
 
-// FAQ TOGGLE
-document.querySelectorAll(".faq-question").forEach(question => {
-  question.addEventListener("click", () => {
-    const answer = question.nextElementSibling;
+// FAQ toggle
+document.querySelectorAll(".faq-question").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const answer = btn.nextElementSibling;
     answer.style.display = answer.style.display === "block" ? "none" : "block";
   });
 });
