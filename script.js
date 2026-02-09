@@ -1,4 +1,6 @@
-// HERO ANIMATION SEQUENTIAL
+// ------------------------
+// HERO ANIMATION
+// ------------------------
 window.addEventListener("load", () => {
   const quote = document.querySelector(".hero-quote");
   const btn = document.querySelector(".hero-btn");
@@ -8,7 +10,7 @@ window.addEventListener("load", () => {
 
   lines.forEach((lineText, index) => {
     const line = document.createElement('div');
-    line.textContent = lineText;
+    line.textContent = lineText.toUpperCase(); // all uppercase
     line.style.opacity = '0';
     line.style.transform = 'translateY(20px)';
     line.style.transition = 'all 0.8s ease';
@@ -26,7 +28,9 @@ window.addEventListener("load", () => {
   }, 400 * (lines.length + 1));
 });
 
-// FAQ toggle
+// ------------------------
+// FAQ TOGGLE
+// ------------------------
 document.querySelectorAll(".faq-question").forEach(btn => {
   btn.addEventListener("click", () => {
     const answer = btn.nextElementSibling;
@@ -34,7 +38,9 @@ document.querySelectorAll(".faq-question").forEach(btn => {
   });
 });
 
-// NEW ARRIVALS horizontal drag/swipe with momentum
+// ------------------------
+// NEW ARRIVALS HORIZONTAL SCROLL
+// ------------------------
 const slider = document.querySelector('.arrival-scroll');
 let isDown = false;
 let startX, scrollLeft;
@@ -58,11 +64,10 @@ slider.addEventListener('mouseup', () => endDrag());
 slider.addEventListener('mousemove', (e) => {
   if(!isDown) return;
   e.preventDefault();
-  const x = e.pageX - slider.offsetLeft;
+  const x = e.pageX - startX;
   const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
 
-  // calculate velocity
   velocity = e.pageX - lastX;
   lastX = e.pageX;
 });
@@ -83,13 +88,12 @@ slider.addEventListener('touchmove', (e) => {
   const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
 
-  // calculate velocity
   velocity = e.touches[0].pageX - lastX;
   lastX = e.touches[0].pageX;
 });
 
 // Helper functions
-function endDrag(isTouch=false) {
+function endDrag() {
   isDown = false;
   pauseAutoScroll = false;
   startMomentum(velocity);
@@ -111,13 +115,14 @@ function cancelMomentum() {
   if(momentumID) cancelAnimationFrame(momentumID);
 }
 
-// Smooth auto-slide when not interacting
+// Auto-slide with easing when not interacting
 let autoScroll = 0;
 function animateSlide() {
   if (!slider) return;
   if (!pauseAutoScroll && !isDown) {
     autoScroll += speed;
     slider.scrollLeft += (autoScroll - slider.scrollLeft) * 0.05;
+
     if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth) {
       slider.scrollLeft = 0;
       autoScroll = 0;
@@ -126,3 +131,47 @@ function animateSlide() {
   requestAnimationFrame(animateSlide);
 }
 requestAnimationFrame(animateSlide);
+
+// ------------------------
+// HEADER ACTIVE LINK ON SCROLL
+// ------------------------
+const sections = document.querySelectorAll("section");
+const navLinks = document.querySelectorAll(".header nav ul li a");
+
+window.addEventListener("scroll", () => {
+  let current = "";
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop - 80; // adjust for header height
+    if (pageYOffset >= sectionTop) {
+      current = section.getAttribute("id");
+    }
+  });
+
+  navLinks.forEach(link => {
+    link.classList.remove("active");
+    if (link.getAttribute("href") === "#" + current) {
+      link.classList.add("active");
+    }
+  });
+});
+
+// ------------------------
+// SMOOTH SCROLL ON HEADER LINK CLICK
+// ------------------------
+navLinks.forEach(link => {
+  link.addEventListener("click", function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute("href").substring(1);
+    const targetSection = document.getElementById(targetId);
+
+    if (targetSection) {
+      const headerOffset = 70; // adjust to match sticky header height
+      const sectionPosition = targetSection.offsetTop - headerOffset;
+
+      window.scrollTo({
+        top: sectionPosition,
+        behavior: "smooth"
+      });
+    }
+  });
+});
