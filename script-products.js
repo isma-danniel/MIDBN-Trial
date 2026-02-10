@@ -138,3 +138,9 @@ window.addEventListener('scroll', ()=>{
   const scrollTop = window.scrollY;
   particleContainer.style.transform = `translateY(${scrollTop * 0.2}px)`;
 });
+
+.brand {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
