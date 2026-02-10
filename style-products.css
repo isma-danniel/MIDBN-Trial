@@ -31,27 +31,82 @@ body{
 
 /* ===== FILTER PANEL ===== */
 .filters{
-  display:flex;flex-direction:column;gap:10px;padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  padding:16px;
   background:var(--panel);
   backdrop-filter:blur(22px) saturate(160%);
   -webkit-backdrop-filter:blur(22px) saturate(160%);
   border-bottom:1px solid var(--border);
-  max-height:0;overflow:hidden;
-  transition:max-height 0.45s cubic-bezier(.22,1.03,.36,1.01),backdrop-filter 0.35s ease,-webkit-backdrop-filter 0.35s ease;
+  max-height:0;
+  opacity:0;
+  overflow:hidden;
 }
-.filters.active{max-height:480px;backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);}
-.filters input,.filters select{
+
+.filters.active{
+  animation:slideBounce 0.45s cubic-bezier(.25,.8,.25,1) forwards;
+}
+
+/* Slide-down bounce keyframes */
+@keyframes slideBounce{
+  0% {max-height:0;opacity:0;}
+  60% {max-height:620px;opacity:1;}
+  80% {max-height:580px;}
+  100% {max-height:600px;opacity:1;}
+}
+
+/* Inputs and selects */
+.filters input, .filters select{
+  width:100%;
   background:rgba(255,255,255,0.06);
   border:1px solid var(--border);
-  color:#fff;padding:12px 14px;border-radius:14px;font-size:13px;outline:none;
+  color:#fff;
+  padding:12px 14px;
+  border-radius:14px;
+  font-size:13px;
+  outline:none;
 }
 .filters input::placeholder{color:rgba(255,255,255,.4);}
-.filter-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.price-range input{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:#fff;padding:12px 10px;border-radius:14px;font-size:13px;outline:none;}
+
+/* Filter rows */
+.filter-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  opacity:0;
+  transform:translateY(-15px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.filters.active .filter-row,
+.filters.active input,
+.filters.active select,
+.filters.active .price-range{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* Stagger fade delays */
+.filters.active .filter-row:nth-child(1){transition-delay:0.05s;}
+.filters.active .filter-row:nth-child(2){transition-delay:0.12s;}
+.filters.active .filter-row:nth-child(3){transition-delay:0.18s;}
+.filters.active input:nth-child(1){transition-delay:0.05s;}
+.filters.active input:nth-child(2){transition-delay:0.10s;}
+.filters.active select:nth-child(1){transition-delay:0.07s;}
+.filters.active select:nth-child(2){transition-delay:0.12s;}
+.filters.active .price-range{transition-delay:0.15s;}
+
+/* Min/Max price inputs */
+.price-range{
+  display:flex;
+  gap:10px;
+  flex:1 1 100%;
+}
+.price-range input{flex:1;text-align:center;}
 
 /* ===== PRODUCT GRID ===== */
 .product-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:14px;}
-@media(min-width:768px){.product-grid{grid-template-columns:repeat(3,1fr);max-width:1150px;margin:auto;}.filters{max-width:1150px;margin:auto;}}
+@media(min-width:768px){.product-grid{grid-template-columns:repeat(3,1fr);max-width:1150px;margin:auto;}}
 
 /* ===== PRODUCT CARD ===== */
 .product-card{
@@ -66,40 +121,27 @@ body{
   transform:translateY(15px) scale(0.98);
   transition:transform .25s ease, box-shadow .35s ease, opacity .35s ease;
 }
-.product-card.show{
-  animation:fadeUpRotate 0.6s ease forwards;
-}
+.product-card.show{animation:fadeUpRotate 0.6s ease forwards;}
 @keyframes fadeUpRotate{
   0%{opacity:0;transform:translateY(20px) rotateX(15deg) scale(0.97);}
   60%{opacity:1;transform:translateY(-4px) rotateX(-3deg) scale(1.02);}
   100%{opacity:1;transform:translateY(0) rotateX(0deg) scale(1);}
 }
-.product-card:hover{
-  transform:scale(1.04);
-  box-shadow:0 20px 45px rgba(255,255,255,0.12) inset,0 22px 60px rgba(0,0,0,0.65);
-}
-.product-card img{
-  width:100%;
-  display:block;
-  border-radius:16px;
-  transition:transform .35s ease, filter .35s ease;
-}
-.product-card:hover img{
-  transform:scale(1.06) rotateZ(-1deg);
-  filter:brightness(1.15) saturate(1.2);
-}
+.product-card:hover{transform:scale(1.04);box-shadow:0 20px 45px rgba(255,255,255,0.12) inset,0 22px 60px rgba(0,0,0,0.65);}
+.product-card img{width:100%;display:block;border-radius:16px;transition:transform .35s ease, filter .35s ease;}
+.product-card:hover img{transform:scale(1.06) rotateZ(-1deg);filter:brightness(1.15) saturate(1.2);}
 .card-body{padding:10px 12px 12px;}
 .name{font-size:13px;font-weight:500;line-height:1.35;margin-bottom:4px;}
 .price{font-size:13px;color:#fff;opacity:.9;margin-bottom:3px;}
 .stock{font-size:11px;color:var(--muted);}
 .whatsapp-btn{display:inline-block;text-decoration:none;background:#25D366;color:#fff;padding:10px 18px;border-radius:12px;font-weight:500;margin-top:6px;}
 
-/* ===== LABEL PULSE + SHIMMER ===== */
+/* Pulsing label */
 .label{
   position:absolute;top:10px;right:10px;
   padding:5px 12px;border-radius:14px;
   font-size:10px;font-weight:600;color:#fff;
-  background:linear-gradient(90deg,#b4dcff,#e0f0ff,#b4dcff); /* matches brand theme */
+  background:linear-gradient(90deg,#b4dcff,#e0f0ff,#b4dcff);
   background-size:200% 100%;
   animation:pulseLabel 1.8s infinite, gradientShift 2s linear infinite;
   border:1px solid rgba(255,255,255,0.2);
@@ -107,44 +149,21 @@ body{
 @keyframes pulseLabel{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.1);opacity:.85;}}
 @keyframes gradientShift{0%{background-position:0 0;}100%{background-position:200% 0;}}
 
-/* ===== QUICK VIEW MODAL ===== */
-.quick-view-modal{
-  position:fixed;top:0;left:0;width:100%;height:100%;display:none;
-  background:rgba(0,0,0,0.85);backdrop-filter:blur(12px) saturate(160%);-webkit-backdrop-filter:blur(12px) saturate(160%);
-  justify-content:center;align-items:center;z-index:999;
-}
-.modal-content{
-  background:var(--panel);border-radius:18px;padding:20px;width:90%;max-width:400px;text-align:center;color:#fff;
-}
+/* QUICK VIEW MODAL */
+.quick-view-modal{position:fixed;top:0;left:0;width:100%;height:100%;display:none;background:rgba(0,0,0,0.85);backdrop-filter:blur(12px) saturate(160%);-webkit-backdrop-filter:blur(12px) saturate(160%);justify-content:center;align-items:center;z-index:999;}
+.modal-content{background:var(--panel);border-radius:18px;padding:20px;width:90%;max-width:400px;text-align:center;color:#fff;}
 .modal-content img{width:100%;border-radius:12px;margin-bottom:12px;}
 .modal-name{font-size:16px;font-weight:500;margin-bottom:6px;}
 .modal-price{font-size:14px;color:#fff;margin-bottom:6px;}
 .modal-stock{font-size:12px;color:var(--muted);margin-bottom:10px;}
 .close-btn{position:absolute;top:12px;right:12px;font-size:22px;cursor:pointer;}
 
-/* ===== LOADING SPINNER ===== */
+/* LOADING SPINNER */
 .loading-spinner{display:none;width:100%;text-align:center;padding:18px 0;}
 .spinner{width:24px;height:24px;border:3px solid rgba(255,255,255,0.2);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;display:inline-block;}
 @keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
 
- /* ===== PARTICLES ===== */
-#particleContainer{
-  position:fixed;
-  top:0;left:0;width:100%;height:100%;
-  pointer-events:none;z-index:1;overflow:hidden;transform:translateZ(0);
-}
-.particle{
-  position:absolute;
-  width:4px;height:4px;
-  background:rgba(180,220,255,0.08);
-  border-radius:50%;
-  opacity:0;
-  box-shadow:0 0 6px rgba(180,220,255,0.25);
-  animation:floatParticle linear infinite;
-}
-@keyframes floatParticle{
-  0%{transform:translateY(0) translateX(0) scale(0.8);opacity:0;}
-  10%{opacity:0.15;}
-  50%{opacity:0.3;}
-  100%{transform:translateY(-120vh) translateX(var(--xMove)) scale(1.2);opacity:0;}
-}
+ /* PARTICLES */
+#particleContainer{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:hidden;transform:translateZ(0);}
+.particle{position:absolute;width:4px;height:4px;background:rgba(180,220,255,0.08);border-radius:50%;opacity:0;box-shadow:0 0 6px rgba(180,220,255,0.25);animation:floatParticle linear infinite;}
+@keyframes floatParticle{0%{transform:translateY(0) translateX(0) scale(0.8);opacity:0;}10%{opacity:0.15;}50%{opacity:0.3;}100%{transform:translateY(-120vh) translateX(var(--xMove)) scale(1.2);opacity:0;}}
