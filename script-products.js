@@ -50,15 +50,16 @@ function renderProducts(list){
     const card = document.createElement("div");
     card.className = "product-card show";
     card.innerHTML = `
-      <img src="${p.img}" alt="${p.name}">
-      ${p.label ? `<div class="label">${p.label}</div>` : ""}
-      <div class="card-body">
-        <div class="brand">Brand: ${p.brand}</div>
-        <div class="name">${p.name}</div>
-        <div class="price">$${p.price}</div>
-        <div class="stock">Stock: ${p.stock}</div>
-        <a href="#" class="more-details-btn">More Details →</a>
-      </div>
+  <img src="${p.img}" alt="${p.name}">
+  ${p.label ? `<div class="label">${p.label}</div>` : ""}
+  <div class="card-body">
+    <div class="brand">Brand: ${p.brand}</div>
+    <div class="name">${p.name}</div>
+    <div class="price">$${p.price}</div>
+    <div class="stock">Stock: ${p.stock}</div>
+    <a href="#" class="more-details-btn">More Details →</a>
+  </div>
+`;
     `;
     // Quick view click
     const moreBtn = card.querySelector(".more-details-btn");
