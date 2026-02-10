@@ -59,7 +59,7 @@ function renderProducts(list){
     <div class="stock">Stock: ${p.stock}</div>
     <a href="#" class="more-details-btn">More Details →</a>
   </div>
-`;
+`
     `;
     // Quick view click
     const moreBtn = card.querySelector(".more-details-btn");
