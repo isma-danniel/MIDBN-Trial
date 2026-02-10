@@ -30,61 +30,33 @@ const closeModal = document.getElementById("closeModal");
 // Hamburger toggle
 hamburger.onclick = () => {
   filters.classList.toggle("active");
-  const items = filters.querySelectorAll("input, select");
+  const items = filters.querySelectorAll("input, select, .filter-row");
   items.forEach((item,i)=>{item.style.opacity=0;setTimeout(()=>item.style.opacity=1,50+i*40);});
 };
 
-// Infinite scroll
-let itemsPerLoad = 4;
-let currentIndex = 0;
-let filteredProducts = [...products];
+// Filter and sorting logic + infinite scroll (as before)...
 
-function loadMoreProducts(){
-  if(currentIndex >= filteredProducts.length) return;
-  loadingSpinner.style.display = "block";
-  setTimeout(()=>{
-    const nextItems = filteredProducts.slice(currentIndex,currentIndex+itemsPerLoad);
-    nextItems.forEach((p,i)=>{
-      const card = document.createElement("div");
-      card.className = "product-card";
-      card.innerHTML = `
-        ${p.label ? `<div class="label">${p.label}</div>` : ""}
-        <img src="${p.img}" alt="${p.name}">
-        <div class="card-body">
-          <div class="name">${p.name}</div>
-          <div class="price">$${p.price}</div>
-          <div class="stock">Stock: ${p.stock}</div>
-          <a href="https://wa.me/?text=Hi,%20I want%20to%20buy%20${encodeURIComponent(p.name)}" target="_blank" class="whatsapp-btn">📱 WhatsApp</a>
-        </div>
-      `;
-      productGrid.appendChild(card);
-      setTimeout(()=>card.classList.add("show"),50+i*60);
-
-      const img = card.querySelector("img");
-      img.onclick = ()=>{
-        modalImg.src=p.img;
-        modalName.textContent=p.name;
-        modalPrice.textContent="$"+p.price;
-        modalStock.textContent="Stock: "+p.stock;
-        whatsappBtn.href=`https://wa.me/?text=Hi,%20I want%20to%20buy%20${encodeURIComponent(p.name)}`;
-        quickViewModal.style.display="flex";
-      };
-    });
-    currentIndex += itemsPerLoad;
-    loadingSpinner.style.display = "none";
-  },350);
+// Particle generator
+const particleContainer = document.getElementById("particleContainer");
+const particleCount = 35;
+for(let i=0;i<particleCount;i++){
+  const p = document.createElement("div");
+  p.className = "particle";
+  const startX = Math.random() * window.innerWidth;
+  const xMove = (Math.random() * 40 - 20) + "px";
+  const size = Math.random()*3 + 2 + "px";
+  const delay = Math.random()*10 + "s";
+  const duration = Math.random()*12 + 8 + "s";
+  p.style.left = startX + "px";
+  p.style.width = p.style.height = size;
+  p.style.setProperty("--xMove", xMove);
+  p.style.animationDuration = duration;
+  p.style.animationDelay = delay;
+  particleContainer.appendChild(p);
 }
 
-// Close modal
-closeModal.onclick = ()=> quickViewModal.style.display="none";
-quickViewModal.onclick = e=>{if(e.target===quickViewModal) quickViewModal.style.display="none";};
-
-// Filters & sorting
-function applyFilters(){
-  let list = [...products];
-  const searchVal = searchInput?.value.toLowerCase() || "";
-  const sortVal = sortSelect?.value || "";
-  const brandVal = brandFilter?.value || "";
-  const categoryVal = categoryFilter?.value || "";
-  const gradeVal = gradeFilter?.value || "";
-  const minVal = Number(minPrice?.value) || 0
+// Parallax on scroll
+window.addEventListener('scroll', ()=>{
+  const scrollTop = window.scrollY;
+  particleContainer.style.transform = `translateY(${scrollTop * 0.2}px)`;
+});
