@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. DATABASE
+    
+  // --- 1. PRODUCT DATABASE ---
   const products = [
     {id:1,name:"Rolex Submariner Date",price:15800,brand:"Rolex",category:"mens",grade:"A",stock:3,label:"NEW",img:"https://picsum.photos/500/500?random=1"},
     {id:2,name:"G-Shock GA2100 Carbon",price:199,brand:"G-Shock",category:"mens",grade:"A",stock:7,label:"LAST STOCK",img:"https://picsum.photos/500/500?random=2"},
@@ -9,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     {id:6,name:"Tissot PRX Quartz",price:650,brand:"Tissot",category:"promo",grade:"B",stock:1,label:"DEFECT",img:"https://picsum.photos/500/500?random=6"}
   ];
 
-  // 2. DOM ELEMENTS
+  // --- 2. SELECT DOM ELEMENTS ---
   const productGrid = document.getElementById("productGrid");
   const searchInput = document.getElementById("searchInput");
   const sortSelect = document.getElementById("sortSelect");
@@ -21,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const hamburger = document.getElementById("hamburger");
   const filters = document.getElementById("filters");
   const loadingSpinner = document.getElementById("loadingSpinner");
-  
+
   // Modal Elements
   const quickViewModal = document.getElementById("quickViewModal");
   const modalImg = document.getElementById("modalImg");
@@ -31,44 +32,45 @@ document.addEventListener("DOMContentLoaded", () => {
   const whatsappBtn = document.getElementById("whatsappBtn");
   const closeModal = document.getElementById("closeModal");
 
-  // 3. RENDER FUNCTION (This was missing!)
+  // --- 3. RENDER FUNCTION (Draws the html) ---
   function renderProducts(items) {
-    productGrid.innerHTML = ""; // Clear current grid logic
-    
+    productGrid.innerHTML = ""; // Clear existing
+
     if (items.length === 0) {
-      productGrid.innerHTML = "<p style='color:white; text-align:center; width:100%;'>No products found.</p>";
+      productGrid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #aaa;">No products found matching your filters.</div>`;
       return;
     }
 
-    items.forEach(product => {
+    items.forEach((product, index) => {
       const card = document.createElement("div");
-      card.className = "product-card";
+      // 'show' class triggers the CSS animation so it's not invisible
+      card.className = "product-card show"; 
       
-      // Determine label HTML
+      // Staggered animation delay
+      card.style.animationDelay = `${index * 0.1}s`;
+
+      // Label logic
       let labelHTML = "";
       if (product.label) {
-        labelHTML = `<span class="badge badge-${product.label === "NEW" ? "new" : "sale"}">${product.label}</span>`;
+        labelHTML = `<div class="label">${product.label}</div>`;
       }
 
       card.innerHTML = `
-        <div class="image-wrapper">
-          ${labelHTML}
-          <img src="${product.img}" alt="${product.name}" loading="lazy">
-        </div>
-        <div class="info">
-          <h3>${product.name}</h3>
+        ${labelHTML}
+        <img src="${product.img}" alt="${product.name}" loading="lazy">
+        <div class="card-body">
+          <div class="name">${product.name}</div>
           <div class="price">$${product.price.toLocaleString()}</div>
-          <div class="meta">
-            <span>Grade: ${product.grade}</span>
-            <span>Stock: ${product.stock}</span>
-          </div>
-          <button class="view-btn" data-id="${product.id}">View Details</button>
+          <div class="stock">Grade: ${product.grade} • Stock: ${product.stock}</div>
+          <button class="whatsapp-btn view-btn" data-id="${product.id}" style="width:100%; border:none; margin-top:10px; cursor:pointer; background:rgba(255,255,255,0.1);">
+            View Details
+          </button>
         </div>
       `;
       productGrid.appendChild(card);
     });
 
-    // Re-attach click listeners for buttons
+    // Attach click events for "View Details"
     document.querySelectorAll(".view-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         const id = parseInt(e.target.dataset.id);
@@ -77,17 +79,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 4. FILTER LOGIC
+  // --- 4. FILTERING LOGIC ---
   function filterAndSortProducts() {
     let filtered = products.filter(p => {
       const matchesSearch = p.name.toLowerCase().includes(searchInput.value.toLowerCase());
       const matchesBrand = brandFilter.value === "" || p.brand === brandFilter.value;
       const matchesCategory = categoryFilter.value === "" || p.category === categoryFilter.value;
       const matchesGrade = gradeFilter.value === "" || p.grade === gradeFilter.value;
-      const matchesMinPrice = !minPrice.value || p.price >= parseInt(minPrice.value);
-      const matchesMaxPrice = !maxPrice.value || p.price <= parseInt(maxPrice.value);
-
-      return matchesSearch && matchesBrand && matchesCategory && matchesGrade && matchesMinPrice && matchesMaxPrice;
+      
+      const pPrice = p.price;
+      const minp = minPrice.value ? parseInt(minPrice.value) : 0;
+      const maxp = maxPrice.value ? parseInt(maxPrice.value) : 99999999;
+      
+      return matchesSearch && matchesBrand && matchesCategory && matchesGrade && (pPrice >= minp && pPrice <= maxp);
     });
 
     // Sorting
@@ -101,62 +105,49 @@ document.addEventListener("DOMContentLoaded", () => {
     renderProducts(filtered);
   }
 
-  // 5. EVENT LISTENERS
-  searchInput.addEventListener("input", filterAndSortProducts);
-  sortSelect.addEventListener("change", filterAndSortProducts);
-  brandFilter.addEventListener("change", filterAndSortProducts);
-  categoryFilter.addEventListener("change", filterAndSortProducts);
-  gradeFilter.addEventListener("change", filterAndSortProducts);
-  minPrice.addEventListener("input", filterAndSortProducts);
-  maxPrice.addEventListener("input", filterAndSortProducts);
+  // --- 5. EVENT LISTENERS ---
+  const inputs = [searchInput, sortSelect, brandFilter, categoryFilter, gradeFilter, minPrice, maxPrice];
+  inputs.forEach(input => input.addEventListener("input", filterAndSortProducts));
 
-  // Hamburger Toggle
-  if(hamburger){
+  if(hamburger) {
     hamburger.onclick = () => {
       filters.classList.toggle("active");
     };
   }
 
-  // 6. MODAL LOGIC
+  // --- 6. MODAL LOGIC ---
   function openModal(id) {
     const product = products.find(p => p.id === id);
     if (!product) return;
 
     modalImg.src = product.img;
     modalName.textContent = product.name;
-    modalPrice.textContent = `$${product.price}`;
-    modalStock.textContent = `Stock Available: ${product.stock}`;
+    modalPrice.textContent = `$${product.price.toLocaleString()}`;
+    modalStock.textContent = `Stock Available: ${product.stock} (Grade ${product.grade})`;
     
-    // WhatsApp Link Generator
-    const message = `Hi, I am interested in ${product.name} (Price: $${product.price})`;
+    // WhatsApp Logic
+    const message = `Hi, I'm interested in the ${product.name} priced at $${product.price}. Is it available?`;
     whatsappBtn.href = `https://wa.me/628123456789?text=${encodeURIComponent(message)}`;
     
     quickViewModal.style.display = "flex";
   }
 
-  if(closeModal) {
-    closeModal.onclick = () => {
-      quickViewModal.style.display = "none";
-    };
-  }
-
-  window.onclick = (event) => {
-    if (event.target === quickViewModal) {
-      quickViewModal.style.display = "none";
-    }
+  if(closeModal) closeModal.onclick = () => quickViewModal.style.display = "none";
+  window.onclick = (e) => {
+    if (e.target === quickViewModal) quickViewModal.style.display = "none";
   };
 
-  // 7. PARTICLE SYSTEM
+  // --- 7. PARTICLE BACKGROUND ---
   const particleContainer = document.getElementById("particleContainer");
   if(particleContainer) {
     const particleCount = 35;
-    for(let i=0;i<particleCount;i++){
+    for(let i=0; i<particleCount; i++){
       const p = document.createElement("div");
       p.className = "particle";
       const startX = Math.random() * window.innerWidth;
-      const size = Math.random()*3 + 2 + "px";
-      const delay = Math.random()*10 + "s";
-      const duration = Math.random()*12 + 8 + "s";
+      const size = Math.random()*3 + 1 + "px";
+      const delay = Math.random()*5 + "s";
+      const duration = Math.random()*10 + 10 + "s";
       
       p.style.left = startX + "px";
       p.style.width = size;
@@ -167,8 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 8. INITIAL LOAD
-  // Hide loading spinner and render
+  // --- 8. INIT ---
   if(loadingSpinner) loadingSpinner.style.display = "none";
-  renderProducts(products); 
+  renderProducts(products);
 });
