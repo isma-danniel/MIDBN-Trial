@@ -268,32 +268,21 @@ body{
 
 .close-btn {
   position: absolute;
-  top: -24px;              /* float above popup */
-  left: 50%;               /* center horizontally */
-  transform: translateX(-50%);
+  top: -16px;             /* above the modal box */
+  right: 16px;            /* aligns to the modal's right edge */
   font-size: 22px;
-  font-weight: 600;
   cursor: pointer;
-  background: var(--panel); /* same as popup */
+  background: var(--panel);  /* subtle background */
   color: var(--primary);
-  border-radius: 50%;      /* round pill */
-  padding: 8px 12px;
-  z-index: 1001;           /* above everything */
-  box-shadow: 0 4px 18px rgba(0,0,0,0.6), 0 0 12px rgba(220,251,255,0.5);
+  padding: 4px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  box-shadow: 0 0 10px rgba(220,251,255,0.4);
+  z-index: 1001;          /* ensure it's above modal content */
   transition: 0.25s;
 }
 
-/* Hover/active effect */
 .close-btn:hover {
-  transform: translateX(-50%) scale(1.15);
-  box-shadow: 0 6px 22px rgba(0,0,0,0.7), 0 0 18px rgba(220,251,255,0.7);
-}
-
-/* Mobile adjustments */
-@media (max-width: 480px) {
-  .close-btn {
-    top: -20px;            /* slightly closer for small screens */
-    font-size: 20px;
-    padding: 6px 10px;
-  }
+  transform: scale(1.1);
+  box-shadow: 0 0 14px rgba(220,251,255,0.6);
 }
