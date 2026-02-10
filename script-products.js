@@ -53,8 +53,8 @@ function renderProducts(list){
       <img src="${p.img}" alt="${p.name}">
       ${p.label ? `<div class="label">${p.label}</div>` : ""}
       <div class="card-body">
-        <div class="name">${p.name}</div>
         <div class="brand">Brand: ${p.brand}</div>
+        <div class="name">${p.name}</div>
         <div class="price">$${p.price}</div>
         <div class="stock">Stock: ${p.stock}</div>
         <a href="#" class="more-details-btn">More Details →</a>
