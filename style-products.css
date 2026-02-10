@@ -268,11 +268,11 @@ body{
 
 .close-btn {
   position: absolute;
-  top: -12px;   /* move above modal */
-  right: -12px; /* move outside modal */
+  top: 8px;       /* slightly lower than top */
+  right: 8px;     /* slightly inset from modal edge */
   font-size: 22px;
   cursor: pointer;
-  background: var(--panel);
+  background: rgba(13,15,16,0.85);
   border-radius: 50%;
   padding: 4px 8px;
   z-index: 1002;
