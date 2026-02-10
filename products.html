@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MIDBN Products</title>
+<!-- Ensure this matches your CSS filename -->
 <link rel="stylesheet" href="style-products.css">
 </head>
 <body>
@@ -12,16 +13,18 @@
 <header class="header">
   <div class="logo">MIDBN</div>
   <div id="hamburger" class="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
+    <span></span> <!-- Top line -->
+    <span></span> <!-- Middle line -->
+    <span></span> <!-- Bottom line -->
   </div>
 </header>
 
 <!-- ===== FILTER PANEL ===== -->
 <div id="filters" class="filters">
+  <!-- Search -->
   <input type="text" id="searchInput" placeholder="Search products...">
   
+  <!-- Row 1: Sort & Brand -->
   <div class="filter-row">
     <select id="sortSelect">
       <option value="">Sort By</option>
@@ -36,14 +39,10 @@
       <option value="Casio">Casio</option>
       <option value="Seiko">Seiko</option>
       <option value="Tissot">Tissot</option>
-      <option value="Omega">Omega</option>
-      <option value="Citizen">Citizen</option>
-      <option value="Tag Heuer">Tag Heuer</option>
-      <option value="Fossil">Fossil</option>
-      <option value="Bulova">Bulova</option>
     </select>
   </div>
 
+  <!-- Row 2: Category & Grade -->
   <div class="filter-row">
     <select id="categoryFilter">
       <option value="">All Categories</option>
@@ -61,6 +60,7 @@
     </select>
   </div>
 
+  <!-- Row 3: Price Range -->
   <div class="filter-row">
     <div class="price-range">
       <input type="number" id="minPrice" placeholder="Min $" min="0">
@@ -73,7 +73,9 @@
 <div id="particleContainer"></div>
 
 <!-- ===== PRODUCT GRID ===== -->
-<div id="productGrid" class="product-grid"></div>
+<div class="container">
+  <div id="productGrid" class="product-grid"></div>
+</div>
 
 <!-- ===== LOADING SPINNER ===== -->
 <div id="loadingSpinner" class="loading-spinner">
@@ -92,6 +94,7 @@
   </div>
 </div>
 
+<!-- Ensure this matches your JS filename -->
 <script src="script-products.js"></script>
 </body>
 </html>
