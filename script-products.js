@@ -1,100 +1,109 @@
-/* ---------------------------------
-   Script Products | MIDBN Timepieces
---------------------------------- */
-
-// Hamburger menu
 const hamburger = document.getElementById("hamburger");
-const navLinks = document.getElementById("navLinks");
-hamburger.addEventListener("click", () => {
-  navLinks.classList.toggle("show");
-});
+const filterPanel = document.getElementById("filterPanel");
+hamburger.onclick = () => filterPanel.classList.toggle("active");
 
-// Product filter
-const productGrid = document.querySelector(".product-grid");
-const filterButtons = document.querySelectorAll(".filter-bar button");
-const searchInput = document.getElementById("productSearch");
-const sortSelect = document.getElementById("sortStock");
+const productGrid = document.getElementById("productGrid");
 
-filterButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    const category = btn.getAttribute("data-category");
-    const brand = btn.getAttribute("data-brand");
-    const grade = btn.getAttribute("data-grade");
+const products = [
+  {
+    name:"Rolex Submariner",
+    price:15800,
+    brand:"Rolex",
+    category:"mens",
+    grade:"A",
+    stock:3,
+    label:"NEW",
+    img:"https://picsum.photos/500/500?1"
+  },
+  {
+    name:"G-Shock GA2100",
+    price:199,
+    brand:"G-Shock",
+    category:"mens",
+    grade:"A",
+    stock:7,
+    label:"LAST STOCK",
+    img:"https://picsum.photos/500/500?2"
+  },
+  {
+    name:"Michael Kors Ladies",
+    price:299,
+    brand:"Michael Kors",
+    category:"womens",
+    grade:"B",
+    stock:4,
+    label:"",
+    img:"https://picsum.photos/500/500?3"
+  },
+  {
+    name:"Couple Watch Set",
+    price:499,
+    brand:"Casio",
+    category:"couple",
+    grade:"A",
+    stock:2,
+    label:"NEW",
+    img:"https://picsum.photos/500/500?4"
+  }
+];
 
-    filterProducts(category, brand, grade);
-  });
-});
-
-searchInput.addEventListener("keyup", () => {
-  filterProducts();
-});
-
-sortSelect.addEventListener("change", () => {
-  sortProducts();
-});
-
-function filterProducts(category = "all", brand = "all", grade = "all") {
-  const searchText = searchInput.value.toLowerCase();
-  const products = document.querySelectorAll(".product-card");
-
-  products.forEach(prod => {
-    const prodCategory = prod.getAttribute("data-category");
-    const prodBrand = prod.getAttribute("data-brand");
-    const prodGrade = prod.getAttribute("data-grade");
-    const title = prod.querySelector("h3").innerText.toLowerCase();
-
-    let isVisible = true;
-
-    if(category !== "all" && prodCategory.toLowerCase() !== category.toLowerCase()) isVisible = false;
-    if(brand !== "all" && prodBrand.toLowerCase() !== brand.toLowerCase()) isVisible = false;
-    if(grade !== "all" && prodGrade.toLowerCase() !== grade.toLowerCase()) isVisible = false;
-    if(title.indexOf(searchText) === -1) isVisible = false;
-
-    prod.style.display = isVisible ? "flex" : "none";
+function renderProducts(list){
+  productGrid.innerHTML = "";
+  list.forEach(p=>{
+    productGrid.innerHTML += `
+      <div class="product-card">
+        ${p.label ? `<div class="label">${p.label}</div>`:""}
+        <img src="${p.img}">
+        <div class="card-body">
+          <div class="name">${p.name}</div>
+          <div class="price">$${p.price}</div>
+          <div class="stock">Stock: ${p.stock}</div>
+        </div>
+      </div>
+    `;
   });
 }
 
-function sortProducts() {
-  const products = Array.from(document.querySelectorAll(".product-card"));
-  const sortValue = sortSelect.value;
+renderProducts(products);
 
-  products.sort((a,b) => {
-    if(sortValue === "az") return a.querySelector("h3").innerText.localeCompare(b.querySelector("h3").innerText);
-    if(sortValue === "price-low") return parseFloat(a.querySelector("p:nth-of-type(2)").innerText.replace(/[^0-9\.]+/g,"")) - 
-                                        parseFloat(b.querySelector("p:nth-of-type(2)").innerText.replace(/[^0-9\.]+/g,""));
-    return 0;
-  });
+const searchInput = document.getElementById("searchInput");
+const sortSelect = document.getElementById("sortSelect");
+const brandFilter = document.getElementById("brandFilter");
+const categoryFilter = document.getElementById("categoryFilter");
+const gradeFilter = document.getElementById("gradeFilter");
 
-  products.forEach(p => productGrid.appendChild(p));
+function filterProducts(){
+  let list = [...products];
+
+  if(searchInput.value){
+    list = list.filter(p=>p.name.toLowerCase().includes(searchInput.value.toLowerCase()));
+  }
+
+  if(brandFilter.value){
+    list = list.filter(p=>p.brand === brandFilter.value);
+  }
+
+  if(categoryFilter.value){
+    list = list.filter(p=>p.category === categoryFilter.value);
+  }
+
+  if(gradeFilter.value){
+    list = list.filter(p=>p.grade === gradeFilter.value);
+  }
+
+  if(sortSelect.value === "az"){
+    list.sort((a,b)=>a.name.localeCompare(b.name));
+  }
+
+  if(sortSelect.value === "priceLow"){
+    list.sort((a,b)=>a.price - b.price);
+  }
+
+  renderProducts(list);
 }
 
-// WhatsApp button
-const whatsappButtons = document.querySelectorAll(".whatsapp-product");
-whatsappButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    const productName = btn.getAttribute("data-product");
-    const phone = "6738908960";
-    window.open(`https://wa.me/${phone}?text=Hi, I'm interested in the product: ${encodeURIComponent(productName)}`, "_blank");
-  });
-});
-
-// Stock counter
-document.querySelectorAll(".product-card").forEach(card => {
-  const stock = parseInt(card.querySelector(".stock").dataset.stock);
-  const stockElem = card.querySelector(".stock");
-  if(stock === 0) {
-    stockElem.innerText = "Out of Stock";
-    card.querySelector(".buy-btn").style.pointerEvents = "none";
-    card.querySelector(".buy-btn").style.opacity = "0.6";
-  } else {
-    stockElem.innerText = `${stock} in stock`;
-  }
-
-  // Add label for last stock
-  if(stock === 1) {
-    const badge = document.createElement("span");
-    badge.classList.add("badge", "last-stock");
-    badge.innerText = "Last Stock!";
-    card.appendChild(badge);
-  }
-});
+searchInput.oninput = filterProducts;
+sortSelect.onchange = filterProducts;
+brandFilter.onchange = filterProducts;
+categoryFilter.onchange = filterProducts;
+gradeFilter.onchange = filterProducts;
