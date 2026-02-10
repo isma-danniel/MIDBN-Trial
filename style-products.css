@@ -87,6 +87,8 @@ body{
   outline:none;
 }
 
+
+
 .filters input::placeholder{
   color:rgba(255,255,255,.4);
 }
@@ -206,4 +208,34 @@ body{
     max-width:1150px;
     margin:auto;
   }
+}
+
+/* ================= FILTER SLIDE DOWN ================= */
+.filters{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:14px;
+  background:var(--panel);
+  backdrop-filter:blur(22px) saturate(160%);
+  -webkit-backdrop-filter:blur(22px) saturate(160%);
+  border-bottom:1px solid var(--border);
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.35s ease;
+}
+
+.filters.active{
+  max-height:500px; /* Enough to show all filters */
+}
+
+.filters input,
+.filters select{
+  background:rgba(255,255,255,0.06);
+  border:1px solid var(--border);
+  color:#fff;
+  padding:12px 14px;
+  border-radius:14px;
+  font-size:13px;
+  outline:none;
 }
