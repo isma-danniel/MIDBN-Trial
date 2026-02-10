@@ -1,76 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MIDBN Products</title>
-  <link rel="stylesheet" href="style-products.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIDBN Products</title>
+<link rel="stylesheet" href="style-products.css">
 </head>
 <body>
 
-  <!-- ========== HEADER ========== -->
-  <header class="header">
-    <div class="logo">MIDBN</div>
-    <div id="hamburger" class="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </header>
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <div class="logo">MIDBN</div>
+  <div id="hamburger" class="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</header>
 
-  <!-- ========== FILTER PANEL ========== -->
-  <div id="filters" class="filters">
-    <input type="text" id="searchInput" placeholder="Search products...">
-    
-    <div class="filter-row">
-      <select id="sortSelect">
-        <option value="">Sort By</option>
-        <option value="az">A → Z</option>
-        <option value="priceLow">Price: Low → High</option>
-      </select>
+<!-- ===== FILTER PANEL ===== -->
+<div id="filters" class="filters">
+  <input type="text" id="searchInput" placeholder="Search products...">
+  
+  <div class="filter-row">
+    <select id="sortSelect">
+      <option value="">Sort By</option>
+      <option value="az">A → Z</option>
+      <option value="priceLow">Price: Low → High</option>
+    </select>
+    <select id="brandFilter">
+      <option value="">All Brands</option>
+      <option value="Rolex">Rolex</option>
+      <option value="G-Shock">G-Shock</option>
+      <option value="Michael Kors">Michael Kors</option>
+      <option value="Casio">Casio</option>
+      <option value="Seiko">Seiko</option>
+      <option value="Tissot">Tissot</option>
+      <option value="Omega">Omega</option>
+      <option value="Citizen">Citizen</option>
+      <option value="Tag Heuer">Tag Heuer</option>
+      <option value="Fossil">Fossil</option>
+      <option value="Bulova">Bulova</option>
+    </select>
+  </div>
 
-      <select id="brandFilter">
-        <option value="">All Brands</option>
-        <option value="Rolex">Rolex</option>
-        <option value="G-Shock">G-Shock</option>
-        <option value="Michael Kors">Michael Kors</option>
-        <option value="Casio">Casio</option>
-        <option value="Seiko">Seiko</option>
-        <option value="Tissot">Tissot</option>
-        <option value="Omega">Omega</option>
-        <option value="Citizen">Citizen</option>
-        <option value="Tag Heuer">Tag Heuer</option>
-        <option value="Fossil">Fossil</option>
-        <option value="Bulova">Bulova</option>
-      </select>
-    </div>
-
-    <div class="filter-row">
-      <select id="categoryFilter">
-        <option value="">All Categories</option>
-        <option value="mens">Mens</option>
-        <option value="womens">Womens</option>
-        <option value="couple">Couple</option>
-        <option value="new">New Collection</option>
-        <option value="promo">Defect / Promo</option>
-      </select>
-
-      <select id="gradeFilter">
-        <option value="">All Grades</option>
-        <option value="A">A</option>
-        <option value="B">B</option>
-        <option value="C">C</option>
-      </select>
+  <div class="filter-row">
+    <select id="categoryFilter">
+      <option value="">All Categories</option>
+      <option value="mens">Mens</option>
+      <option value="womens">Womens</option>
+      <option value="couple">Couple</option>
+      <option value="new">New Collection</option>
+      <option value="promo">Defect / Promo</option>
+    </select>
+    <div class="price-range">
+      <input type="number" id="minPrice" placeholder="Min $" min="0">
+      <input type="number" id="maxPrice" placeholder="Max $" min="0">
     </div>
   </div>
 
-  <!-- ========== PRODUCT GRID ========== -->
-  <div id="productGrid" class="product-grid">
-    <!-- Products will be injected here -->
+  <div class="filter-row">
+    <select id="gradeFilter">
+      <option value="">All Grades</option>
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+    </select>
   </div>
+</div>
 
-  <!-- ========== SCRIPT ========== -->
-  <script src="script-products.js"></script>
+<!-- ===== PRODUCT GRID ===== -->
+<div id="productGrid" class="product-grid"></div>
 
+<!-- ===== LOADING SPINNER ===== -->
+<div id="loadingSpinner" class="loading-spinner">
+  <div class="spinner"></div>
+</div>
+
+<!-- ===== QUICK VIEW MODAL ===== -->
+<div id="quickViewModal" class="quick-view-modal">
+  <div class="modal-content">
+    <span id="closeModal" class="close-btn">&times;</span>
+    <img id="modalImg" src="" alt="">
+    <div id="modalName" class="modal-name"></div>
+    <div id="modalPrice" class="modal-price"></div>
+    <div id="modalStock" class="modal-stock"></div>
+    <a id="whatsappBtn" href="" target="_blank" class="whatsapp-btn">📱 WhatsApp</a>
+  </div>
+</div>
+
+<script src="script-products.js"></script>
 </body>
 </html>
