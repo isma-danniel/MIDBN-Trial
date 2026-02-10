@@ -10,59 +10,67 @@
 
 <header class="header">
   <div class="logo">MIDBN</div>
-
   <div class="hamburger" id="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
+    <span></span><span></span><span></span>
   </div>
 </header>
 
-<div class="filter-panel" id="filterPanel">
+<section class="filters" id="filters">
 
-  <input type="text" id="searchInput" placeholder="Search watches...">
+  <input type="text" id="searchInput" placeholder="Search watches">
 
-  <select id="sortSelect">
-    <option value="">Sort</option>
-    <option value="az">Name A - Z</option>
-    <option value="priceLow">Price Low → High</option>
-  </select>
+  <div class="filter-row">
+    <select id="sortSelect">
+      <option value="">Sort</option>
+      <option value="az">Name A-Z</option>
+      <option value="priceLow">Price Low → High</option>
+    </select>
 
-  <select id="brandFilter">
-    <option value="">Brand</option>
-    <option value="Rolex">Rolex</option>
-    <option value="Casio">Casio</option>
-    <option value="G-Shock">G-Shock</option>
-    <option value="Seiko">Seiko</option>
-    <option value="Tissot">Tissot</option>
-    <option value="Citizen">Citizen</option>
-    <option value="Omega">Omega</option>
-    <option value="Tag Heuer">Tag Heuer</option>
-    <option value="Longines">Longines</option>
-    <option value="Fossil">Fossil</option>
-    <option value="Michael Kors">Michael Kors</option>
-  </select>
+    <select id="brandFilter">
+      <option value="">Brand</option>
+      <option value="Rolex">Rolex</option>
+      <option value="Casio">Casio</option>
+      <option value="G-Shock">G-Shock</option>
+      <option value="Seiko">Seiko</option>
+      <option value="Tissot">Tissot</option>
+      <option value="Citizen">Citizen</option>
+      <option value="Omega">Omega</option>
+      <option value="Tag Heuer">Tag Heuer</option>
+      <option value="Longines">Longines</option>
+      <option value="Fossil">Fossil</option>
+      <option value="Michael Kors">Michael Kors</option>
+    </select>
+  </div>
 
-  <select id="categoryFilter">
-    <option value="">Category</option>
-    <option value="mens">Mens</option>
-    <option value="womens">Womens</option>
-    <option value="couple">Couple</option>
-    <option value="new">New Collection</option>
-    <option value="promo">Defect / Promo</option>
-  </select>
+  <div class="filter-row">
+    <select id="categoryFilter">
+      <option value="">Category</option>
+      <option value="mens">Mens</option>
+      <option value="womens">Womens</option>
+      <option value="couple">Couple</option>
+      <option value="new">New Collection</option>
+      <option value="promo">Defect / Promo</option>
+    </select>
 
-  <select id="gradeFilter">
-    <option value="">Grade</option>
-    <option value="A">Grade A</option>
-    <option value="B">Grade B</option>
-    <option value="C">Grade C</option>
-  </select>
+    <select id="gradeFilter">
+      <option value="">Grade</option>
+      <option value="A">Grade A</option>
+      <option value="B">Grade B</option>
+      <option value="C">Grade C</option>
+    </select>
+  </div>
 
-</div>
+</section>
 
 <section class="product-grid" id="productGrid"></section>
 
 <script src="script-products.js"></script>
+
+<script>
+const hamburger = document.getElementById("hamburger");
+const filters = document.getElementById("filters");
+hamburger.onclick = () => filters.classList.toggle("active");
+</script>
+
 </body>
 </html>
