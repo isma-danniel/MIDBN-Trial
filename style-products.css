@@ -62,7 +62,7 @@ body{
 /* ================= FILTER PANEL ================= */
 
 .filters{
-  display:none;
+  display:flex;
   flex-direction:column;
   gap:10px;
   padding:14px;
@@ -70,10 +70,13 @@ body{
   backdrop-filter:blur(22px) saturate(160%);
   -webkit-backdrop-filter:blur(22px) saturate(160%);
   border-bottom:1px solid var(--border);
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.35s ease;
 }
 
 .filters.active{
-  display:flex;
+  max-height:500px;
 }
 
 .filters input,
@@ -86,8 +89,6 @@ body{
   font-size:13px;
   outline:none;
 }
-
-
 
 .filters input::placeholder{
   color:rgba(255,255,255,.4);
@@ -111,11 +112,7 @@ body{
 /* ================= PRODUCT CARD ================= */
 
 .product-card{
-  background:linear-gradient(
-    180deg,
-    rgba(255,255,255,.05),
-    rgba(255,255,255,.01)
-  );
+  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01));
   border-radius:18px;
   overflow:hidden;
   text-decoration:none;
@@ -127,7 +124,14 @@ body{
   box-shadow:
     0 12px 30px rgba(0,0,0,.85),
     inset 0 1px 0 rgba(255,255,255,.04);
-  transition:transform .25s ease, box-shadow .25s ease;
+  transition:transform .25s ease, box-shadow .25s ease, opacity .35s ease, transform .35s ease;
+  opacity:0;
+  transform:translateY(12px);
+}
+
+.product-card.show{
+  opacity:1;
+  transform:translateY(0);
 }
 
 .product-card:active{
@@ -208,34 +212,4 @@ body{
     max-width:1150px;
     margin:auto;
   }
-}
-
-/* ================= FILTER SLIDE DOWN ================= */
-.filters{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  padding:14px;
-  background:var(--panel);
-  backdrop-filter:blur(22px) saturate(160%);
-  -webkit-backdrop-filter:blur(22px) saturate(160%);
-  border-bottom:1px solid var(--border);
-  max-height:0;
-  overflow:hidden;
-  transition:max-height 0.35s ease;
-}
-
-.filters.active{
-  max-height:500px; /* Enough to show all filters */
-}
-
-.filters input,
-.filters select{
-  background:rgba(255,255,255,0.06);
-  border:1px solid var(--border);
-  color:#fff;
-  padding:12px 14px;
-  border-radius:14px;
-  font-size:13px;
-  outline:none;
 }
