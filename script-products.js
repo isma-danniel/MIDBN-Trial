@@ -1,10 +1,3 @@
-// ==============================
-// MIDBN PRODUCT CATALOG SYSTEM
-// ==============================
-
-// --------------------
-// Product Database
-// --------------------
 const products = [
   {id:1,name:"Rolex Submariner Date",price:15800,brand:"Rolex",category:"mens",grade:"A",stock:3,label:"NEW",img:"https://picsum.photos/500/500?1"},
   {id:2,name:"G-Shock GA2100 Carbon",price:199,brand:"G-Shock",category:"mens",grade:"A",stock:7,label:"LAST STOCK",img:"https://picsum.photos/500/500?2"},
@@ -14,9 +7,6 @@ const products = [
   {id:6,name:"Tissot PRX Quartz",price:650,brand:"Tissot",category:"promo",grade:"B",stock:1,label:"DEFECT",img:"https://picsum.photos/500/500?6"}
 ];
 
-// --------------------
-// DOM Elements
-// --------------------
 const productGrid   = document.getElementById("productGrid");
 const searchInput   = document.getElementById("searchInput");
 const sortSelect    = document.getElementById("sortSelect");
@@ -26,16 +16,16 @@ const gradeFilter   = document.getElementById("gradeFilter");
 const hamburger     = document.getElementById("hamburger");
 const filters       = document.getElementById("filters");
 
-// --------------------
-// Hamburger Slide Toggle
-// --------------------
+// Hamburger toggle + fade-in items
 hamburger.onclick = () => {
   filters.classList.toggle("active");
+  const items = filters.querySelectorAll("input, select");
+  items.forEach((item,i)=>{
+    item.style.opacity = 0;
+    setTimeout(()=> item.style.opacity = 1, 50 + i*40);
+  });
 };
 
-// --------------------
-// Render Products
-// --------------------
 function renderProducts(list){
   if(!productGrid) return;
   productGrid.innerHTML = "";
@@ -61,9 +51,6 @@ function renderProducts(list){
   });
 }
 
-// --------------------
-// Smart Filtering & Sorting
-// --------------------
 function applyFilters(){
   let list = [...products];
   const searchVal   = searchInput?.value.toLowerCase() || "";
@@ -72,14 +59,11 @@ function applyFilters(){
   const categoryVal = categoryFilter?.value || "";
   const gradeVal    = gradeFilter?.value || "";
 
-  // Search
   if(searchVal) list = list.filter(p => p.name.toLowerCase().includes(searchVal));
-  // Filters
   if(brandVal) list = list.filter(p => p.brand === brandVal);
   if(categoryVal) list = list.filter(p => p.category === categoryVal);
   if(gradeVal) list = list.filter(p => p.grade === gradeVal);
 
-  // Smart Sort
   const labelPriority = {"NEW":1, "LAST STOCK":2, "DEFECT":3, "":4};
   list.sort((a,b)=>{
     if(labelPriority[a.label] !== labelPriority[b.label]) return labelPriority[a.label]-labelPriority[b.label];
@@ -87,23 +71,16 @@ function applyFilters(){
     return a.name.localeCompare(b.name);
   });
 
-  // Manual sort override
   if(sortVal === "az") list.sort((a,b)=>a.name.localeCompare(b.name));
   if(sortVal === "priceLow") list.sort((a,b)=>a.price-b.price);
 
   renderProducts(list);
 }
 
-// --------------------
-// Event Listeners
-// --------------------
 searchInput?.addEventListener("input", applyFilters);
 sortSelect?.addEventListener("change", applyFilters);
 brandFilter?.addEventListener("change", applyFilters);
 categoryFilter?.addEventListener("change", applyFilters);
 gradeFilter?.addEventListener("change", applyFilters);
 
-// --------------------
-// Initial Render
-// --------------------
 renderProducts(products);
