@@ -268,22 +268,24 @@ body{
 
 .close-btn {
   position: absolute;
-  top: -16px;                /* above the modal box */
-  left: 50%;                 /* center horizontally */
-  transform: translateX(-50%); /* actually center it */
+  top: -12px;               /* above the modal */
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 22px;
   cursor: pointer;
-  background: var(--panel);  
+  background: var(--panel);  /* same as modal panel */
   color: var(--primary);
   padding: 4px 10px;
   border-radius: 10px;
   border: 1px solid var(--border);
-  box-shadow: 0 0 10px rgba(220,251,255,0.4);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   z-index: 1001;
-  transition: 0.25s;
+  pointer-events: auto;      /* make sure it’s clickable */
+  transition: 0.2s;
 }
 
 .close-btn:hover {
-  transform: translateX(-50%) scale(1.1); /* keep centered when hovering */
-  box-shadow: 0 0 14px rgba(220,251,255,0.6);
+  transform: translateX(-50%) scale(1.05);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+  background: rgba(13,15,16,0.95);
 }
