@@ -18,7 +18,7 @@ body{
   color:var(--text);
 }
 
-/* ===== HEADER & LOGO ===== */
+/* ===== HEADER ===== */
 .header{
   display:flex;
   justify-content:space-between;
@@ -28,9 +28,8 @@ body{
   border-bottom:1px solid rgba(220,251,255,0.15);
   position:sticky;
   top:0;
-  z-index:1000;
+  z-index:100;
 }
-
 .logo {
   font-weight:600;
   letter-spacing:1px;
@@ -38,7 +37,7 @@ body{
   color: var(--primary);
   display: inline-flex;
   align-items: center;
-  gap:6px; /* space between arrow and text */
+  gap:6px;
   font-size: 16px;
   padding:6px 10px;
   border:1px solid var(--border);
@@ -50,30 +49,7 @@ body{
   box-shadow: 0 0 10px rgba(220,251,255,0.4);
 }
 
-/* ===== HAMBURGER ===== */
-/* ===== HAMBURGER FIX ===== */
-.hamburger {
-  width: 30px;
-  height: 22px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-  z-index: 1100; /* above everything else */
-  position: relative; /* ensure z-index works */
-}
-
-.hamburger span {
-  display: block;
-  height: 3px;
-  width: 100%;
-  background: var(--primary); /* bright color for visibility */
-  border-radius: 5px;
-  box-shadow: 0 0 8px rgba(220, 251, 255, 0.6);
-  transition: 0.3s;
-}
-
-/* ===== FILTER PANEL ===== */
+/* ===== FILTER ===== */
 .filters{
   background:var(--panel);
   padding:16px;
@@ -97,7 +73,7 @@ body{
 .filter-row{display:flex;gap:10px}
 .price-range{display:flex;gap:10px;width:100%}
 
-/* ===== PRODUCT GRID ===== */
+/* ===== GRID ===== */
 .product-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -108,7 +84,7 @@ body{
   .product-grid{grid-template-columns:repeat(3,1fr)}
 }
 
-/* ===== PRODUCT CARD ===== */
+/* ===== CARD ===== */
 .product-card{
   background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.01));
   border-radius:20px;
@@ -118,6 +94,7 @@ body{
   backdrop-filter:blur(18px);
   overflow:hidden;
   transition:.35s;
+  position: relative;
 }
 .product-card:hover{
   transform:scale(1.05);
@@ -141,6 +118,25 @@ body{
 .name{font-weight:500}
 .price{color:var(--primary);margin:6px 0}
 .stock{font-size:12px;color:var(--muted)}
+
+/* ===== MORE DETAILS BUTTON ===== */
+.more-details-btn {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--primary);
+  border: 1px solid rgba(220,251,255,.4);
+  font-size: 12px;
+  font-weight: 500;
+  transition: 0.25s;
+}
+.more-details-btn:hover {
+  background: rgba(220,251,255,0.08);
+  box-shadow: 0 0 12px rgba(220,251,255,.4);
+  transform: scale(1.05);
+}
 
 /* ===== LABEL ===== */
 .label{
@@ -192,8 +188,16 @@ body{
   border:1px solid rgba(220,251,255,.2);
   text-align:center;
 }
-.modal-content img{width:100%;border-radius:14px;margin-bottom:12px}
-.modal-name{color:var(--primary)}
+.modal-content img{
+  width:100%;
+  max-height:300px; /* resize for product detail space */
+  object-fit:cover;
+  border-radius:14px;
+  margin-bottom:12px;
+}
+.modal-name{color:var(--primary); margin-bottom:6px;}
+.modal-price{color:var(--primary); margin-bottom:6px;}
+.modal-stock{color:var(--muted); margin-bottom:10px;}
 .close-btn{position:absolute;top:12px;right:14px;font-size:22px;cursor:pointer}
 
 /* ===== PARTICLES ===== */
