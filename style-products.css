@@ -266,26 +266,47 @@ body{
   to{transform:translateY(-120vh)}
 }
 
+.quick-view-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  position: relative; /* important! makes the close button relative to this box */
+  background: var(--panel);
+  padding: 20px;
+  border-radius: 18px;
+  width: 90%;
+  max-width: 380px;
+  border: 1px solid rgba(220,251,255,.2);
+  text-align: center;
+}
+
+/* CLOSE BUTTON */
 .close-btn {
   position: absolute;
-  top: -12px;               /* above the modal */
-  left: 50%;
-  transform: translateX(-50%);
+  top: -16px;               /* above the box */
+  right: -16px;             /* far enough from box corner */
   font-size: 22px;
   cursor: pointer;
-  background: var(--panel);  /* same as modal panel */
+  background: var(--panel);
   color: var(--primary);
   padding: 4px 10px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid var(--border);
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   z-index: 1001;
-  pointer-events: auto;      /* make sure it’s clickable */
+  pointer-events: auto;      /* ensure clickable */
   transition: 0.2s;
 }
 
 .close-btn:hover {
-  transform: translateX(-50%) scale(1.05);
+  transform: scale(1.05);
   box-shadow: 0 6px 16px rgba(0,0,0,0.6);
   background: rgba(13,15,16,0.95);
 }
