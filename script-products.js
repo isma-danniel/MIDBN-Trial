@@ -32,6 +32,11 @@ const closeModal = document.getElementById("closeModal");
 // ===== HAMBURGER TOGGLE =====
 hamburger.onclick = () => {
   filters.classList.toggle("active");
+  const items = filters.querySelectorAll("input, select, .filter-row");
+  items.forEach((item,i)=>{
+    item.style.opacity = 0;
+    setTimeout(()=> item.style.opacity = 1, 50 + i*40);
+  });
 };
 
 // ===== RENDER PRODUCTS =====
@@ -41,7 +46,6 @@ function renderProducts(list){
     productGrid.innerHTML = "<p style='color:var(--muted);text-align:center;padding:20px;'>No products found.</p>";
     return;
   }
-
   list.forEach(p => {
     const card = document.createElement("div");
     card.className = "product-card show";
@@ -52,12 +56,16 @@ function renderProducts(list){
         <div class="name">${p.name}</div>
         <div class="price">$${p.price}</div>
         <div class="stock">Stock: ${p.stock}</div>
-        <a href="https://wa.me/6738908960?text=${encodeURIComponent("I'm interested in " + p.name)}" 
-           target="_blank" class="whatsapp-btn">Buy via WhatsApp</a>
+        <a href="#" class="more-details-btn">More Details →</a>
       </div>
     `;
-
-    card.querySelector("img").onclick = () => openQuickView(p);
+    // Quick view click
+    const moreBtn = card.querySelector(".more-details-btn");
+    moreBtn.onclick = (e)=>{
+      e.preventDefault();
+      openQuickView(p);
+    };
+    card.querySelector("img").onclick = ()=>openQuickView(p);
     productGrid.appendChild(card);
   });
 }
@@ -68,36 +76,27 @@ function openQuickView(product){
   modalName.textContent = product.name;
   modalPrice.textContent = `$${product.price}`;
   modalStock.textContent = `Stock: ${product.stock}`;
-  whatsappBtn.href = `https://wa.me/6738908960?text=${encodeURIComponent("I'm interested in " + product.name)}`;
+  whatsappBtn.href = `https://wa.me/?text=I'm interested in ${encodeURIComponent(product.name)}`;
   quickViewModal.style.display = "flex";
 }
-
 closeModal.onclick = () => quickViewModal.style.display = "none";
-window.onclick = e => { if(e.target === quickViewModal) quickViewModal.style.display = "none"; };
+window.onclick = e => {if(e.target === quickViewModal) quickViewModal.style.display = "none";};
 
 // ===== FILTER & SORT =====
 function filterSortProducts(){
   let filtered = products.filter(p => {
     const searchMatch = p.name.toLowerCase().includes(searchInput.value.toLowerCase());
-    const brandMatch = !brandFilter.value || p.brand === brandFilter.value;
-    const categoryMatch = !categoryFilter.value || p.category === categoryFilter.value;
-    const gradeMatch = !gradeFilter.value || p.grade === gradeFilter.value;
-    const minMatch = !minPrice.value || p.price >= parseFloat(minPrice.value);
-    const maxMatch = !maxPrice.value || p.price <= parseFloat(maxPrice.value);
-
+    const brandMatch = brandFilter.value === "" || p.brand === brandFilter.value;
+    const categoryMatch = categoryFilter.value === "" || p.category === categoryFilter.value;
+    const gradeMatch = gradeFilter.value === "" || p.grade === gradeFilter.value;
+    const minMatch = minPrice.value === "" || p.price >= parseFloat(minPrice.value);
+    const maxMatch = maxPrice.value === "" || p.price <= parseFloat(maxPrice.value);
     return searchMatch && brandMatch && categoryMatch && gradeMatch && minMatch && maxMatch;
   });
 
   // Sorting
-  if(sortSelect.value === "az"){
-    filtered.sort((a,b)=> a.name.localeCompare(b.name));
-  }
-  else if(sortSelect.value === "priceLow"){
-    filtered.sort((a,b)=> a.price - b.price);
-  }
-  else{
-    filtered.sort((a,b)=> a.id - b.id); // normal order fix
-  }
+  if(sortSelect.value === "az") filtered.sort((a,b)=> a.name.localeCompare(b.name));
+  if(sortSelect.value === "priceLow") filtered.sort((a,b)=> a.price - b.price);
 
   renderProducts(filtered);
 }
@@ -117,19 +116,24 @@ renderProducts(products);
 // ===== PARTICLES =====
 const particleContainer = document.getElementById("particleContainer");
 const particleCount = 35;
-
 for(let i=0;i<particleCount;i++){
   const p = document.createElement("div");
   p.className = "particle";
-  p.style.left = Math.random() * window.innerWidth + "px";
-  p.style.width = p.style.height = (Math.random()*3+2) + "px";
-  p.style.setProperty("--xMove",(Math.random()*40-20)+"px");
-  p.style.animationDuration = (Math.random()*12+8)+"s";
-  p.style.animationDelay = (Math.random()*10)+"s";
+  const startX = Math.random() * window.innerWidth;
+  const xMove = (Math.random() * 40 - 20) + "px";
+  const size = Math.random() * 3 + 2 + "px";
+  const delay = Math.random() * 10 + "s";
+  const duration = Math.random() * 12 + 8 + "s";
+  p.style.left = startX + "px";
+  p.style.width = p.style.height = size;
+  p.style.setProperty("--xMove", xMove);
+  p.style.animationDuration = duration;
+  p.style.animationDelay = delay;
   particleContainer.appendChild(p);
 }
 
 // ===== PARALLAX =====
 window.addEventListener('scroll', ()=>{
-  particleContainer.style.transform = `translateY(${window.scrollY * 0.2}px)`;
+  const scrollTop = window.scrollY;
+  particleContainer.style.transform = `translateY(${scrollTop * 0.2}px)`;
 });
