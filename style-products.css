@@ -1,4 +1,3 @@
-/* ===== PRODUCTS PAGE ONLY ===== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
 :root{
@@ -19,7 +18,7 @@ body{
   color:var(--text);
 }
 
-/* ===== HEADER ===== */
+/* ===== HEADER & LOGO ===== */
 .header{
   display:flex;
   justify-content:space-between;
@@ -29,8 +28,9 @@ body{
   border-bottom:1px solid rgba(220,251,255,0.15);
   position:sticky;
   top:0;
-  z-index:100;
+  z-index:1000;
 }
+
 .logo {
   font-weight:600;
   letter-spacing:1px;
@@ -50,7 +50,26 @@ body{
   box-shadow: 0 0 10px rgba(220,251,255,0.4);
 }
 
-/* ===== FILTER ===== */
+/* ===== HAMBURGER ===== */
+.hamburger {
+  width:28px;
+  height:22px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  cursor:pointer;
+  z-index:1100; /* always above particles and filters */
+}
+.hamburger span{
+  display:block;
+  height:3px;
+  width:100%;
+  background:var(--primary);
+  border-radius:10px;
+  box-shadow:0 0 8px rgba(220,251,255,0.6);
+}
+
+/* ===== FILTER PANEL ===== */
 .filters{
   background:var(--panel);
   padding:16px;
@@ -74,7 +93,7 @@ body{
 .filter-row{display:flex;gap:10px}
 .price-range{display:flex;gap:10px;width:100%}
 
-/* ===== GRID ===== */
+/* ===== PRODUCT GRID ===== */
 .product-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -85,7 +104,7 @@ body{
   .product-grid{grid-template-columns:repeat(3,1fr)}
 }
 
-/* ===== CARD ===== */
+/* ===== PRODUCT CARD ===== */
 .product-card{
   background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.01));
   border-radius:20px;
