@@ -140,7 +140,7 @@ window.addEventListener('scroll', ()=>{
 });
 
 .brand {
-  font-size: 12px;
-  color: var(--muted);
+  font-size: 8px;
+  color: var(--border);
   margin-bottom: 4px;
 }
