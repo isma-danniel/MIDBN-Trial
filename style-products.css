@@ -51,22 +51,26 @@ body{
 }
 
 /* ===== HAMBURGER ===== */
+/* ===== HAMBURGER FIX ===== */
 .hamburger {
-  width:28px;
-  height:22px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  cursor:pointer;
-  z-index:1100; /* always above particles and filters */
+  width: 30px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 1100; /* above everything else */
+  position: relative; /* ensure z-index works */
 }
-.hamburger span{
-  display:block;
-  height:3px;
-  width:100%;
-  background:var(--primary);
-  border-radius:10px;
-  box-shadow:0 0 8px rgba(220,251,255,0.6);
+
+.hamburger span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: var(--primary); /* bright color for visibility */
+  border-radius: 5px;
+  box-shadow: 0 0 8px rgba(220, 251, 255, 0.6);
+  transition: 0.3s;
 }
 
 /* ===== FILTER PANEL ===== */
