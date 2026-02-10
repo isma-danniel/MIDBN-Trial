@@ -27,23 +27,21 @@ const modalStock = document.getElementById("modalStock");
 const whatsappBtn = document.getElementById("whatsappBtn");
 const closeModal = document.getElementById("closeModal");
 
-// Hamburger toggle + fade-in
+// Hamburger toggle
 hamburger.onclick = () => {
   filters.classList.toggle("active");
   const items = filters.querySelectorAll("input, select");
   items.forEach((item,i)=>{item.style.opacity=0;setTimeout(()=>item.style.opacity=1,50+i*40);});
 };
 
-// ===== INFINITE SCROLL VARIABLES =====
+// Infinite scroll
 let itemsPerLoad = 4;
 let currentIndex = 0;
 let filteredProducts = [...products];
 
-// ===== LOAD MORE PRODUCTS =====
 function loadMoreProducts(){
   if(currentIndex >= filteredProducts.length) return;
   loadingSpinner.style.display = "block";
-
   setTimeout(()=>{
     const nextItems = filteredProducts.slice(currentIndex,currentIndex+itemsPerLoad);
     nextItems.forEach((p,i)=>{
@@ -56,13 +54,12 @@ function loadMoreProducts(){
           <div class="name">${p.name}</div>
           <div class="price">$${p.price}</div>
           <div class="stock">Stock: ${p.stock}</div>
-          <a href="https://wa.me/?text=Hi,%20I%20want%20to%20buy%20${encodeURIComponent(p.name)}" target="_blank" class="whatsapp-btn">📱 WhatsApp</a>
+          <a href="https://wa.me/?text=Hi,%20I want%20to%20buy%20${encodeURIComponent(p.name)}" target="_blank" class="whatsapp-btn">📱 WhatsApp</a>
         </div>
       `;
       productGrid.appendChild(card);
       setTimeout(()=>card.classList.add("show"),50+i*60);
 
-      // Quick View
       const img = card.querySelector("img");
       img.onclick = ()=>{
         modalImg.src=p.img;
@@ -82,7 +79,7 @@ function loadMoreProducts(){
 closeModal.onclick = ()=> quickViewModal.style.display="none";
 quickViewModal.onclick = e=>{if(e.target===quickViewModal) quickViewModal.style.display="none";};
 
-// ===== APPLY FILTERS & SORT =====
+// Filters & sorting
 function applyFilters(){
   let list = [...products];
   const searchVal = searchInput?.value.toLowerCase() || "";
@@ -90,35 +87,4 @@ function applyFilters(){
   const brandVal = brandFilter?.value || "";
   const categoryVal = categoryFilter?.value || "";
   const gradeVal = gradeFilter?.value || "";
-  const minVal = Number(minPrice?.value) || 0;
-  const maxVal = Number(maxPrice?.value) || Infinity;
-
-  if(searchVal) list = list.filter(p=>p.name.toLowerCase().includes(searchVal));
-  if(brandVal) list = list.filter(p=>p.brand===brandVal);
-  if(categoryVal) list = list.filter(p=>p.category===categoryVal);
-  if(gradeVal) list = list.filter(p=>p.grade===gradeVal);
-  list = list.filter(p=>p.price>=minVal && p.price<=maxVal);
-
-  const labelPriority={"NEW":1,"LAST STOCK":2,"DEFECT":3,"":4};
-  list.sort((a,b)=>{
-    if(labelPriority[a.label]!==labelPriority[b.label]) return labelPriority[a.label]-labelPriority[b.label];
-    if(a.stock!==b.stock) return a.stock-b.stock;
-    return a.name.localeCompare(b.name);
-  });
-
-  if(sortVal==="az") list.sort((a,b)=>a.name.localeCompare(b.name));
-  if(sortVal==="priceLow") list.sort((a,b)=>a.price-b.price);
-
-  filteredProducts = list;
-  currentIndex = 0;
-  productGrid.innerHTML = "";
-  loadMoreProducts();
-}
-
-// Event listeners
-[searchInput,sortSelect,brandFilter,categoryFilter,gradeFilter,minPrice,maxPrice].forEach(el=>{
-  el?.addEventListener("input",applyFilters);
-  el?.addEventListener("change",applyFilters);
-});
-
-// Infinite
+  const minVal = Number(minPrice?.value) || 0
