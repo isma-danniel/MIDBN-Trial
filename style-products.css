@@ -143,7 +143,7 @@ body{
 
 /* Brand above name */
 .card-body .brand{
-  font-size:10px;
+  font-size:14px;
   color: var(--border);   /* same as border */
   margin-bottom:4px;
   font-weight:500;
@@ -151,9 +151,15 @@ body{
 
 /* Product name */
 .card-body .name{
-  font-size:14px;
+  font-size:10px;
   font-weight:500;
 }
+
+.card-body .brand { order: 0; }
+.card-body .name { order: 1; }
+.card-body .price { order: 2; }
+.card-body .stock { order: 3; }
+.card-body .more-details-btn { order: 4; }
 
 /* Price & stock */
 .card-body .price{color:var(--primary);margin:6px 0}
