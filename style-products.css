@@ -246,3 +246,20 @@ body{
   color: var(--border);
   margin-bottom: 4px;
 }
+
+.card-body {
+  display: flex;
+  flex-direction: column; /* stack children vertically */
+}
+
+.card-body .brand {
+  order: 0;           /* first item */
+  font-size: 12px;
+  color: var(--border); /* same as border color */
+  margin-bottom: 4px;   /* space between brand and name */
+  font-weight: 500;
+}
+
+.card-body .name {
+  order: 1; /* second item */
+}
