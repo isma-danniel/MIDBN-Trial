@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MIDBN Products</title>
+<title>Products | MIDBN</title>
 <link rel="stylesheet" href="style-products.css">
 </head>
 <body>
 
+<!-- ===== HEADER ===== -->
 <header class="header">
   <a href="index.html" class="logo">← Home</a>
   <div id="hamburger" class="hamburger">
@@ -17,6 +18,7 @@
   </div>
 </header>
 
+<!-- ===== FILTER PANEL ===== -->
 <div id="filters" class="filters">
   <input type="text" id="searchInput" placeholder="Search products...">
 
@@ -69,22 +71,26 @@
   </div>
 </div>
 
+<!-- ===== PARTICLE BACKGROUND ===== -->
 <div id="particleContainer"></div>
 
+<!-- ===== PRODUCT GRID ===== -->
 <div id="productGrid" class="product-grid"></div>
 
+<!-- ===== LOADING SPINNER ===== -->
 <div id="loadingSpinner" class="loading-spinner">
   <div class="spinner"></div>
 </div>
 
+<!-- ===== QUICK VIEW MODAL ===== -->
 <div id="quickViewModal" class="quick-view-modal">
   <div class="modal-content">
     <span id="closeModal" class="close-btn">&times;</span>
-    <img id="modalImg">
-    <div id="modalName" class="modal-name"></div>
-    <div id="modalPrice" class="modal-price"></div>
-    <div id="modalStock" class="modal-stock"></div>
-    <a id="whatsappBtn" href="https://wa.me/6738908960" target="_blank" class="whatsapp-btn">Buy via WhatsApp</a>
+    <img id="modalImg" style="max-height:300px;object-fit:contain;">
+    <div id="modalName" class="modal-name" style="margin-top:12px;font-weight:500;font-size:16px;"></div>
+    <div id="modalPrice" class="modal-price" style="margin:6px 0;font-size:14px;"></div>
+    <div id="modalStock" class="modal-stock" style="margin-bottom:12px;font-size:12px;color:rgba(230,230,230,0.6);"></div>
+    <a id="whatsappBtn" href="#" target="_blank" class="whatsapp-btn" style="display:inline-block;">📱 Buy via WhatsApp</a>
   </div>
 </div>
 
