@@ -77,6 +77,8 @@ function openQuickView(product){
   modalName.textContent = product.name;
   modalPrice.textContent = `$${product.price}`;
   modalStock.textContent = `Stock: ${product.stock}`;
+  modalDetails.textContent = product.details || "No details available";
+
   whatsappBtn.href = `https://wa.me/?text=I'm interested in ${encodeURIComponent(product.name)}`;
   quickViewModal.style.display = "flex";
 }
