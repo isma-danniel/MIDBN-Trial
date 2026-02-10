@@ -219,3 +219,23 @@ body{
   from{transform:translateY(100vh)}
   to{transform:translateY(-120vh)}
 }
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 28px;       /* explicit width */
+  height: 24px;      /* explicit height */
+  cursor: pointer;
+  z-index: 101;      /* above other elements */
+}
+
+.hamburger span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: var(--primary);
+  margin: 4px 0;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(220,251,255,0.6);
+}
