@@ -220,14 +220,16 @@ body{
   to{transform:translateY(-120vh)}
 }
 
+/* ===== HAMBURGER VISIBLE FIX ===== */
 .hamburger {
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   justify-content: center;
-  width: 28px;       /* explicit width */
-  height: 24px;      /* explicit height */
+  width: 28px;
+  height: 24px;
   cursor: pointer;
-  z-index: 101;      /* above other elements */
+  z-index: 9999; /* highest priority */
+  position: relative; /* ensure it’s on top */
 }
 
 .hamburger span {
@@ -238,4 +240,24 @@ body{
   margin: 4px 0;
   border-radius: 10px;
   box-shadow: 0 0 8px rgba(220,251,255,0.6);
+}
+
+/* ===== QUICK VIEW IMAGE SIZE FIX ===== */
+.modal-content img {
+  width: 90%;      /* slightly smaller */
+  max-height: 220px; /* limit height */
+  object-fit: contain;
+  border-radius: 14px;
+  margin-bottom: 12px;
+}
+
+/* ===== QUICK VIEW DETAILS PADDING ===== */
+.modal-content .modal-name,
+.modal-content .modal-price,
+.modal-content .modal-stock {
+  margin: 6px 0;
+}
+.modal-content .whatsapp-btn {
+  margin-top: 12px;
+  display: inline-block;
 }
