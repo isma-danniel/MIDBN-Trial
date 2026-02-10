@@ -1,3 +1,4 @@
+/* ===== PRODUCTS PAGE ONLY ===== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
 :root{
@@ -11,13 +12,14 @@
   --primary:#dcfbff;
 }
 
+/* ===== GLOBAL ===== */
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 body{
   background:radial-gradient(circle at top,#0b0b0b,var(--bg));
   color:var(--text);
 }
 
-/* HEADER */
+/* ===== HEADER ===== */
 .header{
   display:flex;
   justify-content:space-between;
@@ -29,9 +31,7 @@ body{
   top:0;
   z-index:100;
 }
-
 .logo{font-weight:600;letter-spacing:1px}
-
 .hamburger span{
   display:block;
   height:3px;
@@ -42,7 +42,7 @@ body{
   box-shadow:0 0 8px rgba(220,251,255,0.6);
 }
 
-/* FILTER */
+/* ===== FILTER ===== */
 .filters{
   background:var(--panel);
   padding:16px;
@@ -55,7 +55,6 @@ body{
   transition:.4s;
 }
 .filters.active{max-height:600px}
-
 .filters input,select{
   width:100%;
   padding:12px 14px;
@@ -64,11 +63,10 @@ body{
   border:1px solid rgba(220,251,255,.12);
   color:var(--text);
 }
-
 .filter-row{display:flex;gap:10px}
 .price-range{display:flex;gap:10px;width:100%}
 
-/* GRID */
+/* ===== GRID ===== */
 .product-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -79,26 +77,24 @@ body{
   .product-grid{grid-template-columns:repeat(3,1fr)}
 }
 
-/* CARD */
+/* ===== CARD ===== */
 .product-card{
   background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.01));
   border-radius:20px;
   border:1px solid rgba(220,251,255,.18);
-  box-shadow:
-    inset 0 0 18px rgba(255,255,255,.04),
-    0 12px 35px rgba(0,0,0,.65);
+  box-shadow: inset 0 0 18px rgba(255,255,255,.04),
+              0 12px 35px rgba(0,0,0,.65);
   backdrop-filter:blur(18px);
   overflow:hidden;
   transition:.35s;
 }
 .product-card:hover{
   transform:scale(1.05);
-  box-shadow:
-    inset 0 0 20px rgba(220,251,255,.06),
-    0 18px 50px rgba(0,0,0,.8);
+  box-shadow: inset 0 0 20px rgba(220,251,255,.06),
+              0 18px 50px rgba(0,0,0,.8);
 }
 
-/* IMAGE */
+/* ===== IMAGE ===== */
 .product-card img{
   width:100%;
   border-radius:16px;
@@ -109,13 +105,13 @@ body{
   filter:brightness(1.2);
 }
 
-/* CARD BODY */
+/* ===== CARD BODY ===== */
 .card-body{padding:12px}
 .name{font-weight:500}
 .price{color:var(--primary);margin:6px 0}
 .stock{font-size:12px;color:var(--muted)}
 
-/* LABEL */
+/* ===== LABEL ===== */
 .label{
   position:absolute;
   top:10px;
@@ -129,7 +125,7 @@ body{
   box-shadow:0 0 12px rgba(220,251,255,.5);
 }
 
-/* WHATSAPP BUTTON */
+/* ===== WHATSAPP BUTTON ===== */
 .whatsapp-btn{
   display:inline-block;
   margin-top:8px;
@@ -146,7 +142,7 @@ body{
   transform:scale(1.05);
 }
 
-/* MODAL */
+/* ===== MODAL ===== */
 .quick-view-modal{
   position:fixed;
   inset:0;
@@ -169,7 +165,7 @@ body{
 .modal-name{color:var(--primary)}
 .close-btn{position:absolute;top:12px;right:14px;font-size:22px;cursor:pointer}
 
-/* PARTICLES */
+/* ===== PARTICLES ===== */
 #particleContainer{
   position:fixed;
   inset:0;
