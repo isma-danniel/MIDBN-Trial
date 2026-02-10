@@ -265,3 +265,15 @@ body{
   from{transform:translateY(100vh)}
   to{transform:translateY(-120vh)}
 }
+
+.close-btn {
+  position: absolute;
+  top: -12px;   /* move above modal */
+  right: -12px; /* move outside modal */
+  font-size: 22px;
+  cursor: pointer;
+  background: var(--panel);
+  border-radius: 50%;
+  padding: 4px 8px;
+  z-index: 1002;
+}
