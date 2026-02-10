@@ -28,7 +28,7 @@ body{
   border-bottom:1px solid rgba(220,251,255,0.15);
   position:sticky;
   top:0;
-  z-index:100;
+  z-index:1000; /* above everything */
 }
 .logo {
   font-weight:600;
@@ -47,6 +47,27 @@ body{
 .logo:hover {
   background: rgba(220,251,255,0.08);
   box-shadow: 0 0 10px rgba(220,251,255,0.4);
+}
+
+/* ===== HAMBURGER FIX ===== */
+.hamburger {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 36px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 1001;
+  position: relative;
+}
+.hamburger span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(220,251,255,0.6);
 }
 
 /* ===== FILTER ===== */
@@ -189,9 +210,9 @@ body{
   text-align:center;
 }
 .modal-content img{
-  width:100%;
-  max-height:300px; /* resize for product detail space */
-  object-fit:cover;
+  width:90%;
+  max-height:220px;
+  object-fit:contain;
   border-radius:14px;
   margin-bottom:12px;
 }
@@ -218,52 +239,4 @@ body{
 @keyframes float{
   from{transform:translateY(100vh)}
   to{transform:translateY(-120vh)}
-}
-
-/* ===== HAMBURGER FIX ===== */
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 1000; /* higher than everything else */
-}
-
-.hamburger {
-  display: flex !important;
-  flex-direction: column;
-  justify-content: center;
-  width: 28px;
-  height: 24px;
-  cursor: pointer;
-  z-index: 1010; /* above header content */
-  position: relative;
-}
-
-.hamburger span {
-  display: block;
-  height: 3px;
-  width: 100%;
-  background: var(--primary);
-  margin: 4px 0;
-  border-radius: 10px;
-  box-shadow: 0 0 8px rgba(220,251,255,0.6);
-}
-
-/* ===== QUICK VIEW IMAGE SIZE FIX ===== */
-.modal-content img {
-  width: 90%;      /* slightly smaller */
-  max-height: 220px; /* limit height */
-  object-fit: contain;
-  border-radius: 14px;
-  margin-bottom: 12px;
-}
-
-/* ===== QUICK VIEW DETAILS PADDING ===== */
-.modal-content .modal-name,
-.modal-content .modal-price,
-.modal-content .modal-stock {
-  margin: 6px 0;
-}
-.modal-content .whatsapp-btn {
-  margin-top: 12px;
-  display: inline-block;
 }
