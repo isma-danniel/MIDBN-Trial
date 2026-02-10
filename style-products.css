@@ -1,164 +1,169 @@
-document.addEventListener("DOMContentLoaded", () => {
-    
-  // --- 1. PRODUCT DATABASE ---
-  const products = [
-    {id:1,name:"Rolex Submariner Date",price:15800,brand:"Rolex",category:"mens",grade:"A",stock:3,label:"NEW",img:"https://picsum.photos/500/500?random=1"},
-    {id:2,name:"G-Shock GA2100 Carbon",price:199,brand:"G-Shock",category:"mens",grade:"A",stock:7,label:"LAST STOCK",img:"https://picsum.photos/500/500?random=2"},
-    {id:3,name:"Michael Kors Ladies MK3203",price:299,brand:"Michael Kors",category:"womens",grade:"B",stock:4,label:"",img:"https://picsum.photos/500/500?random=3"},
-    {id:4,name:"Casio Couple Watch Set",price:499,brand:"Casio",category:"couple",grade:"A",stock:2,label:"NEW",img:"https://picsum.photos/500/500?random=4"},
-    {id:5,name:"Seiko Presage Cocktail",price:899,brand:"Seiko",category:"new",grade:"A",stock:5,label:"NEW",img:"https://picsum.photos/500/500?random=5"},
-    {id:6,name:"Tissot PRX Quartz",price:650,brand:"Tissot",category:"promo",grade:"B",stock:1,label:"DEFECT",img:"https://picsum.photos/500/500?random=6"}
-  ];
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
-  // --- 2. SELECT DOM ELEMENTS ---
-  const productGrid = document.getElementById("productGrid");
-  const searchInput = document.getElementById("searchInput");
-  const sortSelect = document.getElementById("sortSelect");
-  const brandFilter = document.getElementById("brandFilter");
-  const categoryFilter = document.getElementById("categoryFilter");
-  const gradeFilter = document.getElementById("gradeFilter");
-  const minPrice = document.getElementById("minPrice");
-  const maxPrice = document.getElementById("maxPrice");
-  const hamburger = document.getElementById("hamburger");
-  const filters = document.getElementById("filters");
-  const loadingSpinner = document.getElementById("loadingSpinner");
+:root{
+  --bg:#000000;
+  --panel:rgba(8,8,12,0.85);
+  --card:rgba(255,255,255,0.035);
+  --border:rgba(255,255,255,0.07);
+  --text:#ffffff;
+  --muted:rgba(255,255,255,0.55);
+}
 
-  // Modal Elements
-  const quickViewModal = document.getElementById("quickViewModal");
-  const modalImg = document.getElementById("modalImg");
-  const modalName = document.getElementById("modalName");
-  const modalPrice = document.getElementById("modalPrice");
-  const modalStock = document.getElementById("modalStock");
-  const whatsappBtn = document.getElementById("whatsappBtn");
-  const closeModal = document.getElementById("closeModal");
+/ ===== GLOBAL ===== /
+{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;-webkit-tap-highlight-color:transparent;}
+body{
+  background: radial-gradient(circle at 50% 20%, #0b0b0b, #000000 90%);
+  color:var(--text);
+  overflow-x:hidden;
+}
 
-  // --- 3. RENDER FUNCTION (Draws the html) ---
-  function renderProducts(items) {
-    productGrid.innerHTML = ""; // Clear existing
+/ ===== HEADER ===== /
+.header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 18px;background:rgba(0,0,0,.55);
+  backdrop-filter:blur(18px) saturate(140%);
+  -webkit-backdrop-filter:blur(18px) saturate(140%);
+  border-bottom:1px solid var(--border);position:sticky;top:0;z-index:99;
+}
+.logo{font-size:19px;font-weight:500;letter-spacing:.6px;}
+.hamburger{width:26px;cursor:pointer;}
+.hamburger span{display:block;height:3px;background:rgba(255,255,255,.9);margin:5px 0;border-radius:10px;}
 
-    if (items.length === 0) {
-      productGrid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #aaa;">No products found matching your filters.</div>`;
-      return;
-    }
+/ ===== FILTER PANEL ===== /
+.filters{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  padding:16px;
+  background:var(--panel);
+  backdrop-filter:blur(22px) saturate(160%);
+  -webkit-backdrop-filter:blur(22px) saturate(160%);
+  border-bottom:1px solid var(--border);
+  max-height:0;
+  opacity:0;
+  overflow:hidden;
+}
 
-    items.forEach((product, index) => {
-      const card = document.createElement("div");
-      // 'show' class triggers the CSS animation so it's not invisible
-      card.className = "product-card show"; 
-      
-      // Staggered animation delay
-      card.style.animationDelay = `${index * 0.1}s`;
+.filters.active{
+  animation:slideBounce 0.45s cubic-bezier(.25,.8,.25,1) forwards;
+}
 
-      // Label logic
-      let labelHTML = "";
-      if (product.label) {
-        labelHTML = `<div class="label">${product.label}</div>`;
-      }
+/ Slide-down bounce keyframes /
+@keyframes slideBounce{
+  0% {max-height:0;opacity:0;}
+  60% {max-height:620px;opacity:1;}
+  80% {max-height:580px;}
+  100% {max-height:600px;opacity:1;}
+}
 
-      card.innerHTML = `
-        ${labelHTML}
-        <img src="${product.img}" alt="${product.name}" loading="lazy">
-        <div class="card-body">
-          <div class="name">${product.name}</div>
-          <div class="price">$${product.price.toLocaleString()}</div>
-          <div class="stock">Grade: ${product.grade} • Stock: ${product.stock}</div>
-          <button class="whatsapp-btn view-btn" data-id="${product.id}" style="width:100%; border:none; margin-top:10px; cursor:pointer; background:rgba(255,255,255,0.1);">
-            View Details
-          </button>
-        </div>
-      `;
-      productGrid.appendChild(card);
-    });
+/ Inputs and selects /
+.filters input, .filters select{
+  width:100%;
+  background:rgba(255,255,255,0.06);
+  border:1px solid var(--border);
+  color:#fff;
+  padding:12px 14px;
+  border-radius:14px;
+  font-size:13px;
+  outline:none;
+}
+.filters input::placeholder{color:rgba(255,255,255,.4);}
 
-    // Attach click events for "View Details"
-    document.querySelectorAll(".view-btn").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        const id = parseInt(e.target.dataset.id);
-        openModal(id);
-      });
-    });
-  }
+/ Filter rows /
+.filter-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  opacity:0;
+  transform:translateY(-15px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.filters.active .filter-row,
+.filters.active input,
+.filters.active select,
+.filters.active .price-range{
+  opacity:1;
+  transform:translateY(0);
+}
 
-  // --- 4. FILTERING LOGIC ---
-  function filterAndSortProducts() {
-    let filtered = products.filter(p => {
-      const matchesSearch = p.name.toLowerCase().includes(searchInput.value.toLowerCase());
-      const matchesBrand = brandFilter.value === "" || p.brand === brandFilter.value;
-      const matchesCategory = categoryFilter.value === "" || p.category === categoryFilter.value;
-      const matchesGrade = gradeFilter.value === "" || p.grade === gradeFilter.value;
-      
-      const pPrice = p.price;
-      const minp = minPrice.value ? parseInt(minPrice.value) : 0;
-      const maxp = maxPrice.value ? parseInt(maxPrice.value) : 99999999;
-      
-      return matchesSearch && matchesBrand && matchesCategory && matchesGrade && (pPrice >= minp && pPrice <= maxp);
-    });
+/ Stagger fade delays /
+.filters.active .filter-row:nth-child(1){transition-delay:0.05s;}
+.filters.active .filter-row:nth-child(2){transition-delay:0.12s;}
+.filters.active .filter-row:nth-child(3){transition-delay:0.18s;}
+.filters.active input:nth-child(1){transition-delay:0.05s;}
+.filters.active input:nth-child(2){transition-delay:0.10s;}
+.filters.active select:nth-child(1){transition-delay:0.07s;}
+.filters.active select:nth-child(2){transition-delay:0.12s;}
+.filters.active .price-range{transition-delay:0.15s;}
 
-    // Sorting
-    const sortValue = sortSelect.value;
-    if (sortValue === "priceLow") {
-      filtered.sort((a, b) => a.price - b.price);
-    } else if (sortValue === "az") {
-      filtered.sort((a, b) => a.name.localeCompare(b.name));
-    }
+/ Min/Max price inputs /
+.price-range{
+  display:flex;
+  gap:10px;
+  flex:1 1 100%;
+}
+.price-range input{flex:1;text-align:center;}
 
-    renderProducts(filtered);
-  }
+/ ===== PRODUCT GRID ===== /
+.product-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:14px;}
+@media(min-width:768px){.product-grid{grid-template-columns:repeat(3,1fr);max-width:1150px;margin:auto;}}
 
-  // --- 5. EVENT LISTENERS ---
-  const inputs = [searchInput, sortSelect, brandFilter, categoryFilter, gradeFilter, minPrice, maxPrice];
-  inputs.forEach(input => input.addEventListener("input", filterAndSortProducts));
+/ ===== PRODUCT CARD ===== /
+.product-card{
+  background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+  border-radius:20px;
+  position:relative;
+  border:1px solid var(--border);
+  backdrop-filter:blur(22px) saturate(180%);
+  -webkit-backdrop-filter:blur(22px) saturate(180%);
+  box-shadow:0 8px 18px rgba(255,255,255,0.05) inset,0 15px 35px rgba(0,0,0,0.6);
+  opacity:0;
+  transform:translateY(15px) scale(0.98);
+  transition:transform .25s ease, box-shadow .35s ease, opacity .35s ease;
+}
+.product-card.show{animation:fadeUpRotate 0.6s ease forwards;}
+@keyframes fadeUpRotate{
+  0%{opacity:0;transform:translateY(20px) rotateX(15deg) scale(0.97);}
+  60%{opacity:1;transform:translateY(-4px) rotateX(-3deg) scale(1.02);}
+  100%{opacity:1;transform:translateY(0) rotateX(0deg) scale(1);}
+}
+.product-card:hover{transform:scale(1.04);box-shadow:0 20px 45px rgba(255,255,255,0.12) inset,0 22px 60px rgba(0,0,0,0.65);}
+.product-card img{width:100%;display:block;border-radius:16px;transition:transform .35s ease, filter .35s ease;}
+.product-card:hover img{transform:scale(1.06) rotateZ(-1deg);filter:brightness(1.15) saturate(1.2);}
+.card-body{padding:10px 12px 12px;}
+.name{font-size:13px;font-weight:500;line-height:1.35;margin-bottom:4px;}
+.price{font-size:13px;color:#fff;opacity:.9;margin-bottom:3px;}
+.stock{font-size:11px;color:var(--muted);}
+.whatsapp-btn{display:inline-block;text-decoration:none;background:#25D366;color:#fff;padding:10px 18px;border-radius:12px;font-weight:500;margin-top:6px;}
 
-  if(hamburger) {
-    hamburger.onclick = () => {
-      filters.classList.toggle("active");
-    };
-  }
+/ Pulsing label /
+.label{
+  position:absolute;top:10px;right:10px;
+  padding:5px 12px;border-radius:14px;
+  font-size:10px;font-weight:600;color:#fff;
+  background:linear-gradient(90deg,#b4dcff,#e0f0ff,#b4dcff);
+  background-size:200% 100%;
+  animation:pulseLabel 1.8s infinite, gradientShift 2s linear infinite;
+  border:1px solid rgba(255,255,255,0.2);
+}
+@keyframes pulseLabel{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.1);opacity:.85;}}
+@keyframes gradientShift{0%{background-position:0 0;}100%{background-position:200% 0;}}
 
-  // --- 6. MODAL LOGIC ---
-  function openModal(id) {
-    const product = products.find(p => p.id === id);
-    if (!product) return;
+/ QUICK VIEW MODAL /
+.quick-view-modal{position:fixed;top:0;left:0;width:100%;height:100%;display:none;background:rgba(0,0,0,0.85);backdrop-filter:blur(12px) saturate(160%);-webkit-backdrop-filter:blur(12px) saturate(160%);justify-content:center;align-items:center;z-index:999;}
+.modal-content{background:var(--panel);border-radius:18px;padding:20px;width:90%;max-width:400px;text-align:center;color:#fff;}
+.modal-content img{width:100%;border-radius:12px;margin-bottom:12px;}
+.modal-name{font-size:16px;font-weight:500;margin-bottom:6px;}
+.modal-price{font-size:14px;color:#fff;margin-bottom:6px;}
+.modal-stock{font-size:12px;color:var(--muted);margin-bottom:10px;}
+.close-btn{position:absolute;top:12px;right:12px;font-size:22px;cursor:pointer;}
 
-    modalImg.src = product.img;
-    modalName.textContent = product.name;
-    modalPrice.textContent = `$${product.price.toLocaleString()}`;
-    modalStock.textContent = `Stock Available: ${product.stock} (Grade ${product.grade})`;
-    
-    // WhatsApp Logic
-    const message = `Hi, I'm interested in the ${product.name} priced at $${product.price}. Is it available?`;
-    whatsappBtn.href = `https://wa.me/628123456789?text=${encodeURIComponent(message)}`;
-    
-    quickViewModal.style.display = "flex";
-  }
+/ LOADING SPINNER /
+.loading-spinner{display:none;width:100%;text-align:center;padding:18px 0;}
+.spinner{width:24px;height:24px;border:3px solid rgba(255,255,255,0.2);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;display:inline-block;}
+@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
 
-  if(closeModal) closeModal.onclick = () => quickViewModal.style.display = "none";
-  window.onclick = (e) => {
-    if (e.target === quickViewModal) quickViewModal.style.display = "none";
-  };
-
-  // --- 7. PARTICLE BACKGROUND ---
-  const particleContainer = document.getElementById("particleContainer");
-  if(particleContainer) {
-    const particleCount = 35;
-    for(let i=0; i<particleCount; i++){
-      const p = document.createElement("div");
-      p.className = "particle";
-      const startX = Math.random() * window.innerWidth;
-      const size = Math.random()*3 + 1 + "px";
-      const delay = Math.random()*5 + "s";
-      const duration = Math.random()*10 + 10 + "s";
-      
-      p.style.left = startX + "px";
-      p.style.width = size;
-      p.style.height = size;
-      p.style.animationDuration = duration;
-      p.style.animationDelay = delay;
-      particleContainer.appendChild(p);
-    }
-  }
-
-  // --- 8. INIT ---
-  if(loadingSpinner) loadingSpinner.style.display = "none";
-  renderProducts(products);
-});
+ / PARTICLES */
+#particleContainer{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:hidden;transform:translateZ(0);}
+.particle{position:absolute;width:4px;height:4px;background:rgba(180,220,255,0.08);border-radius:50%;opacity:0;box-shadow:0 0 6px rgba(180,220,255,0.25);animation:floatParticle linear infinite;}
+@keyframes floatParticle{0%{transform:translateY(0) translateX(0) scale(0.8);opacity:0;}10%{opacity:0.15;}50%{opacity:0.3;}100%{transform:translateY(-120vh) translateX(var(--xMove)) scale(1.2);opacity:0;}}
