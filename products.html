@@ -3,82 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MIDBN Timepieces - Products</title>
+<title>MIDBN | Watch Catalog</title>
 <link rel="stylesheet" href="style-products.css">
 </head>
 <body>
 
-<header>
-  <h1>MIDBN_TIMEPIECES</h1>
-  <nav>
-    <div class="hamburger" id="hamburger">&#9776;</div>
-    <div class="nav-links" id="navLinks">
-      <a href="index.html">Home</a>
-      <a href="https://wa.me/6738908960">Contact</a>
-    </div>
-  </nav>
+<header class="header">
+  <div class="logo">MIDBN</div>
+
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </header>
 
-<section class="search-sort">
-  <div class="search-bar">
-    <input type="text" id="productSearch" placeholder="Search watches...">
-  </div>
-  <div class="sort-bar">
-    <select id="sortStock">
-      <option value="normal">Normal order</option>
-      <option value="az">Sort A-Z</option>
-      <option value="price-low">Price Low → High</option>
-    </select>
-  </div>
-</section>
+<div class="filter-panel" id="filterPanel">
 
-<section class="filter-bar">
-  <strong>Category:</strong>
-  <button data-category="all">All</button>
-  <button data-category="Men">Men</button>
-  <button data-category="Women">Women</button>
-  <button data-category="Couple">Couple</button>
-  <button data-category="New Collection">New Collection</button>
-  <button data-category="Defect/Promo">Defect/Promo</button>
+  <input type="text" id="searchInput" placeholder="Search watches...">
 
-  <strong>Brand:</strong>
-  <button data-brand="all">All</button>
-  <button data-brand="Rolex">Rolex</button>
-  <button data-brand="Omega">Omega</button>
-  <button data-brand="Casio">Casio</button>
-  <button data-brand="Cartier">Cartier</button>
-  <button data-brand="Patek-Philippe">Patek Philippe</button>
-  <button data-brand="G-Shock">G-Shock</button>
-  <button data-brand="Swarvowski">Swarvowski</button>
-  <button data-brand="Franc-Muller">Franc Muller</button>
-  <button data-brand="Audemars-Piguet">Audemars Piguet</button>
-  <button data-brand="Seiko">Seiko</button>
-  <button data-brand="Michael-Kors">Michael Kors</button>
-</section>
+  <select id="sortSelect">
+    <option value="">Sort</option>
+    <option value="az">Name A - Z</option>
+    <option value="priceLow">Price Low → High</option>
+  </select>
 
-<section class="product-grid">
+  <select id="brandFilter">
+    <option value="">Brand</option>
+    <option value="Rolex">Rolex</option>
+    <option value="Casio">Casio</option>
+    <option value="G-Shock">G-Shock</option>
+    <option value="Seiko">Seiko</option>
+    <option value="Tissot">Tissot</option>
+    <option value="Citizen">Citizen</option>
+    <option value="Omega">Omega</option>
+    <option value="Tag Heuer">Tag Heuer</option>
+    <option value="Longines">Longines</option>
+    <option value="Fossil">Fossil</option>
+    <option value="Michael Kors">Michael Kors</option>
+  </select>
 
-  <!-- ADD YOUR PRODUCT CARDS HERE -->
-  <!-- Use this template for each product:
-  <div class="product-card" data-category="Men" data-brand="Rolex" data-grade="New Arrival">
-    <span class="badge new">New Arrival</span> <!-- Only if new/defect -->
-    <div class="product-images">
-      <img src="images/men-1.png" alt="men-1">
-    </div>
-    <p class="brand">Brand: Rolex</p>
-    <h3>Daytona (Black/Gold)</h3>
-    <p class="details">Quartz, stainless steel, men watch</p>
-    <p>Price: $25</p>
-    <p class="stock" data-stock="5"></p>
-    <a class="buy-btn whatsapp-product" data-product="Rolex Daytona">Buy via WhatsApp</a>
-  </div>
-  -->
+  <select id="categoryFilter">
+    <option value="">Category</option>
+    <option value="mens">Mens</option>
+    <option value="womens">Womens</option>
+    <option value="couple">Couple</option>
+    <option value="new">New Collection</option>
+    <option value="promo">Defect / Promo</option>
+  </select>
 
-</section>
+  <select id="gradeFilter">
+    <option value="">Grade</option>
+    <option value="A">Grade A</option>
+    <option value="B">Grade B</option>
+    <option value="C">Grade C</option>
+  </select>
 
-<footer>
-  &copy; 2026 MIDBN Timepieces
-</footer>
+</div>
+
+<section class="product-grid" id="productGrid"></section>
 
 <script src="script-products.js"></script>
 </body>
