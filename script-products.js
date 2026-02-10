@@ -27,6 +27,7 @@ const modalPrice = document.getElementById("modalPrice");
 const modalStock = document.getElementById("modalStock");
 const whatsappBtn = document.getElementById("whatsappBtn");
 const closeModal = document.getElementById("closeModal");
+const modalDetails = document.getElementById("modalDetails");
 
 // ===== HAMBURGER TOGGLE =====
 hamburger.onclick = () => {
