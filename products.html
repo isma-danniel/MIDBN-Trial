@@ -8,39 +8,36 @@
 </head>
 <body>
 
-<!-- ===== HEADER ===== -->
 <header class="header">
   <div class="logo">MIDBN</div>
   <div id="hamburger" class="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
+    <span></span><span></span><span></span>
   </div>
 </header>
 
-<!-- ===== FILTER PANEL ===== -->
 <div id="filters" class="filters">
   <input type="text" id="searchInput" placeholder="Search products...">
-  
+
   <div class="filter-row">
     <select id="sortSelect">
-      <option value="">Sort By</option>
+      <option value="">Normal Order</option>
       <option value="az">A → Z</option>
       <option value="priceLow">Price: Low → High</option>
     </select>
+
     <select id="brandFilter">
       <option value="">All Brands</option>
-      <option value="Rolex">Rolex</option>
-      <option value="G-Shock">G-Shock</option>
-      <option value="Michael Kors">Michael Kors</option>
-      <option value="Casio">Casio</option>
-      <option value="Seiko">Seiko</option>
-      <option value="Tissot">Tissot</option>
-      <option value="Omega">Omega</option>
-      <option value="Citizen">Citizen</option>
-      <option value="Tag Heuer">Tag Heuer</option>
-      <option value="Fossil">Fossil</option>
-      <option value="Bulova">Bulova</option>
+      <option>Rolex</option>
+      <option>G-Shock</option>
+      <option>Michael Kors</option>
+      <option>Casio</option>
+      <option>Seiko</option>
+      <option>Tissot</option>
+      <option>Omega</option>
+      <option>Citizen</option>
+      <option>Tag Heuer</option>
+      <option>Fossil</option>
+      <option>Bulova</option>
     </select>
   </div>
 
@@ -53,42 +50,39 @@
       <option value="new">New Collection</option>
       <option value="promo">Defect / Promo</option>
     </select>
+
     <select id="gradeFilter">
       <option value="">All Grades</option>
-      <option value="A">A</option>
-      <option value="B">B</option>
-      <option value="C">C</option>
+      <option>A</option>
+      <option>B</option>
+      <option>C</option>
     </select>
   </div>
 
   <div class="filter-row">
     <div class="price-range">
-      <input type="number" id="minPrice" placeholder="Min $" min="0">
-      <input type="number" id="maxPrice" placeholder="Max $" min="0">
+      <input type="number" id="minPrice" placeholder="Min $">
+      <input type="number" id="maxPrice" placeholder="Max $">
     </div>
   </div>
 </div>
 
-<!-- ===== PARTICLE BACKGROUND ===== -->
 <div id="particleContainer"></div>
 
-<!-- ===== PRODUCT GRID ===== -->
 <div id="productGrid" class="product-grid"></div>
 
-<!-- ===== LOADING SPINNER ===== -->
 <div id="loadingSpinner" class="loading-spinner">
   <div class="spinner"></div>
 </div>
 
-<!-- ===== QUICK VIEW MODAL ===== -->
 <div id="quickViewModal" class="quick-view-modal">
   <div class="modal-content">
     <span id="closeModal" class="close-btn">&times;</span>
-    <img id="modalImg" src="" alt="">
+    <img id="modalImg">
     <div id="modalName" class="modal-name"></div>
     <div id="modalPrice" class="modal-price"></div>
     <div id="modalStock" class="modal-stock"></div>
-    <a id="whatsappBtn" href="https://wa.me/6738908960" target="_blank" class="whatsapp-btn">📱 WhatsApp</a>
+    <a id="whatsappBtn" href="https://wa.me/6738908960" target="_blank" class="whatsapp-btn">Buy via WhatsApp</a>
   </div>
 </div>
 
