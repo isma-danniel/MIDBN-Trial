@@ -28,7 +28,7 @@ body{
   border-bottom:1px solid rgba(220,251,255,0.15);
   position:sticky;
   top:0;
-  z-index:1000; /* above everything */
+  z-index:1000;
 }
 .logo {
   font-weight:600;
@@ -49,7 +49,7 @@ body{
   box-shadow: 0 0 10px rgba(220,251,255,0.4);
 }
 
-/* ===== HAMBURGER FIX ===== */
+/* ===== HAMBURGER ===== */
 .hamburger {
   display: flex !important;
   flex-direction: column;
@@ -70,7 +70,7 @@ body{
   box-shadow: 0 0 8px rgba(220,251,255,0.6);
 }
 
-/* ===== FILTER ===== */
+/* ===== FILTER PANEL ===== */
 .filters{
   background:var(--panel);
   padding:16px;
@@ -94,7 +94,7 @@ body{
 .filter-row{display:flex;gap:10px}
 .price-range{display:flex;gap:10px;width:100%}
 
-/* ===== GRID ===== */
+/* ===== PRODUCT GRID ===== */
 .product-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -105,7 +105,7 @@ body{
   .product-grid{grid-template-columns:repeat(3,1fr)}
 }
 
-/* ===== CARD ===== */
+/* ===== PRODUCT CARD ===== */
 .product-card{
   background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.01));
   border-radius:20px;
@@ -123,7 +123,7 @@ body{
               0 18px 50px rgba(0,0,0,.8);
 }
 
-/* ===== IMAGE ===== */
+/* ===== PRODUCT IMAGE ===== */
 .product-card img{
   width:100%;
   border-radius:16px;
@@ -135,10 +135,29 @@ body{
 }
 
 /* ===== CARD BODY ===== */
-.card-body{padding:12px}
-.name{font-weight:500}
-.price{color:var(--primary);margin:6px 0}
-.stock{font-size:12px;color:var(--muted)}
+.card-body{
+  display:flex;
+  flex-direction:column; /* stack items vertically */
+  padding:12px;
+}
+
+/* Brand above name */
+.card-body .brand{
+  font-size:10px;
+  color: var(--border);   /* same as border */
+  margin-bottom:4px;
+  font-weight:500;
+}
+
+/* Product name */
+.card-body .name{
+  font-size:14px;
+  font-weight:500;
+}
+
+/* Price & stock */
+.card-body .price{color:var(--primary);margin:6px 0}
+.card-body .stock{font-size:12px;color:var(--muted)}
 
 /* ===== MORE DETAILS BUTTON ===== */
 .more-details-btn {
@@ -239,27 +258,4 @@ body{
 @keyframes float{
   from{transform:translateY(100vh)}
   to{transform:translateY(-120vh)}
-}
-
-.brand {
-  font-size: 10px;
-  color: var(--border);
-  margin-bottom: 4px;
-}
-
-.card-body {
-  display: flex;
-  flex-direction: column; /* stack children vertically */
-}
-
-.card-body .brand {
-  order: 0;           /* first item */
-  font-size: 12px;
-  color: var(--border); /* same as border color */
-  margin-bottom: 4px;   /* space between brand and name */
-  font-weight: 500;
-}
-
-.card-body .name {
-  order: 1; /* second item */
 }
