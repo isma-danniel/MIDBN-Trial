@@ -220,7 +220,13 @@ body{
   to{transform:translateY(-120vh)}
 }
 
-/* ===== HAMBURGER VISIBLE FIX ===== */
+/* ===== HAMBURGER FIX ===== */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* higher than everything else */
+}
+
 .hamburger {
   display: flex !important;
   flex-direction: column;
@@ -228,8 +234,8 @@ body{
   width: 28px;
   height: 24px;
   cursor: pointer;
-  z-index: 9999; /* highest priority */
-  position: relative; /* ensure it’s on top */
+  z-index: 1010; /* above header content */
+  position: relative;
 }
 
 .hamburger span {
