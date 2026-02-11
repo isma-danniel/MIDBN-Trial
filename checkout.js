@@ -1,61 +1,150 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MIDBN | Checkout</title>
+// ✅ checkout.js (FULL)
+// - renders cart
+// - validates form
+// - saves order to Apps Script
+// - deducts stock
+// - adds waterfall particles
+// - better UX (disable button, handle errors)
 
-  <!-- Optional: if you want shared variables/theme -->
-  <link rel="stylesheet" href="style-products.css" />
+const API = "https://script.google.com/macros/s/AKfycbwPTwgGLqGy75TQ8fY9E-pyKoncCVmbs6BJdzZzfgGBRXv4OKTgLbJaBJ3hB4ZfW2rd/exec";
 
-  <!-- Checkout page styling -->
-  <link rel="stylesheet" href="checkout.css" />
-</head>
-<body>
+const cartItemsContainer = document.getElementById("cartItems");
+const cartTotal = document.getElementById("cartTotal");
+const form = document.getElementById("checkoutForm");
+const placeOrderBtn = document.getElementById("placeOrderBtn");
 
-  <!-- ===== HEADER (same concept) ===== -->
-  <header class="header">
-    <a href="products.html" class="logo">← Products</a>
-  </header>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  <!-- ===== WATERFALL BACKGROUND ===== -->
-  <div id="particleContainer"></div>
+// ================= WATERFALL PARTICLES =================
+const particleContainer = document.getElementById("particleContainer");
+if (particleContainer) {
+  const particleCount = 35;
+  for (let i = 0; i < particleCount; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
 
-  <h2 class="checkout-title">Checkout</h2>
+    const startX = Math.random() * window.innerWidth;
+    const size = Math.random() * 3 + 2;
+    const duration = Math.random() * 10 + 10;
+    const delay = Math.random() * 10;
 
-  <div class="checkout-container">
+    p.style.left = startX + "px";
+    p.style.width = size + "px";
+    p.style.height = size + "px";
+    p.style.animationDuration = duration + "s";
+    p.style.animationDelay = delay + "s";
 
-    <!-- CART ITEMS -->
-    <div class="cart-section">
-      <h3>Your Cart</h3>
+    particleContainer.appendChild(p);
+  }
+}
 
-      <div id="cartItems"></div>
+// ================= RENDER CART =================
+function renderCart() {
+  cartItemsContainer.innerHTML = "";
 
-      <div id="cartTotal" class="cart-total">BND 0.00</div>
-    </div>
+  if (!cart || cart.length === 0) {
+    cartItemsContainer.innerHTML = `<p class="empty-cart">Your cart is empty</p>`;
+    cartTotal.innerText = "BND 0.00";
+    return;
+  }
 
-    <!-- CHECKOUT FORM -->
-    <div class="form-section">
-      <h3>Customer Details</h3>
+  let total = 0;
 
-      <form id="checkoutForm" class="checkout-form">
-        <input type="text" id="name" placeholder="Full Name" required />
-        <input type="text" id="phone" placeholder="Phone Number" required />
-        <textarea id="address" placeholder="Delivery Address" required></textarea>
+  cart.forEach(item => {
+    const qty = Number(item.qty || 0);
+    const price = Number(item.price || 0);
+    const line = price * qty;
 
-        <select id="payment" required>
-          <option value="">Select Payment Method</option>
-          <option value="Cash">Cash</option>
-          <option value="Bank Transfer">Bank Transfer</option>
-        </select>
+    total += line;
 
-        <button id="placeOrderBtn" type="submit">Place Order</button>
-        <p id="orderHint" class="order-hint">Stock will be deducted after order is saved.</p>
-      </form>
-    </div>
+    cartItemsContainer.innerHTML += `
+      <div class="cart-item">
+        <div>
+          <strong>${item.name}</strong><br>
+          <small>Qty: ${qty}</small>
+        </div>
+        <div>BND ${line.toFixed(2)}</div>
+      </div>
+    `;
+  });
 
-  </div>
+  cartTotal.innerText = "BND " + total.toFixed(2);
+}
 
-  <script src="checkout.js"></script>
-</body>
-</html>
+renderCart();
+
+// ================= HELPERS =================
+function setSubmitting(isSubmitting) {
+  if (!placeOrderBtn) return;
+  placeOrderBtn.disabled = isSubmitting;
+  placeOrderBtn.innerText = isSubmitting ? "Placing Order..." : "Place Order";
+}
+
+async function postJSON(url, payload) {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type":"application/json" },
+    body: JSON.stringify(payload)
+  });
+  return await res.json();
+}
+
+// ================= SUBMIT ORDER =================
+form.addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const address = document.getElementById("address").value.trim();
+  const payment = document.getElementById("payment").value;
+
+  if (!name || !phone || !address || !payment) {
+    alert("Please complete all fields.");
+    return;
+  }
+
+  const total = cartTotal.innerText;
+
+  try {
+    setSubmitting(true);
+
+    // 1) Save order
+    const orderRes = await postJSON(API, {
+      type: "order",
+      cart,
+      total,
+      customer: { name, phone, address, payment }
+    });
+
+    if (orderRes.status !== "success") {
+      setSubmitting(false);
+      alert("Failed to place order, try again!");
+      return;
+    }
+
+    // 2) Deduct stock (best-effort)
+    try {
+      await postJSON(API, { type: "stock", cart });
+    } catch (_) {
+      // still okay if stock update fails temporarily
+    }
+
+    alert(`Order placed successfully!\nOrder ID: ${orderRes.orderId}`);
+
+    localStorage.removeItem("cart");
+    window.location.href = "products.html";
+
+  } catch (err) {
+    console.error(err);
+    alert("Network error. Please try again.");
+  } finally {
+    setSubmitting(false);
+  }
+});
