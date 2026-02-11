@@ -5,6 +5,13 @@ let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 function renderCart() {
   cartItemsContainer.innerHTML = "";
+
+  if(cart.length === 0){
+    cartItemsContainer.innerHTML = `<p style="opacity:.6;text-align:center">Your cart is empty</p>`;
+    cartTotal.innerText = "BND 0";
+    return;
+  }
+
   let total = 0;
 
   cart.forEach(item => {
@@ -16,7 +23,7 @@ function renderCart() {
           <strong>${item.name}</strong><br>
           <small>Qty: ${item.qty}</small>
         </div>
-        <div>BND ${item.price * item.qty}</div>
+        <div>BND ${(item.price * item.qty).toFixed(2)}</div>
       </div>
     `;
   });
@@ -29,14 +36,20 @@ renderCart();
 document.getElementById("checkoutForm").addEventListener("submit", function(e){
   e.preventDefault();
 
-  const name = document.getElementById("name").value;
-  const phone = document.getElementById("phone").value;
-  const address = document.getElementById("address").value;
+  if(cart.length === 0){
+    alert("Your cart is empty!");
+    return;
+  }
+
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const address = document.getElementById("address").value.trim();
   const payment = document.getElementById("payment").value;
 
   let message = `🛒 *MIDBN ORDER*\n\n`;
+
   cart.forEach(item => {
-    message += `• ${item.name} (x${item.qty}) - BND ${item.price * item.qty}\n`;
+    message += `• ${item.name} (x${item.qty}) - BND ${(item.price * item.qty).toFixed(2)}\n`;
   });
 
   message += `\n*Total:* ${cartTotal.innerText}`;
@@ -45,7 +58,9 @@ document.getElementById("checkoutForm").addEventListener("submit", function(e){
   message += `\n*Address:* ${address}`;
   message += `\n*Payment:* ${payment}`;
 
-  const whatsapp = `https://wa.me/673XXXXXXXX?text=${encodeURIComponent(message)}`;
+  const whatsappNumber = "673XXXXXXXX"; // replace with your real WhatsApp number
+  const whatsapp = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
   window.open(whatsapp, "_blank");
 
   localStorage.removeItem("cart");
