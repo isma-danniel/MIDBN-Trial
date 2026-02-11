@@ -2,13 +2,13 @@
 window.addEventListener("DOMContentLoaded", () => {
   const hamburger = document.getElementById("hamburger");
   const filters = document.getElementById("filters");
-  if(hamburger && filters){
-    hamburger.addEventListener("click", ()=> filters.classList.toggle("active"));
+  if (hamburger && filters) {
+    hamburger.addEventListener("click", () => filters.classList.toggle("active"));
   }
 
   // keyboard support
-  hamburger?.addEventListener("keydown", (e)=>{
-    if(e.key==="Enter" || e.key===" ") hamburger.click();
+  hamburger?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") hamburger.click();
   });
 });
 
@@ -50,6 +50,18 @@ const API = "https://script.google.com/macros/s/AKfycbwPTwgGLqGy75TQ8fY9E-pyKonc
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let currentQuickProduct = null;
 
+// ===== CART COUNT ON BUTTON =====
+function getCartQty(){
+  const cartNow = JSON.parse(localStorage.getItem("cart")) || [];
+  return cartNow.reduce((sum, i) => sum + (i.qty || 0), 0);
+}
+function updateCheckoutButton(){
+  if(!goCheckoutBottom) return;
+  const qty = getCartQty();
+  goCheckoutBottom.textContent = qty > 0 ? `🛒 Go to Checkout (${qty})` : `🛒 Go to Checkout`;
+}
+updateCheckoutButton();
+
 // ===== RENDER PRODUCTS =====
 function renderProducts(list){
   if(!productGrid) return;
@@ -65,7 +77,7 @@ function renderProducts(list){
     card.className = "product-card";
     card.dataset.id = p.id;
 
-    // ✅ No +Add button on card anymore
+    // ✅ No +Add on card (only modal)
     card.innerHTML = `
       <img src="${p.img}" alt="${p.name}">
       ${p.label ? `<div class="label">${p.label}</div>` : ""}
@@ -92,11 +104,11 @@ function renderProducts(list){
 function openQuickView(product){
   currentQuickProduct = product;
 
-  if(modalImg) modalImg.src = product.img;
-  if(modalName) modalName.textContent = product.name;
-  if(modalPrice) modalPrice.textContent = `BND ${product.price}`;
-  if(modalStock) modalStock.textContent = `Stock: ${product.stock}`;
-  if(modalDetails) modalDetails.textContent = product.details || "";
+  modalImg && (modalImg.src = product.img);
+  modalName && (modalName.textContent = product.name);
+  modalPrice && (modalPrice.textContent = `BND ${product.price}`);
+  modalStock && (modalStock.textContent = `Stock: ${product.stock}`);
+  modalDetails && (modalDetails.textContent = product.details || "");
 
   if(whatsappBtn){
     whatsappBtn.href = `https://wa.me/?text=${encodeURIComponent("I'm interested in " + product.name)}`;
@@ -107,7 +119,7 @@ function openQuickView(product){
     modalAddCart.innerText = product.stock <= 0 ? "Out of Stock" : "+ Add to Cart";
   }
 
-  if(quickViewModal) quickViewModal.style.display = "flex";
+  quickViewModal && (quickViewModal.style.display = "flex");
 }
 
 // close modal
@@ -119,8 +131,8 @@ window.addEventListener("click",(e)=>{
 // ===== FILTER + SORT =====
 function filterSortProducts(){
   let filtered = [...products];
-
   const q = (searchInput?.value || "").toLowerCase().trim();
+
   filtered = filtered.filter(p=>{
     const searchMatch = p.name.toLowerCase().includes(q);
     const brandMatch = !brandFilter?.value || brandFilter.value === "" || p.brand === brandFilter.value;
@@ -160,12 +172,10 @@ fetch(API)
   .then(data=>{
     data.forEach(p=>{
       const card = document.querySelector(`[data-id="${p.id}"]`);
-      if(!card) return;
-
-      card.querySelector(".price").innerText = `BND ${p.price}`;
-      card.querySelector(".stock").innerText = `Stock: ${p.stock}`;
-
-      // also update local product stock so modal becomes accurate
+      if(card){
+        card.querySelector(".price").innerText = `BND ${p.price}`;
+        card.querySelector(".stock").innerText = `Stock: ${p.stock}`;
+      }
       const local = products.find(x=>x.id==p.id);
       if(local){
         local.price = p.price;
@@ -177,20 +187,23 @@ fetch(API)
 
 // ===== ADD TO CART (stock check) =====
 function addToCart(id, name, price){
-  fetch(API)
+  return fetch(API)
     .then(res=>res.json())
     .then(data=>{
       const product = data.find(p=>p.id==id);
+
       if(!product || product.stock <= 0){
         alert("Out of stock");
-        return;
+        return false;
       }
 
+      cart = JSON.parse(localStorage.getItem("cart")) || [];
       const existing = cart.find(i=>i.id==id);
+
       if(existing){
         if(existing.qty + 1 > product.stock){
           alert("Not enough stock");
-          return;
+          return false;
         }
         existing.qty++;
       } else {
@@ -198,14 +211,17 @@ function addToCart(id, name, price){
       }
 
       localStorage.setItem("cart", JSON.stringify(cart));
+      updateCheckoutButton();
+      return true;
     });
 }
 
 // ===== MODAL ADD BUTTON (premium) =====
-modalAddCart?.addEventListener("click", ()=>{
+modalAddCart?.addEventListener("click", async ()=>{
   if(!currentQuickProduct) return;
 
-  addToCart(currentQuickProduct.id, currentQuickProduct.name, currentQuickProduct.price);
+  const ok = await addToCart(currentQuickProduct.id, currentQuickProduct.name, currentQuickProduct.price);
+  if(!ok) return;
 
   modalAddCart.classList.add("added");
   modalAddCart.innerText = "✓ Added";
@@ -227,3 +243,6 @@ goCheckoutBottom?.addEventListener("click", ()=>{
   }
   window.location.href = "checkout.html";
 });
+
+// keep label updated if user returns back
+window.addEventListener("focus", updateCheckoutButton);
