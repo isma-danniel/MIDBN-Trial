@@ -11,7 +11,7 @@
 <!-- ===== HEADER ===== -->
 <header class="header">
   <a href="index.html" class="logo">← Home</a>
-  <div id="hamburger" class="hamburger">
+  <div id="hamburger" class="hamburger" aria-label="Open filters" role="button" tabindex="0">
     <span></span>
     <span></span>
     <span></span>
@@ -85,14 +85,19 @@
 <!-- ===== QUICK VIEW MODAL ===== -->
 <div id="quickViewModal" class="quick-view-modal">
   <div class="modal-content">
-    <span id="closeModal" class="close-btn">&times;</span>
+    <span id="closeModal" class="close-btn" aria-label="Close">&times;</span>
+
     <img id="modalImg" style="max-height:300px;object-fit:contain;">
     <div id="modalName" class="modal-name"></div>
     <div id="modalPrice" class="modal-price"></div>
     <div id="modalStock" class="modal-stock"></div>
     <div id="modalDetails" class="modal-details" style="color:var(--text); font-size:14px; margin-bottom:12px;"></div>
 
-    <a id="whatsappBtn" href="#" target="_blank" class="whatsapp-btn">📱 Buy via WhatsApp</a>
+    <!-- ✅ WhatsApp + Add to Cart side-by-side -->
+    <div class="modal-actions">
+      <a id="whatsappBtn" href="#" target="_blank" class="whatsapp-btn">📱 Buy via WhatsApp</a>
+      <button id="modalAddCart" type="button" class="whatsapp-btn modal-addcart">+ Add to Cart</button>
+    </div>
   </div>
 </div>
 
@@ -101,20 +106,7 @@
 
 <script src="script-products.js"></script>
 
-<!-- OPTIONAL: remove this block if you don’t want the mini cart at all -->
-<!--
-<div id="floatingCart">
-  <div id="floatingCartHeader">
-    <span>Cart</span>
-    <span class="cart-count" id="floatingCartCount">0</span>
-  </div>
-  <div id="miniCartItems">
-    <p>Cart is empty</p>
-  </div>
-  <div class="mini-cart-total">Total: BND 0</div>
-  <button id="floatingGoCheckout">Go to Checkout</button>
-</div>
--->
+<!-- OPTIONAL: mini cart removed (you wanted only 1 checkout button) -->
 
 </body>
 </html>
