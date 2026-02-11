@@ -8,16 +8,27 @@
 </head>
 <body>
 
-<div class="checkout-container">
+<header class="header">
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="#">Checkout</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="checkout">
 
   <h1>Secure Checkout</h1>
 
   <div class="checkout-grid">
 
     <!-- CART SUMMARY -->
-    <div class="cart-box">
-      <h2>Order Summary</h2>
+    <div class="glass-box">
+      <h2>Your Order</h2>
       <div id="cartItems"></div>
+
       <div class="total-row">
         <span>Total</span>
         <strong id="cartTotal">BND 0</strong>
@@ -25,12 +36,15 @@
     </div>
 
     <!-- CUSTOMER FORM -->
-    <div class="form-box">
+    <div class="glass-box">
       <h2>Customer Details</h2>
 
       <form id="checkoutForm">
+
         <input type="text" id="name" placeholder="Full Name" required>
-        <input type="tel" id="phone" placeholder="Phone Number" required>
+
+        <input type="tel" id="phone" placeholder="WhatsApp Number" required>
+
         <textarea id="address" placeholder="Delivery Address" required></textarea>
 
         <select id="payment" required>
@@ -39,12 +53,14 @@
           <option value="Bank Transfer">Bank Transfer</option>
         </select>
 
-        <button type="submit">Place Order via WhatsApp</button>
+        <button type="submit">Confirm Order via WhatsApp</button>
+
       </form>
     </div>
 
   </div>
-</div>
+
+</section>
 
 <script src="checkout.js"></script>
 </body>
