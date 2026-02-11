@@ -1,12 +1,11 @@
-// HERO ANIMATION SEQUENTIAL
 document.addEventListener("DOMContentLoaded", () => {
+  // HERO animation
   const quote = document.querySelector(".hero-quote");
   const btn = document.querySelector(".hero-btn");
-
   const lines = quote.innerHTML.split('<br>');
   quote.innerHTML = '';
 
-  lines.forEach((lineText, index) => {
+  lines.forEach((lineText, i) => {
     const line = document.createElement('div');
     line.textContent = lineText;
     line.style.opacity = '0';
@@ -17,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       line.style.opacity = '1';
       line.style.transform = 'translateY(0)';
-    }, 400 * (index + 1));
+    }, 400 * (i + 1));
   });
 
   setTimeout(() => {
@@ -26,92 +25,42 @@ document.addEventListener("DOMContentLoaded", () => {
   }, 400 * (lines.length + 1));
 });
 
-// FAQ toggle
+// FAQ toggle with smoother animation
 document.querySelectorAll(".faq-question").forEach(btn => {
   btn.addEventListener("click", () => {
     const answer = btn.nextElementSibling;
-    answer.style.display = answer.style.display === "block" ? "none" : "block";
+    if (!answer.style.maxHeight || answer.style.maxHeight === '0px') {
+      answer.style.display = 'block';
+      answer.style.maxHeight = answer.scrollHeight + "px";
+    } else {
+      answer.style.maxHeight = '0px';
+      setTimeout(() => answer.style.display = 'none', 300);
+    }
   });
 });
 
-// NEW ARRIVALS horizontal drag/swipe with momentum
+// NEW ARRIVALS horizontal drag/swipe
 const slider = document.querySelector('.arrival-scroll');
-let isDown = false;
-let startX, scrollLeft;
-let velocity = 0;
-let lastX = 0;
-let momentumID;
-let pauseAutoScroll = false;
-const speed = 0.3;
+let isDown = false, startX, scrollLeft, velocity = 0;
+let momentumID, pauseAutoScroll = false;
 
-// Throttle setup for drag events
-let lastMove = 0;
-
-// Desktop drag
-slider.addEventListener('mousedown', (e) => {
-  isDown = true;
-  pauseAutoScroll = true;
-  startX = e.pageX - slider.offsetLeft;
-  scrollLeft = slider.scrollLeft;
-  lastX = e.pageX;
-  cancelMomentum();
-});
-slider.addEventListener('mouseleave', () => endDrag());
-slider.addEventListener('mouseup', () => endDrag());
-slider.addEventListener('mousemove', (e) => {
-  if(!isDown) return;
-  const now = Date.now();
-  if(now - lastMove < 16) return; // ~60fps
-  lastMove = now;
-
-  e.preventDefault();
-  const x = e.pageX - slider.offsetLeft;
+// Use requestAnimationFrame for drag updates
+function updateSlider(x) {
   const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
+}
 
-  velocity = e.pageX - lastX;
-  lastX = e.pageX;
-});
-
-// Mobile swipe
-slider.addEventListener('touchstart', (e) => {
-  isDown = true;
-  pauseAutoScroll = true;
-  startX = e.touches[0].pageX - slider.offsetLeft;
-  scrollLeft = slider.scrollLeft;
-  lastX = e.touches[0].pageX;
-  cancelMomentum();
-});
-slider.addEventListener('touchend', () => endDrag(true));
-slider.addEventListener('touchmove', (e) => {
-  if(!isDown) return;
-  const now = Date.now();
-  if(now - lastMove < 16) return;
-  lastMove = now;
-
-  const x = e.touches[0].pageX - slider.offsetLeft;
-  const walk = (x - startX) * 2;
-  slider.scrollLeft = scrollLeft - walk;
-
-  velocity = e.touches[0].pageX - lastX;
-  lastX = e.touches[0].pageX;
-});
-
-// Helper functions
-function endDrag(isTouch=false) {
+function endDrag() {
   isDown = false;
   pauseAutoScroll = false;
   startMomentum(velocity);
 }
 
-function startMomentum(initialVelocity) {
-  let v = initialVelocity;
+function startMomentum(v) {
   function momentum() {
     slider.scrollLeft -= v;
-    v *= 0.95; // friction
-    if (Math.abs(v) > 0.5) {
-      momentumID = requestAnimationFrame(momentum);
-    }
+    v *= 0.92; // smoother friction
+    if (Math.abs(v) > 0.5) momentumID = requestAnimationFrame(momentum);
   }
   momentumID = requestAnimationFrame(momentum);
 }
@@ -120,46 +69,66 @@ function cancelMomentum() {
   if(momentumID) cancelAnimationFrame(momentumID);
 }
 
-// Smooth auto-slide when not interacting
-let autoScroll = 0;
+// Desktop drag
+slider.addEventListener('mousedown', e => {
+  isDown = true; pauseAutoScroll = true;
+  startX = e.pageX - slider.offsetLeft;
+  scrollLeft = slider.scrollLeft;
+  lastX = e.pageX;
+  cancelMomentum();
+});
+slider.addEventListener('mousemove', e => {
+  if(!isDown) return;
+  updateSlider(e.pageX);
+  velocity = e.pageX - lastX; lastX = e.pageX;
+});
+slider.addEventListener('mouseup', endDrag);
+slider.addEventListener('mouseleave', endDrag);
+
+// Mobile drag
+slider.addEventListener('touchstart', e => {
+  isDown = true; pauseAutoScroll = true;
+  startX = e.touches[0].pageX - slider.offsetLeft;
+  scrollLeft = slider.scrollLeft;
+  lastX = e.touches[0].pageX;
+  cancelMomentum();
+});
+slider.addEventListener('touchmove', e => {
+  if(!isDown) return;
+  updateSlider(e.touches[0].pageX);
+  velocity = e.touches[0].pageX - lastX; lastX = e.touches[0].pageX;
+});
+slider.addEventListener('touchend', endDrag);
+
+// Smooth auto-slide
 function animateSlide() {
-  if (!slider) return;
   if (!pauseAutoScroll && !isDown) {
-    autoScroll += speed;
-    slider.scrollLeft += (autoScroll - slider.scrollLeft) * 0.05;
+    slider.scrollLeft += 0.3;
     if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth) {
       slider.scrollLeft = 0;
-      autoScroll = 0;
     }
   }
   requestAnimationFrame(animateSlide);
 }
 requestAnimationFrame(animateSlide);
 
-// HAMBURGER MENU TOGGLE (iOS-style)
+// HAMBURGER MENU
 const hamburger = document.querySelector(".hamburger");
 const navMenu = document.querySelector(".header nav ul");
 
-// Toggle menu on hamburger click
-hamburger.addEventListener("click", (e) => {
-  e.stopPropagation(); // prevent body click
+hamburger.addEventListener("click", e => {
+  e.stopPropagation();
   hamburger.classList.toggle("active");
   navMenu.classList.toggle("active");
 });
-
-// Close menu when clicking a link
 navMenu.querySelectorAll("a").forEach(link => {
   link.addEventListener("click", () => {
     hamburger.classList.remove("active");
     navMenu.classList.remove("active");
   });
 });
-
-// Close hamburger menu when clicking outside
-document.addEventListener("click", (e) => {
-  const isClickInside = hamburger.contains(e.target) || navMenu.contains(e.target);
-
-  if (!isClickInside && hamburger.classList.contains("active")) {
+document.addEventListener("click", e => {
+  if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
     hamburger.classList.remove("active");
     navMenu.classList.remove("active");
   }
