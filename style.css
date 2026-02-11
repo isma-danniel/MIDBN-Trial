@@ -134,7 +134,7 @@ body { background: var(--dark); color: var(--text); font-family:-apple-system, B
 .catalog-btn { padding:14px 32px; border:1px solid var(--primary); color:var(--primary); text-decoration:none; }
 
 /* CONTACT SECTION */
-.contact-section { padding:60px 20px; text-align:center; border-top:1px solid var(--secondary); margin-top:40px; }
+.contact-section { padding:40px 20px; text-align:center; border-top:1px solid var(--secondary); margin-top:40px; }
 .contact-section h2 { color: var(--primary); margin-bottom:20px; }
 .contact-links { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
 .contact-links a { padding:12px 26px; border-radius:30px; border:1px solid var(--secondary); color:var(--primary); text-decoration:none; transition:0.3s; }
