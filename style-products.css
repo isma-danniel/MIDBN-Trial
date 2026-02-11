@@ -1,3 +1,4 @@
+/* ✅ style-products.css (FULL - WhatsApp removed, clean modal button) */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
 :root{
@@ -11,7 +12,6 @@
 
 /* ================= GLOBAL ================= */
 *{ margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
-
 body{
   background: radial-gradient(circle at top,#0b0b0b,var(--bg));
   color: var(--text);
@@ -94,38 +94,30 @@ body{
 .filters{
   position:relative;
   background: var(--panel);
-
   display:flex;
   flex-direction:column;
   gap:12px;
-
   max-height:0;
   overflow:hidden;
-
-  padding:0 16px;     /* no vertical padding closed */
+  padding:0 16px;
   opacity:0;
-
   border-bottom:none;
-
   transition:
     max-height .45s ease,
     padding .35s ease,
     opacity .3s ease;
 }
-
 .filters.active{
   max-height:600px;
   padding:16px;
   opacity:1;
   border-bottom:1px solid rgba(220,251,255,.15);
-
   backdrop-filter:blur(18px);
   box-shadow:
     0 10px 40px rgba(0,0,0,0.7),
     0 0 30px rgba(220,251,255,0.08),
     inset 0 0 20px rgba(220,251,255,0.05);
 }
-
 .filters.active::before{
   content:"";
   position:absolute;
@@ -133,12 +125,7 @@ body{
   left:0;
   right:0;
   height:1px;
-  background:linear-gradient(
-    90deg,
-    transparent,
-    rgba(220,251,255,0.6),
-    transparent
-  );
+  background:linear-gradient(90deg,transparent,rgba(220,251,255,0.6),transparent);
 }
 
 .filters input,
@@ -150,24 +137,14 @@ body{
   border:1px solid rgba(220,251,255,.12);
   color:var(--text);
 }
-
 .filter-row{ display:flex; gap:10px; }
-
-/* ✅ Min/Max perfectly side-by-side */
-.price-range{
-  display:flex;
-  gap:10px;
-  width:100%;
-}
-.price-range input{
-  flex:1;
-  min-width:0;
-}
+.price-range{ display:flex; gap:10px; width:100%; }
+.price-range input{ flex:1; min-width:0; }
 
 /* ================= PRODUCT GRID ================= */
 .product-grid{
   position:relative;
-  z-index:1; /* above particles */
+  z-index:1;
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:14px;
@@ -189,9 +166,7 @@ body{
 }
 .product-card:hover{
   transform:scale(1.04);
-  box-shadow:
-    0 15px 40px rgba(0,0,0,.7),
-    0 0 20px rgba(220,251,255,.08);
+  box-shadow:0 15px 40px rgba(0,0,0,.7), 0 0 20px rgba(220,251,255,.08);
 }
 .product-card img{
   width:100%;
@@ -281,27 +256,32 @@ body{
   border:1px solid var(--border);
 }
 
+/* ✅ SINGLE BUTTON CENTERED */
 .modal-actions{
   display:flex;
-  gap:10px;
-  margin-top:12px;
+  justify-content:center;
+  margin-top:14px;
 }
-.modal-actions a,
-.modal-actions button{
-  flex:1;
-  padding:10px;
-  border-radius:14px;
+.modal-addcart{
+  padding:12px 20px;
+  border-radius:16px;
   border:1px solid rgba(220,251,255,.4);
   background:linear-gradient(135deg,#4E5D5D,#0d0f10);
   color:#DCFBFF;
   cursor:pointer;
+  font-weight:600;
   transition:.25s;
-  text-decoration:none;
+  min-width:200px;
 }
-.modal-actions a:hover,
-.modal-actions button:hover{
-  box-shadow:0 0 16px rgba(220,251,255,.6);
-  transform:translateY(-1px);
+.modal-addcart:hover{
+  box-shadow:0 0 18px rgba(220,251,255,.6);
+  transform:translateY(-2px);
+}
+.modal-addcart:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+  transform:none;
+  box-shadow:none;
 }
 
 /* ✅ Added success */
@@ -332,18 +312,14 @@ body{
   box-shadow:0 0 20px rgba(220,251,255,.6);
   transform:translateX(-50%) translateY(-3px);
 }
-
-/* hide when empty */
 #goCheckoutBottom.is-hidden{ display:none; }
 
-/* pop-in */
 @keyframes checkoutPop{
   from{ opacity:0; transform:translateX(-50%) translateY(18px); filter:blur(2px); }
   to{ opacity:1; transform:translateX(-50%) translateY(0); filter:blur(0); }
 }
 #goCheckoutBottom.pop-in{ animation:checkoutPop 260ms ease-out; }
 
-/* glow */
 @keyframes checkoutGlow{
   0%{ box-shadow:0 0 0 rgba(220,251,255,0); }
   50%{ box-shadow:0 0 25px rgba(220,251,255,0.9); }
@@ -351,7 +327,6 @@ body{
 }
 #goCheckoutBottom.glow{ animation:checkoutGlow 500ms ease; }
 
-/* shake */
 @keyframes checkoutShake{
   0%{ transform:translateX(-50%) translateY(0); }
   25%{ transform:translateX(calc(-50% - 2px)) translateY(0); }
