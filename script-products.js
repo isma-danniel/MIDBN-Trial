@@ -142,31 +142,11 @@ window.addEventListener('scroll', ()=>{
   particleContainer.style.transform = `translateY(${scrollTop * 0.2}px)`;
 });
 
-fetch("https://script.google.com/macros/s/AKfycbw47Ik4ZX5Jic8knGYTUzszX_i3tszmq6WNSwTUb_DXy2SbQbGfEquntmcGiAVmBqR9/exec")
-  .then(res => res.json())
-  .then(data => {
-    data.forEach(p => {
-      document.querySelector(`[data-id="${p.id}"] .stock`)
-        .innerText = `Stock: ${p.stock}`;
-
-      if(p.stock <= 0){
-        document.querySelector(`[data-id="${p.id}"] .buy-btn`).disabled = true;
-        document.querySelector(`[data-id="${p.id}"] .buy-btn`).innerText = "Out of Stock";
-      }
-    });
-  });
-
-fetch("https://script.google.com/macros/s/AKfycbw47Ik4ZX5Jic8knGYTUzszX_i3tszmq6WNSwTUb_DXy2SbQbGfEquntmcGiAVmBqR9/exec", {
-  method: "POST",
-  body: JSON.stringify({ cart }),
-  headers: { "Content-Type": "application/json" }
-});
-
-const API = "https://script.google.com/macros/s/AKfycbw5ATYF07THSscuWqnF-rYA_iyIjKLQc6JTNPQgpAi8RAiAEShbff5hgbiy7rS-XR8h/exec";
+const API = "YOUR_DEPLOYED_WEB_APP_URL"; // replace with your Apps Script URL
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-/* LOAD LIVE STOCK */
+/* Load live products and stock */
 fetch(API)
   .then(res => res.json())
   .then(products => {
@@ -185,21 +165,18 @@ fetch(API)
     });
   });
 
-/* ADD TO CART WITH LIVE STOCK CHECK */
+/* Add product to cart with stock check */
 function addToCart(id, name, price) {
   fetch(API)
     .then(res => res.json())
     .then(products => {
-
       const product = products.find(p => p.id == id);
-
       if(!product || product.stock <= 0){
         alert("Out of stock");
         return;
       }
 
       const existing = cart.find(i => i.id == id);
-
       if(existing){
         if(existing.qty + 1 > product.stock){
           alert("Not enough stock");
