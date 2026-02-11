@@ -1,4 +1,4 @@
-const API = "YOUR_DEPLOYED_WEB_APP_URL"; // replace with your Apps Script URL
+const API = "https://script.google.com/home/projects/1WZ7biSO_A7f0gyGr3oST38qIvmGXbfj3JhJ3MbGDfcjS_XZ_UNp90g-Y/edit"; // replace with your Apps Script URL
 
 const cartItemsContainer = document.getElementById("cartItems");
 const cartTotal = document.getElementById("cartTotal");
