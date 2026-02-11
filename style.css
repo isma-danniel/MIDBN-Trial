@@ -114,7 +114,23 @@ body { background: var(--dark); color: var(--text); font-family:-apple-system, B
 .brand-scroll { display:grid; grid-template-columns:1fr 1fr; gap:25px; max-height:400px; overflow-y:auto; }
 .brand-card { position: relative; display:flex; justify-content:center; align-items:center; height:140px; overflow:hidden; border-radius:16px; transition:0.3s ease; }
 .brand-card img { width:100%; height:100%; object-fit:cover; }
-.brand-card .brand-name { position:absolute; bottom:10px; left:10px; background: rgba(0,0,0,0.6); padding:6px 14px; border-radius:20px; font-size:0.85rem; font-weight:600; color:var(--primary); }
+.brand-card .brand-name {
+  position: absolute;
+  top: 50%;           /* vertical center */
+  left: 50%;          /* horizontal center */
+  transform: translate(-50%, -50%); /* center text */
+  background: none;   /* remove dark background */
+  padding: 0;         /* remove extra padding */
+  border-radius: 0;   /* remove border-radius */
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-align: center; /* center text horizontally */
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6); /* subtle shadow for readability */
+  white-space: normal;    /* allow multi-line wrapping */
+  word-break: break-word; /* break very long words if needed */
+  max-width: 90%;         /* prevent overflow outside the card */
+}
 .brand-card:hover { transform:scale(1.05); box-shadow:0 6px 20px rgba(0,0,0,0.4); }
 
 /* NEW ARRIVALS */
