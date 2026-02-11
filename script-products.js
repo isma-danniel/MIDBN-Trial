@@ -1,18 +1,18 @@
-// ✅ BOOT: hamburger always works even if other parts fail
+// ✅ BOOT: hamburger always works
 window.addEventListener("DOMContentLoaded", () => {
   const hamburger = document.getElementById("hamburger");
   const filters = document.getElementById("filters");
-  if (hamburger && filters) {
-    hamburger.addEventListener("click", () => {
-      filters.classList.toggle("active");
-    });
+  if(hamburger && filters){
+    hamburger.addEventListener("click", ()=> filters.classList.toggle("active"));
   }
+
+  // keyboard support
+  hamburger?.addEventListener("keydown", (e)=>{
+    if(e.key==="Enter" || e.key===" ") hamburger.click();
+  });
 });
 
-// ==========================================
-// PRODUCT DATA
-// ==========================================
-
+// ===== PRODUCT DATA =====
 const products = [
   {id:1,name:"Rolex Submariner Date",price:15800,brand:"Rolex",category:"mens",grade:"A",stock:3,label:"NEW",img:"https://picsum.photos/500/500?1",details:"Stainless steel, automatic movement, waterproof 300m"},
   {id:2,name:"G-Shock GA2100 Carbon",price:199,brand:"G-Shock",category:"mens",grade:"A",stock:7,label:"LAST STOCK",img:"https://picsum.photos/500/500?2",details:"Carbon core guard, shock resistant"},
@@ -22,10 +22,7 @@ const products = [
   {id:6,name:"Tissot PRX Quartz",price:650,brand:"Tissot",category:"promo",grade:"B",stock:1,label:"DEFECT",img:"https://picsum.photos/500/500?6",details:"Quartz movement"}
 ];
 
-// ==========================================
-// DOM ELEMENTS (SAFE)
-// ==========================================
-
+// ===== DOM =====
 const productGrid = document.getElementById("productGrid");
 const searchInput = document.getElementById("searchInput");
 const sortSelect = document.getElementById("sortSelect");
@@ -43,24 +40,19 @@ const modalStock = document.getElementById("modalStock");
 const modalDetails = document.getElementById("modalDetails");
 const closeModal = document.getElementById("closeModal");
 const modalAddCart = document.getElementById("modalAddCart");
-const goCheckoutBottom = document.getElementById("goCheckoutBottom");
 const whatsappBtn = document.getElementById("whatsappBtn");
 
-// ==========================================
-// CONFIG
-// ==========================================
+const goCheckoutBottom = document.getElementById("goCheckoutBottom");
+
+// ===== CONFIG =====
 const API = "https://script.google.com/macros/s/AKfycbwPTwgGLqGy75TQ8fY9E-pyKoncCVmbs6BJdzZzfgGBRXv4OKTgLbJaBJ3hB4ZfW2rd/exec";
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let currentQuickProduct = null;
 
-// ==========================================
-// RENDER PRODUCTS (SAFE)
-// ==========================================
-
+// ===== RENDER PRODUCTS =====
 function renderProducts(list){
   if(!productGrid) return;
-
   productGrid.innerHTML = "";
 
   if(list.length === 0){
@@ -68,16 +60,15 @@ function renderProducts(list){
     return;
   }
 
-  list.forEach(p => {
-
+  list.forEach(p=>{
     const card = document.createElement("div");
     card.className = "product-card";
     card.dataset.id = p.id;
 
+    // ✅ No +Add button on card anymore
     card.innerHTML = `
       <img src="${p.img}" alt="${p.name}">
       ${p.label ? `<div class="label">${p.label}</div>` : ""}
-
       <div class="card-body">
         <div class="brand">${p.brand}</div>
         <div class="name product-name">${p.name}</div>
@@ -87,21 +78,17 @@ function renderProducts(list){
       </div>
     `;
 
-    // Quick view events
-    const img = card.querySelector("img");
-    const more = card.querySelector(".more-details-btn");
-
-    if(img) img.onclick = () => openQuickView(p);
-    if(more) more.onclick = (e)=>{ e.preventDefault(); openQuickView(p); };
+    card.querySelector("img")?.addEventListener("click", ()=>openQuickView(p));
+    card.querySelector(".more-details-btn")?.addEventListener("click",(e)=>{
+      e.preventDefault();
+      openQuickView(p);
+    });
 
     productGrid.appendChild(card);
   });
 }
 
-// ==========================================
-// QUICK VIEW MODAL (SAFE)
-// ==========================================
-
+// ===== QUICK VIEW =====
 function openQuickView(product){
   currentQuickProduct = product;
 
@@ -123,22 +110,17 @@ function openQuickView(product){
   if(quickViewModal) quickViewModal.style.display = "flex";
 }
 
-if(closeModal && quickViewModal){
-  closeModal.onclick = ()=> quickViewModal.style.display = "none";
-  window.addEventListener("click", (e)=>{
-    if(e.target === quickViewModal) quickViewModal.style.display = "none";
-  });
-}
+// close modal
+closeModal?.addEventListener("click", ()=> quickViewModal.style.display = "none");
+window.addEventListener("click",(e)=>{
+  if(e.target === quickViewModal) quickViewModal.style.display = "none";
+});
 
-// ==========================================
-// FILTER + SORT (SAFE)
-// ==========================================
-
+// ===== FILTER + SORT =====
 function filterSortProducts(){
   let filtered = [...products];
 
   const q = (searchInput?.value || "").toLowerCase().trim();
-
   filtered = filtered.filter(p=>{
     const searchMatch = p.name.toLowerCase().includes(q);
     const brandMatch = !brandFilter?.value || brandFilter.value === "" || p.brand === brandFilter.value;
@@ -154,12 +136,13 @@ function filterSortProducts(){
     return searchMatch && brandMatch && categoryMatch && gradeMatch && minMatch && maxMatch;
   });
 
-  if(sortSelect?.value === "az") filtered.sort((a,b)=> a.name.localeCompare(b.name));
-  if(sortSelect?.value === "priceLow") filtered.sort((a,b)=> a.price - b.price);
+  if(sortSelect?.value === "az") filtered.sort((a,b)=>a.name.localeCompare(b.name));
+  if(sortSelect?.value === "priceLow") filtered.sort((a,b)=>a.price-b.price);
 
   renderProducts(filtered);
 }
 
+// listeners
 searchInput?.addEventListener("input", filterSortProducts);
 sortSelect?.addEventListener("change", filterSortProducts);
 brandFilter?.addEventListener("change", filterSortProducts);
@@ -168,52 +151,42 @@ gradeFilter?.addEventListener("change", filterSortProducts);
 minPrice?.addEventListener("input", filterSortProducts);
 maxPrice?.addEventListener("input", filterSortProducts);
 
-// Initial render
+// init
 renderProducts(products);
 
-// ==========================================
-// LOAD LIVE STOCK FROM GOOGLE SHEET
-// ==========================================
-
+// ===== LOAD LIVE STOCK =====
 fetch(API)
-  .then(res => res.json())
-  .then(data => {
-    data.forEach(p => {
+  .then(res=>res.json())
+  .then(data=>{
+    data.forEach(p=>{
       const card = document.querySelector(`[data-id="${p.id}"]`);
       if(!card) return;
 
-      const priceEl = card.querySelector(".price");
-      const stockEl = card.querySelector(".stock");
-      const addBtn = card.querySelector(".img-addcart");
+      card.querySelector(".price").innerText = `BND ${p.price}`;
+      card.querySelector(".stock").innerText = `Stock: ${p.stock}`;
 
-      if(priceEl) priceEl.innerText = `BND ${p.price}`;
-      if(stockEl) stockEl.innerText = `Stock: ${p.stock}`;
-
-      if(addBtn && p.stock <= 0){
-        addBtn.disabled = true;
-        addBtn.innerText = "Out";
+      // also update local product stock so modal becomes accurate
+      const local = products.find(x=>x.id==p.id);
+      if(local){
+        local.price = p.price;
+        local.stock = p.stock;
       }
     });
   })
-  .catch(()=>{ /* ignore API errors on load */ });
+  .catch(()=>{});
 
-// ==========================================
-// ADD TO CART (STOCK CHECK)
-// ==========================================
-
+// ===== ADD TO CART (stock check) =====
 function addToCart(id, name, price){
   fetch(API)
-    .then(res => res.json())
-    .then(data => {
-      const product = data.find(p => p.id == id);
-
+    .then(res=>res.json())
+    .then(data=>{
+      const product = data.find(p=>p.id==id);
       if(!product || product.stock <= 0){
         alert("Out of stock");
         return;
       }
 
-      const existing = cart.find(i => i.id == id);
-
+      const existing = cart.find(i=>i.id==id);
       if(existing){
         if(existing.qty + 1 > product.stock){
           alert("Not enough stock");
@@ -221,64 +194,36 @@ function addToCart(id, name, price){
         }
         existing.qty++;
       } else {
-        cart.push({ id, name, price, qty: 1 });
+        cart.push({id, name, price, qty:1});
       }
 
       localStorage.setItem("cart", JSON.stringify(cart));
     });
 }
 
-// ==========================================
-// IMAGE FLOATING ADD BUTTON CLICK
-// ==========================================
+// ===== MODAL ADD BUTTON (premium) =====
+modalAddCart?.addEventListener("click", ()=>{
+  if(!currentQuickProduct) return;
 
-document.addEventListener("click", (e)=>{
-  const btn = e.target.closest(".img-addcart");
-  if(!btn) return;
+  addToCart(currentQuickProduct.id, currentQuickProduct.name, currentQuickProduct.price);
 
-  const card = btn.closest(".product-card");
-  if(!card) return;
+  modalAddCart.classList.add("added");
+  modalAddCart.innerText = "✓ Added";
+  modalAddCart.disabled = true;
 
-  const id = btn.dataset.id;
-  const name = card.querySelector(".product-name")?.innerText || "";
-  const price = parseFloat((card.querySelector(".price")?.innerText || "BND 0").replace("BND","").trim()) || 0;
-
-  addToCart(id, name, price);
+  setTimeout(()=>{
+    modalAddCart.classList.remove("added");
+    modalAddCart.innerText = "+ Add to Cart";
+    modalAddCart.disabled = false;
+  }, 1000);
 });
 
-// ==========================================
-// MODAL ADD BUTTON (PREMIUM EFFECT)
-// ==========================================
-
-if(modalAddCart){
-  modalAddCart.addEventListener("click", ()=>{
-    if(!currentQuickProduct) return;
-
-    addToCart(currentQuickProduct.id, currentQuickProduct.name, currentQuickProduct.price);
-
-    modalAddCart.classList.add("added");
-    modalAddCart.innerText = "✓ Added";
-    modalAddCart.disabled = true;
-
-    setTimeout(()=>{
-      modalAddCart.classList.remove("added");
-      modalAddCart.innerText = "+ Add to Cart";
-      modalAddCart.disabled = false;
-    }, 1000);
-  });
-}
-
-// ==========================================
-// GLOBAL BOTTOM CHECKOUT BUTTON
-// ==========================================
-
-if(goCheckoutBottom){
-  goCheckoutBottom.addEventListener("click", ()=>{
-    const cartNow = JSON.parse(localStorage.getItem("cart")) || [];
-    if(cartNow.length === 0){
-      alert("Your cart is empty!");
-      return;
-    }
-    window.location.href = "checkout.html";
-  });
-}
+// ===== CHECKOUT BUTTON =====
+goCheckoutBottom?.addEventListener("click", ()=>{
+  const cartNow = JSON.parse(localStorage.getItem("cart")) || [];
+  if(cartNow.length === 0){
+    alert("Your cart is empty!");
+    return;
+  }
+  window.location.href = "checkout.html";
+});
