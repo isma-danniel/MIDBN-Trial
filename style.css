@@ -129,7 +129,7 @@ body { background: var(--dark); color: var(--text); font-family:-apple-system, B
 .arrival-card:hover { transform:scale(1.05); box-shadow:0 6px 20px rgba(0,0,0,0.3); }
 
 /* CATALOGUE */
-.catalog { padding:20px 20px; text-align:center; }
+.catalog { padding:20px 30px; text-align:center; }
 .catalog-content h2 { color:var(--primary); }
 .catalog-btn { padding:14px 32px; border:1px solid var(--primary); color:var(--primary); text-decoration:none; }
 
