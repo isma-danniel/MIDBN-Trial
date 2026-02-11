@@ -161,3 +161,56 @@ fetch("https://script.google.com/macros/s/AKfycbw47Ik4ZX5Jic8knGYTUzszX_i3tszmq6
   body: JSON.stringify({ cart }),
   headers: { "Content-Type": "application/json" }
 });
+
+const API = "https://script.google.com/macros/s/AKfycbw5ATYF07THSscuWqnF-rYA_iyIjKLQc6JTNPQgpAi8RAiAEShbff5hgbiy7rS-XR8h/exec";
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+/* LOAD LIVE STOCK */
+fetch(API)
+  .then(res => res.json())
+  .then(products => {
+    products.forEach(p => {
+      const card = document.querySelector(`[data-id="${p.id}"]`);
+      if(!card) return;
+
+      card.querySelector(".price").innerText = `BND ${p.price}`;
+      card.querySelector(".stock").innerText = `Stock: ${p.stock}`;
+
+      if(p.stock <= 0){
+        const btn = card.querySelector(".buy-btn");
+        btn.disabled = true;
+        btn.innerText = "Out of Stock";
+      }
+    });
+  });
+
+/* ADD TO CART WITH LIVE STOCK CHECK */
+function addToCart(id, name, price) {
+  fetch(API)
+    .then(res => res.json())
+    .then(products => {
+
+      const product = products.find(p => p.id == id);
+
+      if(!product || product.stock <= 0){
+        alert("Out of stock");
+        return;
+      }
+
+      const existing = cart.find(i => i.id == id);
+
+      if(existing){
+        if(existing.qty + 1 > product.stock){
+          alert("Not enough stock");
+          return;
+        }
+        existing.qty++;
+      } else {
+        cart.push({ id, name, price, qty:1 });
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert("Added to cart");
+    });
+}
