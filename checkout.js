@@ -1,4 +1,4 @@
-const API = "https://script.google.com/home/projects/1WZ7biSO_A7f0gyGr3oST38qIvmGXbfj3JhJ3MbGDfcjS_XZ_UNp90g-Y/edit"; // replace with your Apps Script URL
+const API = "https://script.google.com/macros/s/AKfycbwPTwgGLqGy75TQ8fY9E-pyKoncCVmbs6BJdzZzfgGBRXv4OKTgLbJaBJ3hB4ZfW2rd/exec"; // replace with your Apps Script URL
 
 const cartItemsContainer = document.getElementById("cartItems");
 const cartTotal = document.getElementById("cartTotal");
