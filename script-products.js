@@ -7,6 +7,7 @@ const products = [
   {id:5,name:"Seiko Presage Cocktail",price:899,brand:"Seiko",category:"new",grade:"A",stock:5,label:"NEW",img:"https://picsum.photos/500/500?5", details:"Japanese automatic, cocktail-inspired dial, 50m water resistant"},
   {id:6,name:"Tissot PRX Quartz",price:650,brand:"Tissot",category:"promo",grade:"B",stock:1,label:"DEFECT",img:"https://picsum.photos/500/500?6", details:"Quartz movement, stainless steel, retro design"}
 ];
+
 // ===== DOM ELEMENTS =====
 const productGrid = document.getElementById("productGrid");
 const searchInput = document.getElementById("searchInput");
@@ -25,9 +26,20 @@ const modalImg = document.getElementById("modalImg");
 const modalName = document.getElementById("modalName");
 const modalPrice = document.getElementById("modalPrice");
 const modalStock = document.getElementById("modalStock");
-const whatsappBtn = document.getElementById("whatsappBtn");
-const closeModal = document.getElementById("closeModal");
 const modalDetails = document.getElementById("modalDetails");
+const closeModal = document.getElementById("closeModal");
+
+// ===== FLOATING MINI-CART ELEMENTS =====
+const miniCart = document.getElementById("miniCart");
+const miniCartItems = document.getElementById("miniCartItems");
+const miniCartTotal = document.querySelector(".mini-cart-total");
+const floatingCartCount = document.getElementById("floatingCartCount");
+const floatingGoCheckout = document.getElementById("floatingGoCheckout");
+const floatingToggle = document.getElementById("floatingToggle");
+
+const API = "https://script.google.com/macros/s/AKfycbwPTwgGLqGy75TQ8fY9E-pyKoncCVmbs6BJdzZzfgGBRXv4OKTgLbJaBJ3hB4ZfW2rd/exec";
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 // ===== HAMBURGER TOGGLE =====
 hamburger.onclick = () => {
@@ -49,14 +61,19 @@ function renderProducts(list){
   list.forEach(p => {
     const card = document.createElement("div");
     card.className = "product-card show";
+    card.dataset.id = p.id;
     card.innerHTML = `
       <img src="${p.img}" alt="${p.name}">
       ${p.label ? `<div class="label">${p.label}</div>` : ""}
       <div class="card-body">
         <div class="brand">Brand: ${p.brand}</div>
-        <div class="name">${p.name}</div>
-        <div class="price">$${p.price}</div>
+        <div class="name product-name">${p.name}</div>
+        <div class="price">BND ${p.price}</div>
         <div class="stock">Stock: ${p.stock}</div>
+        <div class="card-buttons">
+          <button class="buy-btn add-to-cart">+ Add to Cart</button>
+          <button class="buy-btn go-checkout">🛒 Go to Checkout</button>
+        </div>
         <a href="#" class="more-details-btn">More Details →</a>
       </div>
     `;
@@ -68,6 +85,7 @@ function renderProducts(list){
       openQuickView(p);
     };
     card.querySelector("img").onclick = ()=>openQuickView(p);
+
     productGrid.appendChild(card);
   });
 }
@@ -76,11 +94,9 @@ function renderProducts(list){
 function openQuickView(product){
   modalImg.src = product.img;
   modalName.textContent = product.name;
-  modalPrice.textContent = `$${product.price}`;
+  modalPrice.textContent = `BND ${product.price}`;
   modalStock.textContent = `Stock: ${product.stock}`;
   modalDetails.textContent = product.details || "No details available";
-
-  whatsappBtn.href = `https://wa.me/?text=I'm interested in ${encodeURIComponent(product.name)}`;
   quickViewModal.style.display = "flex";
 }
 closeModal.onclick = () => quickViewModal.style.display = "none";
@@ -117,60 +133,30 @@ maxPrice.addEventListener("input", filterSortProducts);
 // ===== INITIAL RENDER =====
 renderProducts(products);
 
-// ===== PARTICLES =====
-const particleContainer = document.getElementById("particleContainer");
-const particleCount = 35;
-for(let i=0;i<particleCount;i++){
-  const p = document.createElement("div");
-  p.className = "particle";
-  const startX = Math.random() * window.innerWidth;
-  const xMove = (Math.random() * 40 - 20) + "px";
-  const size = Math.random() * 3 + 2 + "px";
-  const delay = Math.random() * 10 + "s";
-  const duration = Math.random() * 12 + 8 + "s";
-  p.style.left = startX + "px";
-  p.style.width = p.style.height = size;
-  p.style.setProperty("--xMove", xMove);
-  p.style.animationDuration = duration;
-  p.style.animationDelay = delay;
-  particleContainer.appendChild(p);
-}
-
-// ===== PARALLAX =====
-window.addEventListener('scroll', ()=>{
-  const scrollTop = window.scrollY;
-  particleContainer.style.transform = `translateY(${scrollTop * 0.2}px)`;
-});
-
-const API = "https://script.google.com/macros/s/AKfycbwPTwgGLqGy75TQ8fY9E-pyKoncCVmbs6BJdzZzfgGBRXv4OKTgLbJaBJ3hB4ZfW2rd/exec"; // replace with your Apps Script URL
-
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-/* Load live products and stock */
+// ===== LOAD LIVE STOCK FROM SHEET =====
 fetch(API)
   .then(res => res.json())
-  .then(products => {
-    products.forEach(p => {
+  .then(productsData => {
+    productsData.forEach(p => {
       const card = document.querySelector(`[data-id="${p.id}"]`);
       if(!card) return;
-
       card.querySelector(".price").innerText = `BND ${p.price}`;
       card.querySelector(".stock").innerText = `Stock: ${p.stock}`;
-
-      if(p.stock <= 0){
-        const btn = card.querySelector(".buy-btn");
+      const btn = card.querySelector(".add-to-cart");
+      if(p.stock <= 0) {
         btn.disabled = true;
         btn.innerText = "Out of Stock";
       }
     });
+    updateFloatingCart();
   });
 
-/* Add product to cart with stock check */
+// ===== ADD TO CART =====
 function addToCart(id, name, price) {
   fetch(API)
     .then(res => res.json())
-    .then(products => {
-      const product = products.find(p => p.id == id);
+    .then(productsData => {
+      const product = productsData.find(p => p.id == id);
       if(!product || product.stock <= 0){
         alert("Out of stock");
         return;
@@ -188,13 +174,60 @@ function addToCart(id, name, price) {
       }
 
       localStorage.setItem("cart", JSON.stringify(cart));
+      updateFloatingCart();
       alert("Added to cart");
     });
 }
 
-// Event delegation for all product cards
-document.addEventListener("click", function(e){
+// ===== FLOATING MINI-CART FUNCTIONALITY =====
 
+// Toggle mini cart
+floatingToggle.addEventListener("click", ()=>{
+  miniCart.style.display = miniCart.style.display === "flex" ? "none" : "flex";
+});
+
+// Render mini cart
+function renderMiniCart(){
+  miniCartItems.innerHTML = "";
+  let total = 0;
+  if(cart.length === 0){
+    miniCartItems.innerHTML = `<p style="opacity:.6;text-align:center;">Cart is empty</p>`;
+    miniCartTotal.innerText = "Total: BND 0";
+    return;
+  }
+  cart.forEach(item => {
+    total += item.price * item.qty;
+    miniCartItems.innerHTML += `
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+        <span>${item.name} x${item.qty}</span>
+        <span>BND ${(item.price*item.qty).toFixed(2)}</span>
+      </div>
+    `;
+  });
+  miniCartTotal.innerText = `Total: BND ${total.toFixed(2)}`;
+}
+
+// Update cart count badge
+function updateFloatingCart(){
+  const totalQty = cart.reduce((sum,i)=>sum+i.qty,0);
+  if(floatingCartCount) floatingCartCount.innerText = totalQty;
+  renderMiniCart();
+}
+
+// Go to checkout from mini cart
+floatingGoCheckout.addEventListener("click", ()=>{
+  if(cart.length === 0){
+    alert("Your cart is empty!");
+    return;
+  }
+  window.location.href = "checkout.html";
+});
+
+// Initial update
+updateFloatingCart();
+
+// ===== EVENT DELEGATION FOR PRODUCT CARD BUTTONS =====
+document.addEventListener("click", function(e){
   const card = e.target.closest(".product-card");
   if(!card) return;
 
@@ -202,15 +235,12 @@ document.addEventListener("click", function(e){
   const name = card.querySelector(".product-name").innerText;
   const price = parseFloat(card.querySelector(".price").innerText.replace("BND","").trim());
 
-  // Add to Cart button
   if(e.target.classList.contains("add-to-cart")){
-    addToCart(id, name, price);
-    updateCartCount();
+    addToCart(id,name,price);
+    updateFloatingCart();
   }
 
-  // Go to Checkout button
   if(e.target.classList.contains("go-checkout")){
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
     if(cart.length === 0){
       alert("Your cart is empty!");
       return;
@@ -218,14 +248,3 @@ document.addEventListener("click", function(e){
     window.location.href = "checkout.html";
   }
 });
-
-// Update cart count badge
-function updateCartCount() {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const countEls = document.querySelectorAll("#cartCount");
-  const totalQty = cart.reduce((sum,i)=>sum+i.qty,0);
-  countEls.forEach(el => el.innerText = totalQty);
-}
-
-// Initial cart count
-updateCartCount();
