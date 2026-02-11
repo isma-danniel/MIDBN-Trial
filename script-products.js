@@ -141,3 +141,17 @@ window.addEventListener('scroll', ()=>{
   const scrollTop = window.scrollY;
   particleContainer.style.transform = `translateY(${scrollTop * 0.2}px)`;
 });
+
+fetch("https://script.google.com/macros/s/AKfycbw47Ik4ZX5Jic8knGYTUzszX_i3tszmq6WNSwTUb_DXy2SbQbGfEquntmcGiAVmBqR9/exec")
+  .then(res => res.json())
+  .then(data => {
+    data.forEach(p => {
+      document.querySelector(`[data-id="${p.id}"] .stock`)
+        .innerText = `Stock: ${p.stock}`;
+
+      if(p.stock <= 0){
+        document.querySelector(`[data-id="${p.id}"] .buy-btn`).disabled = true;
+        document.querySelector(`[data-id="${p.id}"] .buy-btn`).innerText = "Out of Stock";
+      }
+    });
+  });
