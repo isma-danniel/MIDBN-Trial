@@ -55,10 +55,33 @@ function getCartQty(){
   const cartNow = JSON.parse(localStorage.getItem("cart")) || [];
   return cartNow.reduce((sum, i) => sum + (i.qty || 0), 0);
 }
+
 function updateCheckoutButton(){
   if(!goCheckoutBottom) return;
+
   const qty = getCartQty();
-  goCheckoutBottom.textContent = qty > 0 ? `🛒 Go to Checkout (${qty})` : `🛒 Go to Checkout`;
+
+  if(qty <= 0){
+    goCheckoutBottom.classList.add("is-hidden");
+    goCheckoutBottom.classList.remove("pop-in","glow","shake");
+    goCheckoutBottom.textContent = "🛒 Go to Checkout";
+    return;
+  }
+
+  const wasHidden = goCheckoutBottom.classList.contains("is-hidden");
+
+  goCheckoutBottom.classList.remove("is-hidden");
+  goCheckoutBottom.textContent = `🛒 Go to Checkout (${qty})`;
+
+  if(wasHidden){
+    goCheckoutBottom.classList.remove("pop-in");
+    void goCheckoutBottom.offsetWidth;
+    goCheckoutBottom.classList.add("pop-in");
+  } else {
+    goCheckoutBottom.classList.remove("glow","shake");
+    void goCheckoutBottom.offsetWidth;
+    goCheckoutBottom.classList.add("glow","shake");
+  }
 }
 updateCheckoutButton();
 
@@ -176,6 +199,7 @@ fetch(API)
         card.querySelector(".price").innerText = `BND ${p.price}`;
         card.querySelector(".stock").innerText = `Stock: ${p.stock}`;
       }
+
       const local = products.find(x=>x.id==p.id);
       if(local){
         local.price = p.price;
