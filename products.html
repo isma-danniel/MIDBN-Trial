@@ -1,25 +1,28 @@
-<!-- ✅ products.html (FULL - WhatsApp removed) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Products | MIDBN</title>
-  <link rel="stylesheet" href="style-products.css">
+  <link rel="stylesheet" href="style-products.css" />
 </head>
 <body>
 
   <!-- ===== HEADER ===== -->
   <header class="header">
     <a href="index.html" class="logo">← Home</a>
+
+    <!-- Hamburger -->
     <div id="hamburger" class="hamburger" aria-label="Open filters" role="button" tabindex="0">
-      <span></span><span></span><span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
   </header>
 
   <!-- ===== FILTER PANEL ===== -->
   <div id="filters" class="filters">
-    <input type="text" id="searchInput" placeholder="Search products...">
+    <input type="text" id="searchInput" placeholder="Search products..." />
 
     <div class="filter-row">
       <select id="sortSelect">
@@ -64,8 +67,8 @@
 
     <div class="filter-row">
       <div class="price-range">
-        <input type="number" id="minPrice" placeholder="Min BND">
-        <input type="number" id="maxPrice" placeholder="Max BND">
+        <input type="number" id="minPrice" placeholder="Min BND" />
+        <input type="number" id="maxPrice" placeholder="Max BND" />
       </div>
     </div>
   </div>
@@ -81,14 +84,16 @@
     <div class="modal-content">
       <span id="closeModal" class="close-btn" aria-label="Close">&times;</span>
 
-      <img id="modalImg" alt="Product image">
+      <img id="modalImg" alt="Product image" />
       <div id="modalName" class="modal-name"></div>
       <div id="modalPrice" class="modal-price"></div>
       <div id="modalStock" class="modal-stock"></div>
       <div id="modalDetails" class="modal-details"></div>
 
       <div class="modal-actions">
-        <button id="modalAddCart" type="button" class="modal-addcart">+ Add to Cart</button>
+        <button id="modalAddCart" type="button" class="modal-addcart">
+          + Add to Cart
+        </button>
       </div>
     </div>
   </div>
@@ -96,6 +101,7 @@
   <!-- ✅ ONE GLOBAL BOTTOM CENTER CHECKOUT BUTTON -->
   <button id="goCheckoutBottom" type="button">🛒 Go to Checkout</button>
 
+  <!-- JS -->
   <script src="script-products.js"></script>
 </body>
 </html>
