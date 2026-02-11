@@ -1,3 +1,14 @@
+// ✅ BOOT: hamburger always works even if other parts fail
+window.addEventListener("DOMContentLoaded", () => {
+  const hamburger = document.getElementById("hamburger");
+  const filters = document.getElementById("filters");
+  if (hamburger && filters) {
+    hamburger.addEventListener("click", () => {
+      filters.classList.toggle("active");
+    });
+  }
+});
+
 // ==========================================
 // PRODUCT DATA
 // ==========================================
@@ -12,10 +23,18 @@ const products = [
 ];
 
 // ==========================================
-// DOM ELEMENTS
+// DOM ELEMENTS (SAFE)
 // ==========================================
 
 const productGrid = document.getElementById("productGrid");
+const searchInput = document.getElementById("searchInput");
+const sortSelect = document.getElementById("sortSelect");
+const brandFilter = document.getElementById("brandFilter");
+const categoryFilter = document.getElementById("categoryFilter");
+const gradeFilter = document.getElementById("gradeFilter");
+const minPrice = document.getElementById("minPrice");
+const maxPrice = document.getElementById("maxPrice");
+
 const quickViewModal = document.getElementById("quickViewModal");
 const modalImg = document.getElementById("modalImg");
 const modalName = document.getElementById("modalName");
@@ -25,28 +44,29 @@ const modalDetails = document.getElementById("modalDetails");
 const closeModal = document.getElementById("closeModal");
 const modalAddCart = document.getElementById("modalAddCart");
 const goCheckoutBottom = document.getElementById("goCheckoutBottom");
-const hamburger = document.getElementById("hamburger");
-const filters = document.getElementById("filters");
+const whatsappBtn = document.getElementById("whatsappBtn");
 
-if(hamburger && filters){
-  hamburger.addEventListener("click", ()=>{
-    filters.classList.toggle("active");
-  });
-}
-
+// ==========================================
+// CONFIG
+// ==========================================
 const API = "https://script.google.com/macros/s/AKfycbwPTwgGLqGy75TQ8fY9E-pyKoncCVmbs6BJdzZzfgGBRXv4OKTgLbJaBJ3hB4ZfW2rd/exec";
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let currentQuickProduct = null;
 
-
 // ==========================================
-// RENDER PRODUCTS
+// RENDER PRODUCTS (SAFE)
 // ==========================================
 
 function renderProducts(list){
+  if(!productGrid) return;
 
   productGrid.innerHTML = "";
+
+  if(list.length === 0){
+    productGrid.innerHTML = "<p style='color:var(--muted);text-align:center;padding:20px;'>No products found.</p>";
+    return;
+  }
 
   list.forEach(p => {
 
@@ -57,8 +77,6 @@ function renderProducts(list){
     card.innerHTML = `
       <img src="${p.img}" alt="${p.name}">
       ${p.label ? `<div class="label">${p.label}</div>` : ""}
-
-      <!-- FLOATING ADD BUTTON -->
       <button class="img-addcart" data-id="${p.id}" type="button">+ Add</button>
 
       <div class="card-body">
@@ -71,146 +89,173 @@ function renderProducts(list){
     `;
 
     // Quick view events
-    card.querySelector("img").onclick = () => openQuickView(p);
-    card.querySelector(".more-details-btn").onclick = (e)=>{
-      e.preventDefault();
-      openQuickView(p);
-    };
+    const img = card.querySelector("img");
+    const more = card.querySelector(".more-details-btn");
+
+    if(img) img.onclick = () => openQuickView(p);
+    if(more) more.onclick = (e)=>{ e.preventDefault(); openQuickView(p); };
 
     productGrid.appendChild(card);
   });
 }
 
-renderProducts(products);
-
-
 // ==========================================
-// QUICK VIEW MODAL
+// QUICK VIEW MODAL (SAFE)
 // ==========================================
 
 function openQuickView(product){
-
   currentQuickProduct = product;
 
-  modalImg.src = product.img;
-  modalName.textContent = product.name;
-  modalPrice.textContent = `BND ${product.price}`;
-  modalStock.textContent = `Stock: ${product.stock}`;
-  modalDetails.textContent = product.details;
+  if(modalImg) modalImg.src = product.img;
+  if(modalName) modalName.textContent = product.name;
+  if(modalPrice) modalPrice.textContent = `BND ${product.price}`;
+  if(modalStock) modalStock.textContent = `Stock: ${product.stock}`;
+  if(modalDetails) modalDetails.textContent = product.details || "";
+
+  if(whatsappBtn){
+    whatsappBtn.href = `https://wa.me/?text=${encodeURIComponent("I'm interested in " + product.name)}`;
+  }
 
   if(modalAddCart){
     modalAddCart.disabled = product.stock <= 0;
     modalAddCart.innerText = product.stock <= 0 ? "Out of Stock" : "+ Add to Cart";
   }
 
-  quickViewModal.style.display = "flex";
+  if(quickViewModal) quickViewModal.style.display = "flex";
 }
 
-closeModal.onclick = ()=> quickViewModal.style.display = "none";
-window.onclick = (e)=>{
-  if(e.target === quickViewModal){
-    quickViewModal.style.display = "none";
-  }
-};
+if(closeModal && quickViewModal){
+  closeModal.onclick = ()=> quickViewModal.style.display = "none";
+  window.addEventListener("click", (e)=>{
+    if(e.target === quickViewModal) quickViewModal.style.display = "none";
+  });
+}
 
+// ==========================================
+// FILTER + SORT (SAFE)
+// ==========================================
+
+function filterSortProducts(){
+  let filtered = [...products];
+
+  const q = (searchInput?.value || "").toLowerCase().trim();
+
+  filtered = filtered.filter(p=>{
+    const searchMatch = p.name.toLowerCase().includes(q);
+    const brandMatch = !brandFilter?.value || brandFilter.value === "" || p.brand === brandFilter.value;
+    const categoryMatch = !categoryFilter?.value || categoryFilter.value === "" || p.category === categoryFilter.value;
+    const gradeMatch = !gradeFilter?.value || gradeFilter.value === "" || p.grade === gradeFilter.value;
+
+    const min = minPrice?.value ? parseFloat(minPrice.value) : null;
+    const max = maxPrice?.value ? parseFloat(maxPrice.value) : null;
+
+    const minMatch = min === null || p.price >= min;
+    const maxMatch = max === null || p.price <= max;
+
+    return searchMatch && brandMatch && categoryMatch && gradeMatch && minMatch && maxMatch;
+  });
+
+  if(sortSelect?.value === "az") filtered.sort((a,b)=> a.name.localeCompare(b.name));
+  if(sortSelect?.value === "priceLow") filtered.sort((a,b)=> a.price - b.price);
+
+  renderProducts(filtered);
+}
+
+searchInput?.addEventListener("input", filterSortProducts);
+sortSelect?.addEventListener("change", filterSortProducts);
+brandFilter?.addEventListener("change", filterSortProducts);
+categoryFilter?.addEventListener("change", filterSortProducts);
+gradeFilter?.addEventListener("change", filterSortProducts);
+minPrice?.addEventListener("input", filterSortProducts);
+maxPrice?.addEventListener("input", filterSortProducts);
+
+// Initial render
+renderProducts(products);
 
 // ==========================================
 // LOAD LIVE STOCK FROM GOOGLE SHEET
 // ==========================================
 
 fetch(API)
-.then(res => res.json())
-.then(data => {
+  .then(res => res.json())
+  .then(data => {
+    data.forEach(p => {
+      const card = document.querySelector(`[data-id="${p.id}"]`);
+      if(!card) return;
 
-  data.forEach(p => {
+      const priceEl = card.querySelector(".price");
+      const stockEl = card.querySelector(".stock");
+      const addBtn = card.querySelector(".img-addcart");
 
-    const card = document.querySelector(`[data-id="${p.id}"]`);
-    if(!card) return;
+      if(priceEl) priceEl.innerText = `BND ${p.price}`;
+      if(stockEl) stockEl.innerText = `Stock: ${p.stock}`;
 
-    card.querySelector(".price").innerText = `BND ${p.price}`;
-    card.querySelector(".stock").innerText = `Stock: ${p.stock}`;
-
-    const addBtn = card.querySelector(".img-addcart");
-    if(addBtn && p.stock <= 0){
-      addBtn.disabled = true;
-      addBtn.innerText = "Out";
-    }
-
-  });
-
-});
-
+      if(addBtn && p.stock <= 0){
+        addBtn.disabled = true;
+        addBtn.innerText = "Out";
+      }
+    });
+  })
+  .catch(()=>{ /* ignore API errors on load */ });
 
 // ==========================================
-// ADD TO CART FUNCTION
+// ADD TO CART (STOCK CHECK)
 // ==========================================
 
 function addToCart(id, name, price){
-
   fetch(API)
-  .then(res => res.json())
-  .then(data => {
+    .then(res => res.json())
+    .then(data => {
+      const product = data.find(p => p.id == id);
 
-    const product = data.find(p => p.id == id);
-
-    if(!product || product.stock <= 0){
-      alert("Out of stock");
-      return;
-    }
-
-    const existing = cart.find(i => i.id == id);
-
-    if(existing){
-      if(existing.qty + 1 > product.stock){
-        alert("Not enough stock");
+      if(!product || product.stock <= 0){
+        alert("Out of stock");
         return;
       }
-      existing.qty++;
-    } else {
-      cart.push({ id, name, price, qty: 1 });
-    }
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+      const existing = cart.find(i => i.id == id);
 
-  });
+      if(existing){
+        if(existing.qty + 1 > product.stock){
+          alert("Not enough stock");
+          return;
+        }
+        existing.qty++;
+      } else {
+        cart.push({ id, name, price, qty: 1 });
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+    });
 }
 
-
 // ==========================================
-// FLOATING IMAGE ADD BUTTON CLICK
+// IMAGE FLOATING ADD BUTTON CLICK
 // ==========================================
 
-document.addEventListener("click", function(e){
-
+document.addEventListener("click", (e)=>{
   const btn = e.target.closest(".img-addcart");
   if(!btn) return;
 
   const card = btn.closest(".product-card");
+  if(!card) return;
 
   const id = btn.dataset.id;
-  const name = card.querySelector(".product-name").innerText;
-  const price = parseFloat(card.querySelector(".price").innerText.replace("BND","").trim());
+  const name = card.querySelector(".product-name")?.innerText || "";
+  const price = parseFloat((card.querySelector(".price")?.innerText || "BND 0").replace("BND","").trim()) || 0;
 
   addToCart(id, name, price);
-
 });
-
 
 // ==========================================
 // MODAL ADD BUTTON (PREMIUM EFFECT)
 // ==========================================
 
 if(modalAddCart){
-
   modalAddCart.addEventListener("click", ()=>{
-
     if(!currentQuickProduct) return;
 
-    addToCart(
-      currentQuickProduct.id,
-      currentQuickProduct.name,
-      currentQuickProduct.price
-    );
+    addToCart(currentQuickProduct.id, currentQuickProduct.name, currentQuickProduct.price);
 
     modalAddCart.classList.add("added");
     modalAddCart.innerText = "✓ Added";
@@ -221,29 +266,20 @@ if(modalAddCart){
       modalAddCart.innerText = "+ Add to Cart";
       modalAddCart.disabled = false;
     }, 1000);
-
   });
-
 }
-
 
 // ==========================================
 // GLOBAL BOTTOM CHECKOUT BUTTON
 // ==========================================
 
 if(goCheckoutBottom){
-
   goCheckoutBottom.addEventListener("click", ()=>{
-
     const cartNow = JSON.parse(localStorage.getItem("cart")) || [];
-
     if(cartNow.length === 0){
       alert("Your cart is empty!");
       return;
     }
-
     window.location.href = "checkout.html";
-
   });
-
 }
