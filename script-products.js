@@ -142,7 +142,7 @@ window.addEventListener('scroll', ()=>{
   particleContainer.style.transform = `translateY(${scrollTop * 0.2}px)`;
 });
 
-const API = "YOUR_DEPLOYED_WEB_APP_URL"; // replace with your Apps Script URL
+const API = "https://script.google.com/macros/s/AKfycbwPTwgGLqGy75TQ8fY9E-pyKoncCVmbs6BJdzZzfgGBRXv4OKTgLbJaBJ3hB4ZfW2rd/exec"; // replace with your Apps Script URL
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
