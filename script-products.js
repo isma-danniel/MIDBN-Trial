@@ -155,3 +155,9 @@ fetch("https://script.google.com/macros/s/AKfycbw47Ik4ZX5Jic8knGYTUzszX_i3tszmq6
       }
     });
   });
+
+fetch("https://script.google.com/macros/s/AKfycbw47Ik4ZX5Jic8knGYTUzszX_i3tszmq6WNSwTUb_DXy2SbQbGfEquntmcGiAVmBqR9/exec", {
+  method: "POST",
+  body: JSON.stringify({ cart }),
+  headers: { "Content-Type": "application/json" }
+});
