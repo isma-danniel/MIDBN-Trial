@@ -202,40 +202,68 @@ fetch(API)
 
       const local = products.find(x=>x.id==p.id);
       if(local){
-        local.price = p.price;
-        local.stock = p.stock;
+        local.price = Number(p.price);
+        local.stock = Number(p.stock);
       }
     });
   })
   .catch(()=>{});
 
-// ===== ADD TO CART (stock check) =====
+// ===== ADD TO CART (stock check + fallback if API fails) =====
 function addToCart(id, name, price){
+  // Try API first (live stock)
   return fetch(API)
-    .then(res=>res.json())
-    .then(data=>{
-      const product = data.find(p=>p.id==id);
+    .then(res => res.json())
+    .then(data => {
+      const product = data.find(p => String(p.id) === String(id));
 
-      if(!product || product.stock <= 0){
+      if(!product){
+        alert("Product not found in stock sheet");
+        return false;
+      }
+
+      const stock = Number(product.stock || 0);
+      const livePrice = Number(product.price || price);
+
+      if(stock <= 0){
         alert("Out of stock");
         return false;
       }
 
       cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const existing = cart.find(i=>i.id==id);
+      const existing = cart.find(i => String(i.id) === String(id));
 
       if(existing){
-        if(existing.qty + 1 > product.stock){
+        if(existing.qty + 1 > stock){
           alert("Not enough stock");
           return false;
         }
         existing.qty++;
       } else {
-        cart.push({id, name, price, qty:1});
+        cart.push({ id, name, price: livePrice, qty: 1 });
       }
 
       localStorage.setItem("cart", JSON.stringify(cart));
       updateCheckoutButton();
+      return true;
+    })
+    .catch(err => {
+      console.error("API failed, fallback addToCart():", err);
+
+      // ✅ Fallback (offline): still add locally
+      cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const existing = cart.find(i => String(i.id) === String(id));
+
+      if(existing){
+        existing.qty++;
+      } else {
+        cart.push({ id, name, price, qty: 1 });
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCheckoutButton();
+
+      alert("Added to cart (offline mode). Stock check unavailable.");
       return true;
     });
 }
@@ -244,7 +272,11 @@ function addToCart(id, name, price){
 modalAddCart?.addEventListener("click", async ()=>{
   if(!currentQuickProduct) return;
 
-  const ok = await addToCart(currentQuickProduct.id, currentQuickProduct.name, currentQuickProduct.price);
+  const ok = await addToCart(
+    currentQuickProduct.id,
+    currentQuickProduct.name,
+    currentQuickProduct.price
+  );
   if(!ok) return;
 
   modalAddCart.classList.add("added");
@@ -265,7 +297,7 @@ goCheckoutBottom?.addEventListener("click", ()=>{
     alert("Your cart is empty!");
     return;
   }
-  window.location.href = "checkout.html";
+  window.location.href = "./checkout.html";
 });
 
 // keep label updated if user returns back
