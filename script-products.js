@@ -77,7 +77,6 @@ function renderProducts(list){
     card.innerHTML = `
       <img src="${p.img}" alt="${p.name}">
       ${p.label ? `<div class="label">${p.label}</div>` : ""}
-      <button class="img-addcart" data-id="${p.id}" type="button">+ Add</button>
 
       <div class="card-body">
         <div class="brand">${p.brand}</div>
