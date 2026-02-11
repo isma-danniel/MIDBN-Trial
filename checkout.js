@@ -1,76 +1,61 @@
-const API = "https://script.google.com/macros/s/AKfycbwPTwgGLqGy75TQ8fY9E-pyKoncCVmbs6BJdzZzfgGBRXv4OKTgLbJaBJ3hB4ZfW2rd/exec"; // replace with your Apps Script URL
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIDBN | Checkout</title>
 
-const cartItemsContainer = document.getElementById("cartItems");
-const cartTotal = document.getElementById("cartTotal");
+  <!-- Optional: if you want shared variables/theme -->
+  <link rel="stylesheet" href="style-products.css" />
 
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  <!-- Checkout page styling -->
+  <link rel="stylesheet" href="checkout.css" />
+</head>
+<body>
 
-function renderCart() {
-  cartItemsContainer.innerHTML = "";
-  if(cart.length === 0){
-    cartItemsContainer.innerHTML = `<p style="opacity:.6;text-align:center">Your cart is empty</p>`;
-    cartTotal.innerText = "BND 0";
-    return;
-  }
+  <!-- ===== HEADER (same concept) ===== -->
+  <header class="header">
+    <a href="products.html" class="logo">← Products</a>
+  </header>
 
-  let total = 0;
-  cart.forEach(item => {
-    total += item.price * item.qty;
-    cartItemsContainer.innerHTML += `
-      <div class="cart-item">
-        <div>
-          <strong>${item.name}</strong><br>
-          <small>Qty: ${item.qty}</small>
-        </div>
-        <div>BND ${(item.price * item.qty).toFixed(2)}</div>
-      </div>
-    `;
-  });
-  cartTotal.innerText = "BND " + total.toFixed(2);
-}
+  <!-- ===== WATERFALL BACKGROUND ===== -->
+  <div id="particleContainer"></div>
 
-renderCart();
+  <h2 class="checkout-title">Checkout</h2>
 
-/* Checkout form submit */
-document.getElementById("checkoutForm").addEventListener("submit", function(e){
-  e.preventDefault();
-  if(cart.length === 0){
-    alert("Your cart is empty!");
-    return;
-  }
+  <div class="checkout-container">
 
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const address = document.getElementById("address").value.trim();
-  const payment = document.getElementById("payment").value;
+    <!-- CART ITEMS -->
+    <div class="cart-section">
+      <h3>Your Cart</h3>
 
-  const total = cartTotal.innerText;
+      <div id="cartItems"></div>
 
-  /* 1️⃣ Save order */
-  fetch(API, {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({
-      type: "order",
-      cart,
-      total,
-      customer: { name, phone, address, payment }
-    })
-  }).then(res=>res.json())
-    .then(orderRes=>{
-      if(orderRes.status === "success"){
-        /* 2️⃣ Deduct stock */
-        fetch(API, {
-          method: "POST",
-          headers: {"Content-Type":"application/json"},
-          body: JSON.stringify({ type:"stock", cart })
-        });
+      <div id="cartTotal" class="cart-total">BND 0.00</div>
+    </div>
 
-        alert(`Order placed successfully!\nOrder ID: ${orderRes.orderId}`);
-        localStorage.removeItem("cart");
-        window.location.reload();
-      } else {
-        alert("Failed to place order, try again!");
-      }
-    });
-});
+    <!-- CHECKOUT FORM -->
+    <div class="form-section">
+      <h3>Customer Details</h3>
+
+      <form id="checkoutForm" class="checkout-form">
+        <input type="text" id="name" placeholder="Full Name" required />
+        <input type="text" id="phone" placeholder="Phone Number" required />
+        <textarea id="address" placeholder="Delivery Address" required></textarea>
+
+        <select id="payment" required>
+          <option value="">Select Payment Method</option>
+          <option value="Cash">Cash</option>
+          <option value="Bank Transfer">Bank Transfer</option>
+        </select>
+
+        <button id="placeOrderBtn" type="submit">Place Order</button>
+        <p id="orderHint" class="order-hint">Stock will be deducted after order is saved.</p>
+      </form>
+    </div>
+
+  </div>
+
+  <script src="checkout.js"></script>
+</body>
+</html>
