@@ -25,6 +25,14 @@ const modalDetails = document.getElementById("modalDetails");
 const closeModal = document.getElementById("closeModal");
 const modalAddCart = document.getElementById("modalAddCart");
 const goCheckoutBottom = document.getElementById("goCheckoutBottom");
+const hamburger = document.getElementById("hamburger");
+const filters = document.getElementById("filters");
+
+if(hamburger && filters){
+  hamburger.addEventListener("click", ()=>{
+    filters.classList.toggle("active");
+  });
+}
 
 const API = "https://script.google.com/macros/s/AKfycbwPTwgGLqGy75TQ8fY9E-pyKoncCVmbs6BJdzZzfgGBRXv4OKTgLbJaBJ3hB4ZfW2rd/exec";
 
