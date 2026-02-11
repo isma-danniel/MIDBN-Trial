@@ -1,3 +1,5 @@
+// ✅ script-products.js (FULL - WhatsApp removed)
+
 // ===== CONFIG =====
 const API = "https://script.google.com/macros/s/AKfycbwPTwgGLqGy75TQ8fY9E-pyKoncCVmbs6BJdzZzfgGBRXv4OKTgLbJaBJ3hB4ZfW2rd/exec";
 
@@ -32,7 +34,6 @@ const modalStock = document.getElementById("modalStock");
 const modalDetails = document.getElementById("modalDetails");
 const closeModal = document.getElementById("closeModal");
 const modalAddCart = document.getElementById("modalAddCart");
-const whatsappBtn = document.getElementById("whatsappBtn");
 
 const goCheckoutBottom = document.getElementById("goCheckoutBottom");
 
@@ -155,12 +156,6 @@ function openQuickView(product) {
   modalStock.textContent = `Stock: ${product.stock}`;
   modalDetails.textContent = product.details || "";
 
-  // whatsapp link
-  if (whatsappBtn) {
-    whatsappBtn.href = `https://wa.me/?text=${encodeURIComponent("I'm interested in " + product.name)}`;
-  }
-
-  // modal add button
   if (modalAddCart) {
     modalAddCart.disabled = product.stock <= 0;
     modalAddCart.innerText = product.stock <= 0 ? "Out of Stock" : "+ Add to Cart";
@@ -315,5 +310,4 @@ goCheckoutBottom?.addEventListener("click", () => {
   window.location.href = "./checkout.html";
 });
 
-// keep count correct when user comes back
 window.addEventListener("focus", updateCheckoutButton);
