@@ -5,40 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MIDBN | Checkout</title>
 
-  <!-- reuse your theme variables + glow styles if you want -->
   <link rel="stylesheet" href="style-products.css" />
-
-  <!-- checkout-only styles -->
   <link rel="stylesheet" href="checkout.css" />
 </head>
 <body>
 
-  <!-- ===== HEADER (same concept) ===== -->
   <header class="header">
     <a href="products.html" class="logo">← Products</a>
   </header>
 
-  <!-- ===== WATERFALL BACKGROUND ===== -->
   <div id="particleContainer"></div>
 
   <h2 class="checkout-title">Checkout</h2>
 
   <div class="checkout-container">
 
-    <!-- CART ITEMS -->
+    <!-- CART -->
     <div class="cart-section">
-      <h3>Your Cart</h3>
+      <div class="cart-head">
+        <h3>Your Cart</h3>
+        <button id="clearCartBtn" class="ghost-btn" type="button">Clear</button>
+      </div>
 
       <div id="cartItems"></div>
-
-      <!-- IMPORTANT: keep class cart-total, but also add id for JS -->
       <div id="cartTotal" class="cart-total">BND 0.00</div>
-
-      <!-- optional helper -->
-      <p id="emptyCart" class="empty-cart" style="display:none;">Your cart is empty</p>
     </div>
 
-    <!-- CHECKOUT FORM -->
+    <!-- FORM -->
     <div class="form-section">
       <h3>Customer Details</h3>
 
@@ -53,7 +46,8 @@
           <option value="Bank Transfer">Bank Transfer</option>
         </select>
 
-        <button type="submit">Place Order</button>
+        <button id="placeOrderBtn" type="submit">Place Order</button>
+        <p class="order-hint">Stock will be deducted after order is saved.</p>
       </form>
     </div>
 
