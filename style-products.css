@@ -10,21 +10,39 @@
 }
 
 /* ================= GLOBAL ================= */
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Inter',sans-serif;
-}
+*{ margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
 
 body{
   background: radial-gradient(circle at top,#0b0b0b,var(--bg));
   color: var(--text);
+  overflow-x:hidden;
+}
+
+/* ================= WATERFALL PARTICLES ================= */
+#particleContainer{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  overflow:hidden;
+}
+.particle{
+  position:absolute;
+  width:4px;
+  height:4px;
+  background:rgba(220,251,255,.25);
+  border-radius:50%;
+  animation:fall linear infinite;
+  filter:blur(.5px);
+}
+@keyframes fall{
+  from{ transform:translateY(-100vh); opacity:0; }
+  10%{ opacity:1; }
+  90%{ opacity:1; }
+  to{ transform:translateY(120vh); opacity:0; }
 }
 
 /* ================= HEADER ================= */
-
 .header{
   display:flex;
   justify-content:space-between;
@@ -36,7 +54,6 @@ body{
   top:0;
   z-index:1000;
 }
-
 .logo{
   font-weight:600;
   text-decoration:none;
@@ -52,43 +69,57 @@ body{
   box-shadow:0 0 12px rgba(220,251,255,.4);
 }
 
-/* ================= HAMBURGER ================= */
-
+/* ================= HAMBURGER (CLEAN) ================= */
 .hamburger{
   display:flex;
   flex-direction:column;
-  justify-content:space-between;
+  justify-content:center;
+  gap:6px;
   width:32px;
-  height:22px;
+  height:28px;
   cursor:pointer;
+  position:relative;
+  z-index:1100;
 }
-
 .hamburger span{
+  width:100%;
   height:3px;
   background:var(--primary);
   border-radius:10px;
-  box-shadow:0 0 8px rgba(220,251,255,.6);
+  transition:0.3s ease;
+  box-shadow:0 0 6px rgba(220,251,255,.6);
 }
 
-/* ================= FILTER PANEL ================= */
-
+/* ================= FILTER PANEL (EXTRA CLEAN + GLASS GLOW) ================= */
 .filters{
   position:relative;
-  background:var(--panel);
-  padding:0 16px;
+  background: var(--panel);
+
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+
   max-height:0;
   overflow:hidden;
-  transition:.4s ease;
+
+  padding:0 16px;     /* no vertical padding closed */
   opacity:0;
+
+  border-bottom:none;
+
+  transition:
+    max-height .45s ease,
+    padding .35s ease,
+    opacity .3s ease;
 }
 
 .filters.active{
   max-height:600px;
   padding:16px;
   opacity:1;
+  border-bottom:1px solid rgba(220,251,255,.15);
 
   backdrop-filter:blur(18px);
-
   box-shadow:
     0 10px 40px rgba(0,0,0,0.7),
     0 0 30px rgba(220,251,255,0.08),
@@ -113,36 +144,40 @@ body{
 .filters input,
 .filters select{
   width:100%;
-  padding:12px;
+  padding:12px 14px;
   border-radius:14px;
-  border:1px solid rgba(220,251,255,.15);
-  background:rgba(255,255,255,.05);
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(220,251,255,.12);
   color:var(--text);
 }
 
-.filter-row{
+.filter-row{ display:flex; gap:10px; }
+
+/* ✅ Min/Max perfectly side-by-side */
+.price-range{
   display:flex;
   gap:10px;
-  margin-bottom:10px;
+  width:100%;
+}
+.price-range input{
+  flex:1;
+  min-width:0;
 }
 
 /* ================= PRODUCT GRID ================= */
-
 .product-grid{
+  position:relative;
+  z-index:1; /* above particles */
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:14px;
   padding:16px;
 }
-
 @media(min-width:768px){
-  .product-grid{
-    grid-template-columns:repeat(3,1fr);
-  }
+  .product-grid{ grid-template-columns:repeat(3,1fr); }
 }
 
 /* ================= PRODUCT CARD ================= */
-
 .product-card{
   background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
   border-radius:20px;
@@ -152,74 +187,25 @@ body{
   position:relative;
   transition:.35s;
 }
-
 .product-card:hover{
   transform:scale(1.04);
   box-shadow:
     0 15px 40px rgba(0,0,0,.7),
     0 0 20px rgba(220,251,255,.08);
 }
-
 .product-card img{
   width:100%;
   display:block;
   border-radius:16px;
   transition:.35s;
 }
+.product-card:hover img{ transform:scale(1.06); }
 
-.product-card:hover img{
-  transform:scale(1.06);
-}
-
-/* FLOATING IMAGE ADD BUTTON */
-
-.img-addcart{
-  position:absolute;
-  bottom:14px;
-  right:14px;
-  padding:6px 12px;
-  font-size:12px;
-  border-radius:14px;
-  border:1px solid rgba(220,251,255,.6);
-  background:rgba(13,15,16,.85);
-  color:var(--primary);
-  backdrop-filter:blur(10px);
-  cursor:pointer;
-  transition:.25s;
-  z-index:5;
-}
-
-.img-addcart:hover{
-  background:rgba(220,251,255,.15);
-  box-shadow:0 0 12px rgba(220,251,255,.6);
-}
-
-/* ================= CARD BODY ================= */
-
-.card-body{
-  padding:12px;
-}
-
-.brand{
-  font-size:14px;
-  color:var(--primary);
-}
-
-.name{
-  font-size:12px;
-  margin-top:2px;
-}
-
-.price{
-  margin:6px 0;
-  color:var(--primary);
-  font-weight:500;
-}
-
-.stock{
-  font-size:12px;
-  color:var(--muted);
-}
+.card-body{ padding:12px; }
+.brand{ font-size:14px; color:var(--primary); }
+.name{ font-size:12px; margin-top:2px; }
+.price{ margin:6px 0; color:var(--primary); font-weight:500; }
+.stock{ font-size:12px; color:var(--muted); }
 
 .more-details-btn{
   margin-top:8px;
@@ -232,12 +218,9 @@ body{
   font-size:12px;
   transition:.25s;
 }
-.more-details-btn:hover{
-  background:rgba(220,251,255,.08);
-}
+.more-details-btn:hover{ background:rgba(220,251,255,.08); }
 
 /* ================= LABEL ================= */
-
 .label{
   position:absolute;
   top:10px;
@@ -249,10 +232,10 @@ body{
   background:rgba(220,251,255,.12);
   color:var(--primary);
   box-shadow:0 0 12px rgba(220,251,255,.5);
+  z-index:2;
 }
 
 /* ================= MODAL ================= */
-
 .quick-view-modal{
   position:fixed;
   inset:0;
@@ -260,9 +243,8 @@ body{
   display:none;
   justify-content:center;
   align-items:center;
-  z-index:999;
+  z-index:2000;
 }
-
 .modal-content{
   position:relative;
   background:var(--panel);
@@ -274,7 +256,6 @@ body{
   backdrop-filter:blur(20px);
   text-align:center;
 }
-
 .modal-content img{
   width:90%;
   max-height:220px;
@@ -282,6 +263,10 @@ body{
   border-radius:14px;
   margin-bottom:12px;
 }
+.modal-name{ color:var(--primary); font-weight:600; margin-bottom:4px; }
+.modal-price{ color:var(--primary); margin-bottom:4px; }
+.modal-stock{ color:var(--muted); margin-bottom:10px; }
+.modal-details{ color:var(--text); font-size:14px; margin-bottom:12px; }
 
 .close-btn{
   position:absolute;
@@ -301,7 +286,6 @@ body{
   gap:10px;
   margin-top:12px;
 }
-
 .modal-actions a,
 .modal-actions button{
   flex:1;
@@ -312,15 +296,23 @@ body{
   color:#DCFBFF;
   cursor:pointer;
   transition:.25s;
+  text-decoration:none;
 }
-
 .modal-actions a:hover,
 .modal-actions button:hover{
   box-shadow:0 0 16px rgba(220,251,255,.6);
+  transform:translateY(-1px);
 }
 
-/* ================= BOTTOM CHECKOUT BUTTON ================= */
+/* ✅ Added success */
+.modal-addcart.added{
+  background:rgba(0,150,90,0.85)!important;
+  border:1px solid rgba(0,200,120,0.8)!important;
+  color:#fff!important;
+  box-shadow:0 0 16px rgba(0,255,150,0.6);
+}
 
+/* ================= CHECKOUT BUTTON ================= */
 #goCheckoutBottom{
   position:fixed;
   bottom:20px;
@@ -333,11 +325,38 @@ body{
   color:#DCFBFF;
   font-weight:600;
   cursor:pointer;
-  z-index:10000;
+  z-index:3000;
   transition:.3s;
 }
-
 #goCheckoutBottom:hover{
   box-shadow:0 0 20px rgba(220,251,255,.6);
   transform:translateX(-50%) translateY(-3px);
 }
+
+/* hide when empty */
+#goCheckoutBottom.is-hidden{ display:none; }
+
+/* pop-in */
+@keyframes checkoutPop{
+  from{ opacity:0; transform:translateX(-50%) translateY(18px); filter:blur(2px); }
+  to{ opacity:1; transform:translateX(-50%) translateY(0); filter:blur(0); }
+}
+#goCheckoutBottom.pop-in{ animation:checkoutPop 260ms ease-out; }
+
+/* glow */
+@keyframes checkoutGlow{
+  0%{ box-shadow:0 0 0 rgba(220,251,255,0); }
+  50%{ box-shadow:0 0 25px rgba(220,251,255,0.9); }
+  100%{ box-shadow:0 0 0 rgba(220,251,255,0); }
+}
+#goCheckoutBottom.glow{ animation:checkoutGlow 500ms ease; }
+
+/* shake */
+@keyframes checkoutShake{
+  0%{ transform:translateX(-50%) translateY(0); }
+  25%{ transform:translateX(calc(-50% - 2px)) translateY(0); }
+  50%{ transform:translateX(calc(-50% + 2px)) translateY(0); }
+  75%{ transform:translateX(calc(-50% - 1px)) translateY(0); }
+  100%{ transform:translateX(-50%) translateY(0); }
+}
+#goCheckoutBottom.shake{ animation:checkoutShake 200ms ease; }
