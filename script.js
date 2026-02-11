@@ -1,5 +1,5 @@
 // HERO ANIMATION SEQUENTIAL
-window.addEventListener("load", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const quote = document.querySelector(".hero-quote");
   const btn = document.querySelector(".hero-btn");
 
@@ -44,6 +44,9 @@ let momentumID;
 let pauseAutoScroll = false;
 const speed = 0.3;
 
+// Throttle setup for drag events
+let lastMove = 0;
+
 // Desktop drag
 slider.addEventListener('mousedown', (e) => {
   isDown = true;
@@ -57,12 +60,15 @@ slider.addEventListener('mouseleave', () => endDrag());
 slider.addEventListener('mouseup', () => endDrag());
 slider.addEventListener('mousemove', (e) => {
   if(!isDown) return;
+  const now = Date.now();
+  if(now - lastMove < 16) return; // ~60fps
+  lastMove = now;
+
   e.preventDefault();
   const x = e.pageX - slider.offsetLeft;
   const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
 
-  // calculate velocity
   velocity = e.pageX - lastX;
   lastX = e.pageX;
 });
@@ -79,11 +85,14 @@ slider.addEventListener('touchstart', (e) => {
 slider.addEventListener('touchend', () => endDrag(true));
 slider.addEventListener('touchmove', (e) => {
   if(!isDown) return;
+  const now = Date.now();
+  if(now - lastMove < 16) return;
+  lastMove = now;
+
   const x = e.touches[0].pageX - slider.offsetLeft;
   const walk = (x - startX) * 2;
   slider.scrollLeft = scrollLeft - walk;
 
-  // calculate velocity
   velocity = e.touches[0].pageX - lastX;
   lastX = e.touches[0].pageX;
 });
@@ -144,14 +153,6 @@ navMenu.querySelectorAll("a").forEach(link => {
     hamburger.classList.remove("active");
     navMenu.classList.remove("active");
   });
-});
-
-// Close menu when clicking outside
-document.body.addEventListener("click", (e) => {
-  if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
-    hamburger.classList.remove("active");
-    navMenu.classList.remove("active");
-  }
 });
 
 // Close hamburger menu when clicking outside
