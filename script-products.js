@@ -191,3 +191,41 @@ function addToCart(id, name, price) {
       alert("Added to cart");
     });
 }
+
+// Event delegation for all product cards
+document.addEventListener("click", function(e){
+
+  const card = e.target.closest(".product-card");
+  if(!card) return;
+
+  const id = card.dataset.id;
+  const name = card.querySelector(".product-name").innerText;
+  const price = parseFloat(card.querySelector(".price").innerText.replace("BND","").trim());
+
+  // Add to Cart button
+  if(e.target.classList.contains("add-to-cart")){
+    addToCart(id, name, price);
+    updateCartCount();
+  }
+
+  // Go to Checkout button
+  if(e.target.classList.contains("go-checkout")){
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if(cart.length === 0){
+      alert("Your cart is empty!");
+      return;
+    }
+    window.location.href = "checkout.html";
+  }
+});
+
+// Update cart count badge
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const countEls = document.querySelectorAll("#cartCount");
+  const totalQty = cart.reduce((sum,i)=>sum+i.qty,0);
+  countEls.forEach(el => el.innerText = totalQty);
+}
+
+// Initial cart count
+updateCartCount();
