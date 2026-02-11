@@ -29,14 +29,16 @@ const modalStock = document.getElementById("modalStock");
 const modalDetails = document.getElementById("modalDetails");
 const closeModal = document.getElementById("closeModal");
 
-// ===== FLOATING MINI-CART ELEMENTS =====
-const miniCart = document.getElementById("miniCart");
-const miniCartItems = document.getElementById("miniCartItems");
-const miniCartTotal = document.querySelector(".mini-cart-total");
+const goCheckoutBottom = document.getElementById("goCheckoutBottom");
+
+// ===== FLOATING MINI-CART ELEMENTS (OPTIONAL) =====
+const floatingCart = document.getElementById("floatingCart");
 const floatingCartCount = document.getElementById("floatingCartCount");
 const floatingGoCheckout = document.getElementById("floatingGoCheckout");
-const floatingToggle = document.getElementById("floatingToggle");
+const miniCartItems = document.getElementById("miniCartItems");
+const miniCartTotal = document.querySelector(".mini-cart-total");
 
+// ===== API =====
 const API = "https://script.google.com/macros/s/AKfycbwPTwgGLqGy75TQ8fY9E-pyKoncCVmbs6BJdzZzfgGBRXv4OKTgLbJaBJ3hB4ZfW2rd/exec";
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -58,22 +60,24 @@ function renderProducts(list){
     productGrid.innerHTML = "<p style='color:var(--muted);text-align:center;padding:20px;'>No products found.</p>";
     return;
   }
+
   list.forEach(p => {
     const card = document.createElement("div");
     card.className = "product-card show";
     card.dataset.id = p.id;
+
     card.innerHTML = `
       <img src="${p.img}" alt="${p.name}">
       ${p.label ? `<div class="label">${p.label}</div>` : ""}
+
+      <!-- FLOATING ADD BUTTON ON IMAGE -->
+      <button class="img-addcart" data-add-id="${p.id}" type="button">+ Add</button>
+
       <div class="card-body">
         <div class="brand">Brand: ${p.brand}</div>
         <div class="name product-name">${p.name}</div>
         <div class="price">BND ${p.price}</div>
         <div class="stock">Stock: ${p.stock}</div>
-        <div class="card-buttons">
-          <button class="buy-btn add-to-cart">+ Add to Cart</button>
-          <button class="buy-btn go-checkout">🛒 Go to Checkout</button>
-        </div>
         <a href="#" class="more-details-btn">More Details →</a>
       </div>
     `;
@@ -97,10 +101,17 @@ function openQuickView(product){
   modalPrice.textContent = `BND ${product.price}`;
   modalStock.textContent = `Stock: ${product.stock}`;
   modalDetails.textContent = product.details || "No details available";
+
+  // keep whatsapp link (still available)
+  const whatsappBtn = document.getElementById("whatsappBtn");
+  if (whatsappBtn) {
+    whatsappBtn.href = `https://wa.me/?text=${encodeURIComponent("I'm interested in " + product.name)}`;
+  }
+
   quickViewModal.style.display = "flex";
 }
 closeModal.onclick = () => quickViewModal.style.display = "none";
-window.onclick = e => {if(e.target === quickViewModal) quickViewModal.style.display = "none";};
+window.onclick = e => { if(e.target === quickViewModal) quickViewModal.style.display = "none"; };
 
 // ===== FILTER & SORT =====
 function filterSortProducts(){
@@ -114,7 +125,6 @@ function filterSortProducts(){
     return searchMatch && brandMatch && categoryMatch && gradeMatch && minMatch && maxMatch;
   });
 
-  // Sorting
   if(sortSelect.value === "az") filtered.sort((a,b)=> a.name.localeCompare(b.name));
   if(sortSelect.value === "priceLow") filtered.sort((a,b)=> a.price - b.price);
 
@@ -140,15 +150,19 @@ fetch(API)
     productsData.forEach(p => {
       const card = document.querySelector(`[data-id="${p.id}"]`);
       if(!card) return;
+
       card.querySelector(".price").innerText = `BND ${p.price}`;
       card.querySelector(".stock").innerText = `Stock: ${p.stock}`;
-      const btn = card.querySelector(".add-to-cart");
-      if(p.stock <= 0) {
-        btn.disabled = true;
-        btn.innerText = "Out of Stock";
+
+      // Disable floating add button if out of stock
+      const addBtn = card.querySelector(".img-addcart");
+      if(addBtn && p.stock <= 0) {
+        addBtn.disabled = true;
+        addBtn.textContent = "Out";
       }
     });
-    updateFloatingCart();
+
+    updateFloatingCart(); // optional mini cart
   });
 
 // ===== ADD TO CART =====
@@ -179,22 +193,46 @@ function addToCart(id, name, price) {
     });
 }
 
-// ===== FLOATING MINI-CART FUNCTIONALITY =====
+// ===== EVENT: CLICK FLOATING ADD BUTTON ON IMAGE =====
+document.addEventListener("click", function(e){
+  const btn = e.target.closest(".img-addcart");
+  if(!btn) return;
 
-// Toggle mini cart
-floatingToggle.addEventListener("click", ()=>{
-  miniCart.style.display = miniCart.style.display === "flex" ? "none" : "flex";
+  const card = btn.closest(".product-card");
+  if(!card) return;
+
+  const id = btn.dataset.addId || card.dataset.id;
+  const name = card.querySelector(".product-name")?.innerText || "";
+  const price = parseFloat((card.querySelector(".price")?.innerText || "BND 0").replace("BND","").replace("$","").trim()) || 0;
+
+  addToCart(id, name, price);
 });
 
-// Render mini cart
+// ===== ONE GLOBAL BOTTOM CHECKOUT BUTTON =====
+if(goCheckoutBottom){
+  goCheckoutBottom.addEventListener("click", ()=>{
+    const cartNow = JSON.parse(localStorage.getItem("cart")) || [];
+    if(cartNow.length === 0){
+      alert("Your cart is empty!");
+      return;
+    }
+    window.location.href = "checkout.html";
+  });
+}
+
+// ===== OPTIONAL MINI CART (if floatingCart exists) =====
 function renderMiniCart(){
+  if(!miniCartItems || !miniCartTotal) return;
+
   miniCartItems.innerHTML = "";
   let total = 0;
+
   if(cart.length === 0){
-    miniCartItems.innerHTML = `<p style="opacity:.6;text-align:center;">Cart is empty</p>`;
+    miniCartItems.innerHTML = `<p>Cart is empty</p>`;
     miniCartTotal.innerText = "Total: BND 0";
     return;
   }
+
   cart.forEach(item => {
     total += item.price * item.qty;
     miniCartItems.innerHTML += `
@@ -204,47 +242,27 @@ function renderMiniCart(){
       </div>
     `;
   });
+
   miniCartTotal.innerText = `Total: BND ${total.toFixed(2)}`;
 }
 
-// Update cart count badge
 function updateFloatingCart(){
-  const totalQty = cart.reduce((sum,i)=>sum+i.qty,0);
-  if(floatingCartCount) floatingCartCount.innerText = totalQty;
+  if(floatingCartCount){
+    const totalQty = cart.reduce((sum,i)=>sum+i.qty,0);
+    floatingCartCount.innerText = totalQty;
+  }
   renderMiniCart();
 }
 
-// Go to checkout from mini cart
-floatingGoCheckout.addEventListener("click", ()=>{
-  if(cart.length === 0){
-    alert("Your cart is empty!");
-    return;
-  }
-  window.location.href = "checkout.html";
-});
-
-// Initial update
-updateFloatingCart();
-
-// ===== EVENT DELEGATION FOR PRODUCT CARD BUTTONS =====
-document.addEventListener("click", function(e){
-  const card = e.target.closest(".product-card");
-  if(!card) return;
-
-  const id = card.dataset.id;
-  const name = card.querySelector(".product-name").innerText;
-  const price = parseFloat(card.querySelector(".price").innerText.replace("BND","").trim());
-
-  if(e.target.classList.contains("add-to-cart")){
-    addToCart(id,name,price);
-    updateFloatingCart();
-  }
-
-  if(e.target.classList.contains("go-checkout")){
-    if(cart.length === 0){
+if(floatingGoCheckout){
+  floatingGoCheckout.addEventListener("click", ()=>{
+    const cartNow = JSON.parse(localStorage.getItem("cart")) || [];
+    if(cartNow.length === 0){
       alert("Your cart is empty!");
       return;
     }
     window.location.href = "checkout.html";
-  }
-});
+  });
+}
+
+updateFloatingCart();
